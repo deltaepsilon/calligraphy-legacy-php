@@ -1,0 +1,32 @@
+parameters:
+
+services:
+  cde_cart.manager.product:
+    class: CDE\CartBundle\Entity\ProductManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: 'CDE\CartBundle\Entity\Product'
+
+  cde_cart.manager.cart:
+    class: CDE\CartBundle\Entity\CartManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: 'CDE\CartBundle\Entity\Cart'
+      sessionManager: '@session'
+      
+  cde_cart.manager.transaction:
+    class: CDE\CartBundle\Entity\TransactionManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      mailer: '@mailer'
+      subscriptionManager: '@cde_subscription.manager.subscription'
+      discountManager: '@cde_cart.manager.discount'
+      awsManager: '@cde_utility.manager.aws'
+      productManager: '@cde_cart.manager.product'
+      class: 'CDE\CartBundle\Entity\Transaction'
+      
+  cde_cart.manager.discount:
+    class: CDE\CartBundle\Entity\DiscountManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: 'CDE\CartBundle\Entity\Discount'

@@ -1,0 +1,100 @@
+# Front
+CDEUtilityBundle_index:
+    pattern:  /
+    defaults: { _controller: CDEUtilityBundle:Front:index }
+    
+CDEUtilityBundle_index_meta:
+    pattern:  /meta/{name}
+    defaults: { _controller: CDEUtilityBundle:Front:meta }
+
+CDEUtilityBundle_index_purchase:
+    pattern:  /purchase/{slug}
+    defaults: { _controller: CDEUtilityBundle:Front:purchase }
+
+# Classes
+CDEUtilityBundle_class_index:
+    pattern:  /class/
+    defaults: { _controller: CDEUtilityBundle:Class:index }
+    requirements:
+      tag: (\w|-|\d)+
+      slug: (\w|-|\d)+
+
+CDEUtilityBundle_class_toc:
+    pattern:  /class/tag/{slug}
+    defaults: { _controller: CDEUtilityBundle:Class:toc }
+    requirements:
+      slug: (\w|-|\d)+
+
+CDEUtilityBundle_class_view:
+    pattern:  /class/{tag}/{slug}
+    defaults: { _controller: CDEUtilityBundle:Class:view }
+    requirements:
+      tag: (\w|-|\d)+
+      slug: (\w|-|\d)+
+
+
+
+# Galleries
+CDEUtilityBundle_utility_gallery:
+  pattern:  /utility/gallery/{name}
+  defaults: { _controller: CDEUtilityBundle:Utility:gallery }
+  options:
+    expose: true
+
+CDEUtilityBundle_utility_gallery_data:
+  pattern:  /utility/data/gallery
+  defaults: { _controller: CDEUtilityBundle:Utility:galleryData }
+  options:
+    expose: true
+
+CDEUtilityBundle_utility_signed_uri:
+  pattern:  /utility/sign/
+  defaults: { _controller: CDEUtilityBundle:Utility:jsonSignedUri }
+  options:
+    expose: true
+    
+# Gallery Account
+CDEContentBundle_gallery_account_index:
+    pattern:  /gallery/{id}
+    defaults: { _controller: CDEContentBundle:Gallery:indexAccount, id: ~ }
+    requirements:
+      id: \d+
+
+# This second route is necessary in some cases, because prod doesn't like the empty id
+CDEContentBundle_gallery_account_index_with_slash:
+    pattern:  /gallery/
+    defaults: { _controller: CDEContentBundle:Gallery:indexAccount}
+
+CDEContentBundle_gallery_account_create:
+    pattern:  /gallery/create
+    defaults: { _controller: CDEContentBundle:Gallery:createAccount }
+
+CDEContentBundle_gallery_account_update:
+    pattern:  /gallery/{id}/update
+    defaults: { _controller: CDEContentBundle:Gallery:updateAccount }
+
+CDEContentBundle_gallery_account_delete:
+    pattern:  /gallery/{id}/delete
+    defaults: { _controller: CDEContentBundle:Gallery:deleteAccount }
+
+# Admin Utility
+CDEUtilityBundle_utility_index:
+    pattern:  /admin/utility/
+    defaults: { _controller: CDEUtilityBundle:Utility:index }
+
+CDEUtilityBundle_utility_aws_secure_distribution:
+    pattern:  /admin/utility/aws/secure
+    defaults: { _controller: CDEUtilityBundle:Utility:secureDistribution }
+    
+CDEUtilityBundle_utility_aws_signed_uri:
+    pattern:  /admin/utility/aws/url
+    defaults: { _controller: CDEUtilityBundle:Utility:signedUri }
+    
+CDEUtilityBundle_utility_aws_distro_info:
+    pattern:  /admin/utility/aws/distro
+    defaults: { _controller: CDEUtilityBundle:Utility:distroInfo }
+
+#Email Blasts
+CDEUtilityBundle_email_view:
+  pattern: /email/{name}
+  defaults: { _controller: CDEUtilityBundle:Email:view, name: ~ }

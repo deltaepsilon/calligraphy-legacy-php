@@ -1,0 +1,18 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>{% block title %}I Still Love Calligraphy{% endblock %}</title>
+
+    <meta name="viewport" content="width=1400px">
+
+    {% block stylesheets %}
+        <link href="{{ asset('/css/email/base.css') }}" type="text/css" rel="stylesheet" />
+    {% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+    {% block footer %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends '::base.html.twig' %}
+
+{% if subscriptions %}
+    {% block sub %}
+        <li id="gallery-link">
+            <a href="{{ path('CDEContentBundle_gallery_account_index') }}">Gallery</a>
+        </li>
+    {% endblock %}
+{% endif %}
+
+{% block main %}
+    <div id="subscriptions-page">
+        
+<!--         Content Grid     -->
+        <div class="coursework-text"></div>
+        {% if tags %}
+            {% include 'CDEUtilityBundle:Class:grid.pages.html.twig' %}
+        {% else %}
+            <h2>You have no active content</h2>
+        {% endif %}
+        
+        <!-- <hr /> -->
+<!--         Subscriptions    -->
+<!--         <h1>Subscriptions</h1> -->
+        {% if subscriptions %}
+            {#{% include 'CDEUtilityBundle:Class:table.subscriptions.html.twig' %}#}
+        {% else %}
+            <a class="submit-link" href="{{ path('CDECartBundle_store_index') }}">
+                    <div class="sign-up-text centered"></div>
+            </a>
+            <p />
+        {% endif %}
+        
+    </div>
+{% endblock %}

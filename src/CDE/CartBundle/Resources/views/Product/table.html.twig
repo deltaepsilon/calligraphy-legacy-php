@@ -1,0 +1,92 @@
+<table class="data-table" id="product-table">
+    <thead>
+        <tr>
+            <th class="asc sortable alpha">title</th>
+            <th class="sortable alpha">description</th>
+            <th class="sortable alpha">price</th>
+            <th class="sortable alpha">active</th>
+            <th class="sortable alpha">image</th>
+            <th class="sortable alpha">uri</th>
+            <th class="sortable alpha">days</th>
+            <th class="sortable alpha">subscriptions</th>
+            <th class="sortable alpha">recurring</th>
+            <th class="sortable alpha">discount</th>
+            <th class="sortable alpha">discount</th>
+            <th class="sortable alpha">expiration (days)</th>
+            <th class="sortable date">created</th>
+            <th class="sortable date">updated</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+            <tr>
+                <td>
+                    <a href="{{ path('CDECartBundle_product_view', { 'slug': product.slug }) }}">{{ product }}</a>
+                </td>
+                <td>
+                    {{ product.description }}
+                </td>
+                <td>
+                    ${{ product.price }}
+                </td>
+                <td>
+                    {% if product.active == 1 %}
+                        True
+                    {% else %}
+                        False
+                    {% endif %}
+                </td>
+                <td>
+                    <img class="thumbnail" src="{{ product.keyImage }}" />
+                </td>
+                <td>
+                    {{ product.uri }}
+                </td>
+                <td>
+                    {{ product.days }}
+                </td>
+                <td>
+                    <ul>
+                        {% for tag in product.tags %}
+                            <li class="normal-size">{{ tag }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    {% if product.recurring == 1 %}
+                        True
+                    {% else %}
+                        False
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.discountPercent %}
+                        {{ product.discountPercent }}%
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.discountValue %}
+                        ${{ product.discountValue }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ product.expiration }}
+                </td>
+                <td>
+                    {{ product.created|date('m/d/y') }}
+                </td>
+                <td>
+                    {{ product.updated|date('m/d/y') }}
+                </td>
+                <td>
+                    <a href="{{ path('CDECartBundle_product_delete', { 'id': product.id }) }}">delete</a>
+                </td>
+                <td>
+                    <a href="{{ path('CDECartBundle_product_update', { 'id': product.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

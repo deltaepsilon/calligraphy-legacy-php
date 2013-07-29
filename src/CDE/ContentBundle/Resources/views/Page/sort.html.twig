@@ -1,0 +1,25 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_index') }}">
+        <li>
+            Back to Pages
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <div class="sort-page">
+        <h1>Update Page Sort Order</h1>
+        <form action="{{ path('CDEContentBundle_sort') }}" method="post" {{ form_enctype(form) }}>
+            {% for pageForm in form.pages %}
+                <div class="sort-page-item">
+                    {% set page = pageForm.get('value') %}
+                    {{ page }}
+                    {{ form_widget(pageForm) }}
+                </div>
+            {% endfor %}
+         <input type="submit" value="Update" />
+         </form>
+     </div>
+{% endblock %}

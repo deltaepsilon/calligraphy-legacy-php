@@ -1,0 +1,21 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_index') }}">
+        <li>
+            Back to Pages
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Create New Page</h1>
+    <p>
+        Use double brackets to surround private AWS Cloudfront links.  They will be automatically signed.
+        <pre>href="&#123;&#123; http://private.cloudfrontdistro.com/asset.mp4 &#125;&#125;"</pre>
+    </p>
+    <form action="{{ path('CDEContentBundle_create') }}" method="post" {{ form_enctype(form) }} id="page-form">
+        {{ form_widget(form) }}
+     <input type="submit" value="Create" />
+     </form>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+{% endblock %}
+
+{% block main %}
+  <h2>This is administration.  Beware.</h2>
+    <ul class="front-nav button-list">
+        <a href="{{ path('CDEContentBundle_index')}}"><li>Content</li></a>
+        <a href="{{ path('CDEContentBundle_gallery_index')}}"><li>Galleries</li></a>
+        <a href="{{ path('CDEUserBundle_index')}}"><li>Users</li></a>
+        <a href="{{ path('CDEUserBundle_address_index')}}"><li>Addresses</li></a>
+        <a href="{{ path('CDESubscriptionBundle_index')}}"><li>Subscriptions</li></a>
+        <a href="{{ path('CDECartBundle_product_index')}}"><li>Products</li></a>
+        <a href="{{ path('CDECartBundle_transaction_index')}}"><li>Transactions</li></a>
+        <a href="{{ path('CDECartBundle_discount_index')}}"><li>Discounts</li></a>
+	    <a href="{{ path('CDEAffiliateBundle_index')}}"><li>Affiliates</li></a>
+        <a href="{{ path('CDEUtilityBundle_utility_index')}}"><li>Utility</li></a>
+    </ul>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends '::base.html.twig' %}
+
+{% block primarySection %}
+    <div id="wrapper-admin">
+        <section id="admin" class="clearfix" role="main">
+            {% block main %}
+                
+            {% endblock %}
+        </section>
+        <footer>
+            {% block footer %}
+                &copy; {{ site_name }} {{ "now"|date('Y') }}
+            {% endblock %}
+        </footer>
+    </div>
+{% endblock %}

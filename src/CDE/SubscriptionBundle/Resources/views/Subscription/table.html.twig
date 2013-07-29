@@ -1,0 +1,48 @@
+<table class="data-table" id="subscription-table">
+    <thead>
+        <tr>
+            <th class="sortable alpha">user</th>
+            <th class="sortable alpha">name</th>
+            <th class="sortable numeric">days Left</th>
+            <th class="sortable date">expires</th>
+            <th class="desc sortable date">created</th>
+            <th class="sortable date">updated</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subscription in subscriptions %}
+            <tr>
+                <td>
+                    <a href="{{ path('CDEUserBundle_view', { 'id': subscription.user.id }) }}">{{ subscription.user }}</a>
+                </td>
+                <td>
+                    <a href="{{ path('CDECartBundle_product_view', { 'slug': subscription.product.slug }) }}">{{ subscription.product }}</a>
+                </td>
+                <td>
+                    {% if subscription.daysRemaining <= 0 %}
+                        Expired
+                    {% else %}
+                        {{ subscription.daysRemaining }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ subscription.expires|date('m/d/y') }}
+                </td>
+                <td>
+                    {{ subscription.created|date('m/d/y') }}
+                </td>
+                <td>
+                    {{ subscription.updated|date('m/d/y') }}
+                </td>
+                <td>
+                    <a href="{{ path('CDESubscriptionBundle_delete', { 'id': subscription.id }) }}">delete</a>
+                </td>
+                <td>
+                    <a href="{{ path('CDESubscriptionBundle_update', { 'id': subscription.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

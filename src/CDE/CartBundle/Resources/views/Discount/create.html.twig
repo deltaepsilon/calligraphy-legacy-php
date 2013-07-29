@@ -1,0 +1,17 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDECartBundle_discount_index') }}">
+        <li>
+            Back to Discounts
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Create New Discount</h1>
+    <form action="{{ path('CDECartBundle_discount_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" />
+    </form>
+{% endblock %}

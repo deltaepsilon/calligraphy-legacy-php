@@ -1,0 +1,18 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_tag_index') }}">
+        <li class="meta">
+            Back to Tags
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Update Tag</h1>
+    <h2><a href="{{ path('CDEContentBundle_tag_view', { 'id': tag.id }) }}">{{ tag }}</a></h2>
+    <form action="{{ path('CDEContentBundle_tag_update', { 'id': tag.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+     <input type="submit" value="Update" />
+     </form>
+{% endblock %}

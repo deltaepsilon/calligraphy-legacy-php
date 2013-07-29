@@ -1,0 +1,12 @@
+{% extends 'CDECartBundle:Mail:base.txt.twig' %}
+
+{% block title %}
+You have a new gallery comment on {{ comment.gallery.title }}.
+{% endblock %}
+
+{% block main %}
+Comment:
+        {{ comment.comment | raw }}
+
+View all comments at {{ url('CDEContentBundle_gallery_account_index', { 'id': comment.id }) }}
+{% endblock %}

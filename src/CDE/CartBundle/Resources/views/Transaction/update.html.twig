@@ -1,0 +1,23 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDECartBundle_transaction_index') }}">
+        <li>
+            Back to Transactions
+        </li>
+    </a>
+    <a href="{{ path('CDECartBundle_transaction_delete', { 'id': transaction.id }) }}">
+        <li>
+            Delete
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Update {{ transaction }}</h1>
+    <h2><a href="{{ path('CDECartBundle_transaction_view', { 'id': transaction.id }) }}">{{ transaction }}</a></h2>
+    <form action="{{ path('CDECartBundle_transaction_update', { 'id': transaction.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Update" />
+    </form>
+{% endblock %}

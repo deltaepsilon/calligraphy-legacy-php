@@ -1,0 +1,14 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUserBundle_create') }}">
+        <li>
+            New User
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Users</h1>
+    {% include 'CDEUserBundle:User:table.html.twig' %}
+{% endblock %}

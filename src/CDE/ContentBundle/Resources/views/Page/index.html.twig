@@ -1,0 +1,24 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_create') }}">
+        <li>
+            New Page
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_tag_index') }}">
+        <li>
+            Manage Tags
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_sort') }}">
+        <li>
+            Manage TOC
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Pages</h1>
+    {% include 'CDEContentBundle:Page:table.html.twig' %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'CDECartBundle:Mail:base.txt.twig' %}
+
+{% block title %}
+    You have received a gallery comment
+{% endblock %}
+
+{% block main %}
+Visit {{ site_name|raw }} at
+    {{ url('CDECartBundle_store_index') }}
+to shop around.  You'll get a chance to claim your gift card at checkout.
+
+{{ product|raw|upper }}
+{% if product.discountValue %}    
+    Value: ${{ product.discountValue }}
+{% endif %}
+{% if product.discountPercent %}    
+    Percent: ${{ product.discountPercent }}%
+{% endif %}
+    Purchase Date: {{ product.created|date('m/d/y') }}
+    Expiration: {{ product.discountExpiration|date('m/d/y') }}
+{% for code in product.discountCodes %}
+    Gift Code: {{ code|raw }}
+{% endfor %}
+{% endblock %}

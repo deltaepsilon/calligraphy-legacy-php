@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUtilityBundle_class_index') }}">
+        <li>
+            Back to Coursework
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_gallery_account_index') }}">
+        <li>
+            Back to Gallery
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1><a href="{{ path('CDEContentBundle_gallery_account_index', { 'id': gallery.id }) }}">{{ gallery }}</a></h1>
+    
+    <form action="{{ path('CDEContentBundle_gallery_account_update', { 'id': gallery.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Update" />
+    </form>
+    <img class="gallery-image" src="{{ gallery.signedUri }}" />
+{% endblock %}

@@ -1,0 +1,21 @@
+CDE\ContentBundle\Entity\Page:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }
+
+CDE\ContentBundle\Entity\Tag:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }
+
+CDE\ContentBundle\Entity\Gallery:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }
+    filename:
+      - Image: ~
+
+CDE\ContentBundle\Entity\Comment:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }

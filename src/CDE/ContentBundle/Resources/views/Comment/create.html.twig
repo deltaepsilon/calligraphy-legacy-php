@@ -1,0 +1,18 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_gallery_index') }}">
+        <li>
+            Back to Galleries
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_gallery_view', { 'id': gallery.id }) }}">
+        <li>
+            Back to Gallery
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+	{% include 'CDEContentBundle:Comment:create-embed.html.twig' %}
+{% endblock %}

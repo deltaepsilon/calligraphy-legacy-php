@@ -1,0 +1,29 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDECartBundle_product_create', { 'type': 'physical' } ) }}">
+        <li>
+            New Physical Product
+        </li>
+    </a>
+    <a href="{{ path('CDECartBundle_product_create', { 'type': 'digital' } ) }}">
+        <li>
+            New Digital Product
+        </li>
+    </a>
+    <a href="{{ path('CDECartBundle_product_create', { 'type': 'subscription' } ) }}">
+        <li>
+            New Subscription Product
+        </li>
+    </a>
+    <a href="{{ path('CDECartBundle_product_create', { 'type': 'gift' } ) }}">
+        <li>
+            New Gift Product
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Options</h1>
+    {% include 'CDECartBundle:Product:table.html.twig' %}
+{% endblock %}

@@ -1,0 +1,9 @@
+CDE\SubscriptionBundle\Entity\SubscriptionOption:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }
+
+CDE\SubscriptionBundle\Entity\Subscription:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }

@@ -1,0 +1,14 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_gallery_account_create') }}">
+        <li>
+            New Gallery Image
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Instructor Gallery - {{ app.user.username }}</h1>
+    {% include 'CDEContentBundle:Gallery:gallery.html.twig' %}
+{% endblock %}

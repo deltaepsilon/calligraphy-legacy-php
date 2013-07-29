@@ -1,0 +1,11 @@
+parameters:
+#    cde_utility.example.class: CDE\UtilityBundle\Example
+
+services:
+#    cde_utility.example:
+#        class: %cde_utility.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+  cde_utility.manager.aws:
+    class: 'CDE\UtilityBundle\Manager\AWSManager'
+    arguments:
+      container: '@service_container'

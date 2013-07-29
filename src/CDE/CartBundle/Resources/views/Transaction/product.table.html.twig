@@ -1,0 +1,90 @@
+<table class="data-table" id="product-table">
+    <thead>
+        <tr>
+            <th class="sortable alpha">title</th>
+            <th class="sortable alpha">description</th>
+            <th class="sortable numeric">price</th>
+            <th class="sortable numeric">quantity</th>
+            
+            <th class="sortable alpha">image</th>
+            <th class="sortable alpha">uri</th>
+            <th class="sortable alpha">days</th>
+            <th class="sortable alpha">recurring</th>
+            <th class="sortable alpha">discount %</th>
+            <th class="sortable alpha">discount $</th>
+            <th class="sortable alpha">codes</th>
+            <th class="sortable alpha">expiration</th>
+            {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+                <th class="sortable alpha">active</th>
+                <th>email</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+            <tr>
+                <td>
+                    <a href="{{ path('CDECartBundle_product_view', { 'slug': product.slug }) }}">{{ product }}</a>
+                </td>
+                <td>
+                    {{ product.description }}
+                </td>
+                <td>
+                    ${{ product.price }}
+                </td>
+                <td>
+                    {{ product.quantity }}
+                </td>
+                <td>
+                    <img class="thumbnail" src="{{ product.keyImage }}" />
+                </td>
+                <td>
+                    <a href="{{ product.signedUri }}">{{ product.uri }}</a>
+                </td>
+                <td>
+                    {{ product.days }}
+                </td>
+                <td>
+                    {% if product.recurring == 1 %}
+                        True
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.discountPercent %}
+                        {{ product.discountPercent }}%
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.discountValue %}
+                        ${{ product.discountValue }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% for code in product.discountCodes %}
+                        {{ code }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if product.discountExpiration %}
+                        {{ product.discountExpiration|date('m/d/y') }}
+                    {% endif %}
+                </td>
+                {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+                    <td>
+                        {% if product.active == 1 %}
+                            True
+                        {% else %}
+                            False
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if product.type == 'gift' %}
+                            <a href="{{ path('CDECartBundle_transaction_email_gift', { 'id': transaction.id, 'productId': product.id }) }}">view</a>
+                            <a href="{{ path('CDECartBundle_transaction_email_gift', { 'id': transaction.id, 'productId': product.id, 'send': 'send' }) }}">send</a>                        
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

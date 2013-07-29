@@ -1,0 +1,23 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_index') }}">
+        <li>
+            Back to Pages
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_update', { 'id': page.id }) }}">
+        <li>
+            Back to Page Update
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Update Page</h1>
+    <h2><a href="{{ path('CDEContentBundle_view', { 'id': page.id }) }}">{{ page }}</a></h2>
+    <form action="{{ path('CDEContentBundle_update_tag', { 'id': page.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+     <input type="submit" value="Update" />
+     </form>
+{% endblock %}

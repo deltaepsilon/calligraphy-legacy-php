@@ -1,0 +1,60 @@
+<form action="{{ path('CDEContentBundle_comment_index') }}" method="post" {{ form_enctype(form) }}>
+    <table class="data-table" id="gallery-table">
+        <thead>
+            <tr>
+                <th class="sortable alpha">mark as read</th>
+                <th class="sortable alpha">read</th>
+                <th class="sortable alpha">user</th>
+                <th class="sortable alpha">gallery owner</th>
+                <th class="sortable alpha">gallery</th>
+                <th class="sortable alpha">comment</th>
+                <th class="desc sortable date">created</th>
+                <th class="sortable date">updated</th>
+                <th>Delete</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commentForm in form.comments %}
+                {% set comment = commentForm.get('value') %}
+                <tr>
+                    <td class="label-hidden">
+                        {{ form_widget(commentForm) }}
+                    </td>
+                    <td>
+                        {% if comment.marked %}
+                            read
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('CDEUserBundle_view', { 'id': comment.user.id }) }}">{{ comment.user }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('CDEUserBundle_view', { 'id': comment.galleryuser.id }) }}">{{ comment.galleryuser }}</a>
+                    </td>
+                    <td>
+			<a href="{{ path('CDEContentBundle_gallery_view', { 'id': comment.gallery.id}) }}">{{ comment.gallery.title }}</a>
+                    </td>
+                    <td>
+                        {{ comment.comment }}
+                    </td>
+                    <td>
+                        {{ comment.created|date('m/d/y') }}
+                    </td>
+                    <td>
+                        {{ comment.updated|date('m/d/y') }}
+                    </td>
+                    <td>
+                        <a href="{{ path('CDEContentBundle_comment_delete', { 'id': comment.id }) }}">delete</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('CDEContentBundle_comment_update', { 'id': comment.id }) }}">edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>
+        <input type="submit" value="Update" />
+    </p>
+</form>

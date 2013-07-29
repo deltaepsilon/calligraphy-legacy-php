@@ -1,0 +1,14 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDECartBundle_discount_create') }}">
+        <li>
+            Create New Discount
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Discounts</h1>
+    {% include 'CDECartBundle:Discount:table.html.twig' %}
+{% endblock %}

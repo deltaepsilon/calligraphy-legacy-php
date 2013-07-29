@@ -1,0 +1,93 @@
+{% extends '::base.html.twig' %}
+{% block main %}
+    <div class="meta-page">
+        <div class="faq"></div>
+        <br/>
+        <h5>
+            If you can't find a solution in the FAQ's, <a href="mailto:support@melissaesplin.com">email</a> us with your question.
+        </h5>
+        <ul>
+            <li>
+                <h3>
+                    Is I Still Love Calligraphy Amazing?
+                </h3>
+                <p>
+                    Of course! Melissa has been teaching and developing this curriculum for years, and she knows what students need to get started. The web course has a nifty advantage over her face-to-face classes, because you get coursework, video instruction, practice materials, and Melissa's personal attention for a whole month. Work your way through each lesson, complete the assignments, and upload your work for Melissa to critique.
+                </p>
+            </li>
+	        <li>
+		        <h3>
+			        How do I reset my password?
+		        </h3>
+		        <p>
+			        Click the LOGIN button at the top of each page and follow the "reset password" link... or <a href="{{ path('fos_user_resetting_request') }}">reset your password here</a>.
+		        </p>
+	        </li>
+            <li>
+                <h3>
+                    Do you have return policy?
+                </h3>
+                <p>
+                    Yes we do!  If you feel like I Still Love Calligraphy has disappointed you, drop us a line at <a href="mailto:support@melissaesplin.com?subject=Return">support@melissaesplin.com</a> and we'll make sure you get satisfaction.
+                </p>
+            </li>
+            <li>
+                <h3>
+                    How can I maximize my video quality?
+                </h3>
+                <p>
+                    Different web browsers use different video formats. Safari and IE support H.264, which is the native format for our videos. All other video formats (Chrome/Firefox) have been transcoded for compatibility and may lose some quality. Mozilla has stated that it will soon start to support H.264, but Safari is your best bet to maximize video quality.
+                </p>
+            </li>
+            <li>
+                <h3>
+                    Some element on the site looks wonky.
+                </h3>
+                <p>
+                    We've done our web development with the latest Firefox browser. We test in Chrome and Safari, but not IE. Sorry IE folks. We've tried to make everything compatible, but we just don't have the time/resources to test in IE. Upgrade your browser to the newest version, and if that doesn't fix it, switch to Firefox. If you're really frustrated, email us some <a href="mailto:support@melissaesplin.com">feedback</a>.
+                </p>
+            </li>
+            <li>
+                <h3>
+                    Can I purchase my supplies before my subscription? What do I buy?
+                </h3>
+                <p>
+                    We've been working with <a href="http://store.yahoo.com/cgi-bin/clink?yhst-131221940731303+qJkSPN+index.html+">Paper & Ink Arts</a> to make getting started as easy as possible. Head over to their conferences and classes section and select the I Still Love Calligraphy course. There you'll be able to find all of the basics you'll need and a few optional items to get started.
+                </p>
+            </li>
+            <li>
+                <h3>
+                    Is the course on an individual basis?
+                </h3>
+                <p>
+                    Yes, it is! That's the beauty of it, You can access the course at any time and work at your own pace. Feedback is on an individual basis as well.
+                </p>
+            </li>
+            <li>
+                <h3>
+                    Is the upload gallery viewable by everyone?
+                </h3>
+                <p>
+                    No, it is not. The galleries are all private between the user and admin. We are working on a public gallery for students to publish finished pieces for showing off.
+                </p>
+            </li>
+            <li>
+                <h3>
+                    Do you offer extensions for the subscription?
+                </h3>
+                <p>
+                    We don't offer extensions at this time, although you can purchase the class again and the extra time will be added to your existing subscription. We made sure that the subscription was the right amount of time for our beta testers and they all agreed that 30 days was just right. If you do need an extension, feel free to drop us a line at <a href="mailto:support@melissaesplin.com">support@melissaesplin.com</a>
+                </p>
+            </li>
+            <li>
+                <h3>
+                    Will course materials available to students even after the 30 days?
+                </h3>
+                <p>
+                    The course includes printable guides for practicing. The guides are yours to keep and use as you work on polishing your new skill.
+                </p>
+            </li>
+        </ul>
+        <iframe style="margin: auto; display: block; margin-top: 3em;" width="420" height="315" src="http://www.youtube.com/embed/5LoIjNHRx_w" frameborder="0" allowfullscreen></iframe>
+    </div>
+{% endblock %}

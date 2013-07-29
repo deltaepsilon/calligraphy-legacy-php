@@ -1,0 +1,37 @@
+{% extends '::base.html.twig' %}
+
+{% block sideNav %}
+    {% include 'CDEUtilityBundle:Class:partial.toc.html.twig' %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+     <style>
+        {{ page.css|raw }}
+     </style>
+{% endblock %}
+
+{% block sub %}
+    <li id="gallery-link">
+        <a href="{{ path('CDEContentBundle_gallery_account_index') }}">Gallery</a>
+    </li>
+{% endblock %}
+
+{% block main %}
+    <div class="content-page">
+        <h1>{{ page.title }}</h1>
+        {{ page.signedHtml|raw }}
+        <div class="previous-next">
+            {% if previous %}
+                <a href="{{ path('CDEUtilityBundle_class_view', { 'tag': tag.slug, 'slug': previous.slug }) }}">
+                    <div class="arrow-left">Previous</div>
+                </a>
+            {% endif %}
+            {% if next %}
+                <a href="{{ path('CDEUtilityBundle_class_view', { 'tag': tag.slug, 'slug': next.slug }) }}">
+                    <div class="arrow-right">Next</div>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

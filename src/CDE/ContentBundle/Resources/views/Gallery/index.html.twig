@@ -1,0 +1,19 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_gallery_create') }}">
+        <li>
+            New Gallery
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_comment_index') }}">
+        <li>
+            View All Comments
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Galleries</h1>
+    {% include 'CDEContentBundle:Gallery:table.html.twig' %}
+{% endblock %}

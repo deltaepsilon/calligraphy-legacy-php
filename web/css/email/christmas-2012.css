@@ -1,0 +1,151 @@
+/*    Files */
+/*    Colors  */
+/*Unadjusted*/
+/*Unadjusted*/
+/*Unadjusted*/
+/*Unadjusted*/
+::-moz-selection {
+  background: #f79e6e;
+  color: #ffffff;
+  text-shadow: none;
+}
+::selection {
+  background: #f79e6e;
+  color: #ffffff;
+  text-shadow: none;
+}
+input:invalid, textarea:invalid {
+  background-color: rgba(173, 219, 207, 0.8);
+}
+/*Fonts*/
+.light {
+  font-family: helvetica, arial;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+.medium {
+  font-family: helvetica, arial;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.bold {
+  font-family: helvetica, arial;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+::-moz-selection {
+  background: #addbcf;
+  color: #ffffff;
+  text-shadow: none;
+}
+::selection {
+  background: #addbcf;
+  color: #ffffff;
+  text-shadow: none;
+}
+body {
+  background: #ffffff;
+  color: #555149;
+  position: relative;
+  width: 500px;
+  margin: 41px auto 16px;
+  font-family: helvetica, arial;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  padding: 0;
+  width: 250px;
+}
+a, a:visited {
+  color: #555149;
+  text-decoration: none;
+}
+#header-row {
+  height: 114px;
+  vertical-align: top;
+}
+#lines-top-row {
+  height: 55px;
+  vertical-align: top;
+}
+#announcing {
+  z-index: 1;
+}
+#announcing-text {
+  width: 100px;
+}
+#gray-box {
+  background-color: #e3e1d9;
+  height: 92px;
+}
+#gray-box p {
+  font-size: 15px;
+  line-height: 19px;
+  margin-top: 0;
+  padding-top: 18px;
+  text-align: left;
+}
+#pen-and-ink {
+  background: #FFFFFF;
+  border: 2px solid #F0EFEC;
+  border-right: none;
+  border-top: none;
+  float: right;
+  padding: 4px 0 4px 4px;
+}
+#text {
+  padding-top: 16px;
+  width: 225px;
+}
+#text p {
+  padding-left: 1px;
+  font-size: 12px;
+  line-height: 16px;
+}
+#lines-bottom {
+  height: 25px;
+  width: 255px;
+  z-index: -1;
+}
+#footer {
+  background-color: #f79e6e;
+  height: 60px;
+}
+#footer p {
+  color: white;
+  font-size: 12px;
+  letter-spacing: 2px;
+  line-height: 20px;
+  padding: 10px;
+  text-align: center;
+  text-transform: uppercase;
+}
+#footer span {
+  color: #555149;
+  font-size: 16px;
+}
+#announcing {
+  margin-left: -2px;
+}
+#pen-and-ink {
+  border-top: 2px solid #F0EFEC;
+}
+#gray-box p {
+  margin-left: -40px;
+}
+body {
+  padding: 0 10px;
+}
+#lines-top-row {
+  height: 31px;
+}
+#header-row {
+  height: 111px;
+}
+#sign-up {
+  margin-bottom: 10px;
+}

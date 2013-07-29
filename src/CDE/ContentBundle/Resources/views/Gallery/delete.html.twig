@@ -1,0 +1,22 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_gallery_update', { 'id': gallery.id }) }}">
+        <li>
+            Back to Content Edit
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_gallery_view', { 'id': gallery.id }) }}">
+        <li>
+            Back to Content
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Are you sure you want to delete {{ gallery }}?</h1>
+    <form action="{{ path('CDEContentBundle_gallery_delete', { 'id': gallery.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Delete" />
+    </form>
+{% endblock %}

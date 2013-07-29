@@ -1,0 +1,18 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEAffiliateBundle_index') }}">
+        <li class="meta">
+            Back to Affiliates
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Update Affiliate</h1>
+    <h2><a href="{{ path('CDEAffiliateBundle_view', { 'id': affiliate.id }) }}">{{ affiliate }}</a></h2>
+    <form action="{{ path('CDEAffiliateBundle_update', { 'id': affiliate.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+     <input type="submit" value="Update" />
+     </form>
+{% endblock %}

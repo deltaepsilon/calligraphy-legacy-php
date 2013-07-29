@@ -1,0 +1,81 @@
+CDEUserBundle_index:
+  pattern: /admin
+  defaults: { _controller: CDEUserBundle:User:index}
+
+CDEUserBundle_view:
+  pattern: /admin/{id}
+  defaults: { _controller: CDEUserBundle:User:view}
+  requirements:
+    id: \d+
+    
+CDEUserBundle_create:
+  pattern: /admin/create
+  defaults: { _controller: CDEUserBundle:User:create}
+    
+CDEUserBundle_update:
+  pattern: /admin/{id}/edit
+  defaults: { _controller: CDEUserBundle:User:update}
+  requirements:
+    id: \d+
+
+CDEUserBundle_delete:
+  pattern: /admin/{id}/delete
+  defaults: { _controller: CDEUserBundle:User:delete}
+  requirements:
+    id: \d+
+    
+# Enable user account management
+CDEUserBundle_account_view:
+  pattern: /
+  defaults: { _controller: CDEUserBundle:User:viewAccount}
+  requirements:
+    id: \d+
+    
+CDEUserBundle_account_update:
+  pattern: /update
+  defaults: { _controller: CDEUserBundle:User:updateAccount}
+  requirements:
+    id: \d+
+    
+CDEUserBundle_account_delete:
+  pattern: /delete
+  defaults: { _controller: CDEUserBundle:User:deleteAccount}
+  requirements:
+    id: \d+
+    
+CDEUserBundle_account_transaction:
+  pattern: /transaction/{id}
+  defaults: { _controller: CDEUserBundle:User:transactionAccount}
+  requirements:
+    id: \d+
+    
+# Address routes
+CDEUserBundle_address_index:
+  pattern: /admin/address
+  defaults: { _controller: CDEUserBundle:Address:index}
+
+CDEUserBundle_address_view:
+  pattern: /address/{id}
+  defaults: { _controller: CDEUserBundle:Address:view}
+  requirements:
+    id: \d+
+    
+CDEUserBundle_address_create:
+  pattern: /address/create
+  defaults: { _controller: CDEUserBundle:Address:create}
+    
+CDEUserBundle_address_update:
+  pattern: /address/{id}/edit
+  defaults: { _controller: CDEUserBundle:Address:update}
+  requirements:
+    id: \d+
+
+CDEUserBundle_address_delete:
+  pattern: /address/{id}/delete
+  defaults: { _controller: CDEUserBundle:Address:delete}
+  requirements:
+    id: \d+
+
+#New routes required by Symfony 2.3
+CDEUserBundle_login_partial:
+  pattern: /login/partial

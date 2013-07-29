@@ -1,0 +1,27 @@
+<table class="data-table" id="pages-table">
+    <thead>
+        <tr>
+            <th class="sortable alpha">class</th>
+            <th class="sortable alpha">title</th>
+            <th class="sortable alpha">page</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for page in pages %}
+            <tr>
+                <td>
+                    {% for tag in page.tags %}
+                        <a href="{{ path('CDEUtilityBundle_class_view', { 'tag': tag.slug, 'slug': page.slug }) }}">{{ tag }}</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ page.title }}
+                </td>
+                <td>
+                    Should be order
+                    {{ page.id }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

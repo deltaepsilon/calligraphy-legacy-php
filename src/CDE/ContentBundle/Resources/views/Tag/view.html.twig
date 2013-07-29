@@ -1,0 +1,34 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_tag_index') }}">
+        <li>
+            Back to Tags
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_tag_update', { 'id': tag.id}) }}">
+        <li>
+            Edit Tag
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_tag_create') }}">
+        <li>
+            New Tag
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ tag }}</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">Parent</div><div class="value">{{ tag.parent }}</div>
+        </li>
+        <li>
+            <div class="key">Name</div><div class="value">{{ tag.name }}</div>
+        </li>
+        <li>
+            <div class="key">Status</div><div class="value">{{ tag.activeText }}</div>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,21 @@
+parameters:
+#    cde_user.example.class: CDE\UserBundle\Example
+
+services:
+  cde_user.registration.form.type:
+    class: CDE\UserBundle\Form\Type\RegistrationFormType
+    arguments: [%fos_user.model.user.class%]
+    tags:
+      - { name: form.type, alias: cde_user_registration }
+  cde_user.manager.user:
+    class: CDE\UserBundle\Entity\UserManager
+    arguments:
+      em: '@doctrine.orm.entity_manager'
+      class: CDE\UserBundle\Entity\User
+      userManager: '@fos_user.user_manager'
+      subscriptionManager: '@cde_subscription.manager.subscription'
+  cde_user.manager.address:
+    class: CDE\UserBundle\Entity\AddressManager
+    arguments:
+      em: '@doctrine.orm.entity_manager'
+      class: CDE\UserBundle\Entity\Address

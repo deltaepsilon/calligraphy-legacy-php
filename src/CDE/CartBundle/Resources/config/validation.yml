@@ -1,0 +1,28 @@
+CDE\CartBundle\Entity\Cart:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }
+
+CDE\CartBundle\Entity\Discount:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }
+    expires:
+      - NotBlank: ~
+    uses:
+      - Min: 0
+    maxUses:
+      - Min: 0
+    value:
+      - Min: 0
+    percent:
+      - Min: 0
+CDE\CartBundle\Entity\Product:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }
+      
+CDE\CartBundle\Entity\Transaction:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }

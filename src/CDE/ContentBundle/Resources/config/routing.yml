@@ -1,0 +1,121 @@
+# Page
+CDEContentBundle_index:
+    pattern:  /
+    defaults: { _controller: CDEContentBundle:Page:index }
+
+CDEContentBundle_view:
+    pattern:  /{id}
+    defaults: { _controller: CDEContentBundle:Page:view }
+    requirements:
+      id: \d+
+    
+CDEContentBundle_create:
+    pattern:  /create
+    defaults: { _controller: CDEContentBundle:Page:create }
+
+CDEContentBundle_update:
+    pattern:  /{id}/update
+    defaults: { _controller: CDEContentBundle:Page:update }
+    requirements:
+      id: \d+
+
+CDEContentBundle_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: CDEContentBundle:Page:delete }
+    requirements:
+      id: \d+
+
+CDEContentBundle_update_tag:
+    pattern:  /{id}/update/tag
+    defaults: { _controller: CDEContentBundle:Page:tag }
+    requirements:
+      id: \d+
+
+CDEContentBundle_sort:
+    pattern:  /sort
+    defaults: { _controller: CDEContentBundle:Page:sort }
+    requirements:
+      id: \d+
+      
+# Tag
+CDEContentBundle_tag_index:
+    pattern:  /tag
+    defaults: { _controller: CDEContentBundle:Tag:index }
+
+CDEContentBundle_tag_view:
+    pattern:  /tag/{id}
+    defaults: { _controller: CDEContentBundle:Tag:view }
+    requirements:
+      id: \d+
+    
+CDEContentBundle_tag_create:
+    pattern:  /tag/create
+    defaults: { _controller: CDEContentBundle:Tag:create }
+
+CDEContentBundle_tag_update:
+    pattern:  /tag/{id}/update
+    defaults: { _controller: CDEContentBundle:Tag:update }
+    requirements:
+      id: \d+
+
+CDEContentBundle_tag_delete:
+    pattern:  /tag/{id}/delete
+    defaults: { _controller: CDEContentBundle:Tag:delete }
+    requirements:
+      id: \d+
+
+# Gallery
+CDEContentBundle_gallery_index:
+    pattern:  /gallery
+    defaults: { _controller: CDEContentBundle:Gallery:index }
+
+CDEContentBundle_gallery_view:
+    pattern:  /gallery/{id}
+    defaults: { _controller: CDEContentBundle:Gallery:view }
+    requirements:
+      id: \d+
+    
+CDEContentBundle_gallery_create:
+    pattern:  /gallery/create
+    defaults: { _controller: CDEContentBundle:Gallery:create }
+
+CDEContentBundle_gallery_update:
+    pattern:  /gallery/{id}/update
+    defaults: { _controller: CDEContentBundle:Gallery:update }
+    requirements:
+      id: \d+
+
+CDEContentBundle_gallery_delete:
+    pattern:  /gallery/{id}/delete
+    defaults: { _controller: CDEContentBundle:Gallery:delete }
+    requirements:
+      id: \d+
+
+# Comment
+CDEContentBundle_comment_index:
+    pattern:  /comment
+    defaults: { _controller: CDEContentBundle:Comment:index }
+
+CDEContentBundle_comment_view:
+    pattern:  /comment/{id}
+    defaults: { _controller: CDEContentBundle:Comment:view }
+    requirements:
+      id: \d+
+    
+CDEContentBundle_comment_create:
+    pattern:  /comment/create/{id}
+    defaults: { _controller: CDEContentBundle:Comment:create }
+    requirements:
+      id: \d+
+
+CDEContentBundle_comment_update:
+    pattern:  /comment/{id}/update
+    defaults: { _controller: CDEContentBundle:Comment:update }
+    requirements:
+      id: \d+
+
+CDEContentBundle_comment_delete:
+    pattern:  /comment/{id}/delete
+    defaults: { _controller: CDEContentBundle:Comment:delete }
+    requirements:
+      id: \d+

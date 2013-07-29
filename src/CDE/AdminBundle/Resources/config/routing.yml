@@ -1,0 +1,3 @@
+CDEAdminBundle_index:
+    pattern:  /
+    defaults: { _controller: CDEAdminBundle:Admin:index }

@@ -1,0 +1,11 @@
+<ol class="data-list">
+    {% for tocPage in toc %}
+        <li>
+            {% if page is defined and tocPage.id == page.id %}
+                <b>{{ tocPage.title }}</b>
+            {% else %}
+                <a href="{{ path('CDEUtilityBundle_class_view', { 'tag': tag.slug, 'slug': tocPage.slug }) }}">{{ tocPage.title }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ol>

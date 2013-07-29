@@ -1,0 +1,24 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_gallery_index') }}">
+        <li>
+            Back to Galleries
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_gallery_view', { 'id': gallery.id }) }}">
+        <li>
+            Back to Gallery
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1><a href="{{ path('CDEContentBundle_gallery_view', { 'id': gallery.id }) }}">{{ gallery }}</a></h1>
+    
+    <form action="{{ path('CDEContentBundle_comment_update', { 'id': comment.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Update" />
+    </form>
+    <img class="gallery-image" src="{{ gallery.signedUri }}" />
+{% endblock %}

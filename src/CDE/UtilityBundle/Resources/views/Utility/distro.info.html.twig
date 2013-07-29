@@ -1,0 +1,43 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUtilityBundle_utility_index') }}">
+        <li>
+            Back to Utility
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>CloudFront/S3 Private Distro</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">Distro ID</div><div class="value">{{ response.body.Id }}</div>
+        </li>
+        <li>
+            <div class="key">Last Modified</div><div class="value">{{ response.body.LastModifiedTime }}</div>
+        </li>
+        <li>
+            <div class="key">Status</div><div class="value">{{ response.body.Status }}</div>
+        </li>
+        <li>
+            <div class="key">Domain</div><div class="value">{{ response.body.DomainName }}</div>
+        </li>
+        <li>
+            <div class="key">S3 DNS Name</div><div class="value">{{ response.body.DistributionConfig.S3Origin.DNSName }}</div>
+        </li>
+        <li>
+            <div class="key">S3 OAI</div><div class="value">{{ response.body.DistributionConfig.S3Origin.OriginAccessIdentity }}</div>
+        </li>
+        <li>
+            <div class="key">Signers</div><div class="value">
+                {% if response.body.DistributionConfig.TrustedSigners.Self %}
+                    Self
+                {% else %}
+                    Self not found.  Possible error.
+                {% endif %}
+                
+            </div>
+        </li>
+    </ul>
+{% endblock %}

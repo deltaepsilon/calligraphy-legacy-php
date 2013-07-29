@@ -1,0 +1,28 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUtilityBundle_class_index') }}">
+        <li>
+            Back to Coursework
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_gallery_account_index') }}">
+        <li>
+            Back to Gallery
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Upload New Gallery Image</h1>
+    <h5>
+        Image files only please (jpg, jpeg, png, gif).  PDFs will not display.
+        <br/>
+        Please keep images under 800px wide to avoid resizing issues.
+    </h5>
+    <br/>
+    <form action="{{ path('CDEContentBundle_gallery_account_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+     <input type="submit" value="Create" />
+     </form>
+{% endblock %}

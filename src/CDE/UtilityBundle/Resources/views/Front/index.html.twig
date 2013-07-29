@@ -1,0 +1,43 @@
+{% extends '::base.html.twig' %}
+{% block main %}
+    <div class="callout">
+        <h1>Learn Modern Calligraphy</h1>
+        make paper gorgeous with pointed pen and ink 
+    </div>
+    <div id="signup">
+        <ul>
+            <li id="signup-gallery" class="gallery" >
+                <div class="key-image">
+                    <img src="http://images.melissaesplin.com/calligraphy/gallery-key-image.png" />
+                </div>
+                <span class="gallery-label">melissa's gallery</span>
+            </li>
+            <a href="{{ path('CDEUtilityBundle_index_meta', { 'name': 'sign-up' }) }}">
+                <li>
+                    <span id="sign-up-text">Click Here<br/>To &nbsp; &nbsp;</span>
+                    <div class="sign-up-text"></div>
+                </li>
+            </a>
+            <li>
+               <a href="http://melissaesplin.com">
+                   <div class="isly-link">
+                       <img src="http://images.melissaesplin.com/calligraphy/isly-key-image.png" />
+                   </div>
+                   <span class="gallery-label">i still love you blog</span>
+               </a> 
+            </li>
+        </ul>
+    </div>
+    <video id="trailer" width="794" height="447" controls="" tabindex="0">
+        <source type="video/mp4" src="http://images.melissaesplin.com/calligraphy/trailer.mp4"></source>
+        <source type="video/webm" src="http://images.melissaesplin.com/calligraphy/trailer.webm"></source>
+    </video>
+
+    <div id="mc_embed_signup">
+        <form action="http://istilllovecalligraphy.us5.list-manage2.com/subscribe/post?u=381a43f9ce1087b394d843d80&amp;id=60761ee4f8" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+            <label for="mce-EMAIL">Sign up for our newsletter to receive deals and course announcements in your inbox.</label>
+            <input id="mc-email-input" class="no-focus" type="email" value="" name="EMAIL" placeholder="email address" required>
+            <input id="mc-email-submit" class="no-focus" type="submit" value="Subscribe" name="subscribe" class="button">
+        </form>
+    </div>
+{% endblock %}

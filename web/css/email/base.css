@@ -1,0 +1,36 @@
+/*    Files */
+/*    Colors  */
+/*Unadjusted*/
+/*Unadjusted*/
+/*Unadjusted*/
+/*Unadjusted*/
+::-moz-selection {
+  background: #f79e6e;
+  color: #ffffff;
+  text-shadow: none;
+}
+::selection {
+  background: #f79e6e;
+  color: #ffffff;
+  text-shadow: none;
+}
+input:invalid,
+textarea:invalid {
+  background-color: rgba(173, 219, 207, 0.8);
+}
+/*Fonts*/
+.light {
+  font-family: helvetica, arial;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+.medium {
+  font-family: helvetica, arial;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.bold {
+  font-family: helvetica, arial;
+  font-weight: 700;
+  letter-spacing: 1px;
+}

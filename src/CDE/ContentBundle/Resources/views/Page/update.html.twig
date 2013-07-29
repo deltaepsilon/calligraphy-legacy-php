@@ -1,0 +1,26 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_index') }}">
+        <li>
+            Back to Pages
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_update_tag', { 'id': page.id }) }}">
+        <li>
+            Add Sub-Tags
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1><a href="{{ path('CDEContentBundle_view', { 'id': page.id }) }}">{{ page }}</a></h1>
+    <p>
+        Use double brackets to surround private AWS Cloudfront links.  They will be automatically signed.
+        <pre>href="&#123;&#123; http://private.cloudfrontdistro.com/asset.mp4 &#125;&#125;"</pre>
+    </p>
+    <form action="{{ path('CDEContentBundle_update', { 'id': page.id }) }}" method="post" {{ form_enctype(form) }} id="page-form">
+        {{ form_widget(form) }}
+     <input type="submit" value="Update" />
+     </form>
+{% endblock %}

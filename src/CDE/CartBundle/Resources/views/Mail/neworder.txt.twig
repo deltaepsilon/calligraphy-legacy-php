@@ -1,0 +1,45 @@
+{% extends 'CDECartBundle:Mail:base.txt.twig' %}
+
+{% block title %}
+New Order: {{ transaction }}
+{% endblock %}
+
+{% block main %}
+Greetings {{ transaction.user}},
+
+Thank you for your purchase.  We love to take care of our customers, so contact us anytime!
+
+{{ site_name|raw }}
+
+
+Details: {{ url('CDEUserBundle_account_transaction', { 'id': transaction.id }) }}
+
+Order: {% set total = 0 %}
+
+{% for product in transaction.products %}
+    {{ product|raw|upper }}
+        Price: ${{ product.price }}
+        Quantity: {{ product.quantity }}
+        Total: ${{ product.price * product.quantity }}
+{% if product.type == 'digital' %}
+        Temporary URL (7-day Expiration): 
+            {{ product.signedUri|raw }}
+{% endif %}{% if product.type == 'subscription' %}
+        Days: {{ product.days }}
+{% endif %}{% if product.type == 'gift' %}
+{% for code in product.discountCodes %}
+        Gift Code: {{ code|raw }}
+{% endfor %}
+{% if product.discountValue %}
+        Value: ${{ product.discountValue }}
+{% endif %}{% if product.discountPercent %}
+        Percentage: {{ product.discountPercent * 100 }}%
+{% endif %}
+        Expiration: {{ product.discountExpiration|date('m/d/y') }}
+{% endif %}
+{% set total = total + product.price * product.quantity %}
+
+{% endfor %}
+
+Order Total: ${{ total }}
+{% endblock %}

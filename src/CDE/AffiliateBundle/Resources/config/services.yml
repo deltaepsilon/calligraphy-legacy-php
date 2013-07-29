@@ -1,0 +1,9 @@
+parameters:
+#    cde_affiliate.example.class: CDE\AffiliateBundle\Example
+
+services:
+  cde_affiliate.manager.affiliate:
+    class: CDE\AffiliateBundle\Entity\AffiliateManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: 'CDE\AffiliateBundle\Entity\Affiliate'

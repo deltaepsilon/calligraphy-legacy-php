@@ -1,0 +1,8 @@
+parameters:
+
+services:
+  cde_subscription.manager.subscription:
+    class: CDE\SubscriptionBundle\Entity\SubscriptionManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: 'CDE\SubscriptionBundle\Entity\Subscription'

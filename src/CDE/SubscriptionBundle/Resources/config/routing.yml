@@ -1,0 +1,28 @@
+# Subscription
+CDESubscriptionBundle_index:
+    pattern:  /
+    defaults: { _controller: CDESubscriptionBundle:Subscription:index }
+
+CDESubscriptionBundle_view:
+    pattern:  /{id}
+    defaults: { _controller: CDESubscriptionBundle:Subscription:view }
+    requirements:
+      id: \d+
+
+CDESubscriptionBundle_create:
+    pattern:  /create
+    defaults: { _controller: CDESubscriptionBundle:Subscription:create }
+    requirements:
+      id: \d+
+      
+CDESubscriptionBundle_update:
+    pattern:  /{id}/update
+    defaults: { _controller: CDESubscriptionBundle:Subscription:update }
+    requirements:
+      id: \d+
+
+CDESubscriptionBundle_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: CDESubscriptionBundle:Subscription:delete }
+    requirements:
+      id: \d+

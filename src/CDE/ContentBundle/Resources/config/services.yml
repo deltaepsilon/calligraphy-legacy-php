@@ -1,0 +1,31 @@
+parameters:
+#    cde_content.example.class: CDE\ContentBundle\Example
+
+services:
+#    cde_content.example:
+#        class: %cde_content.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+  cde_content.manager.page:
+    class: CDE\ContentBundle\Entity\PageManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: 'CDE\ContentBundle\Entity\Page'
+
+  cde_content.manager.tag:
+    class: CDE\ContentBundle\Entity\TagManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: 'CDE\ContentBundle\Entity\Tag'
+
+  cde_content.manager.gallery:
+    class: CDE\ContentBundle\Entity\GalleryManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: 'CDE\ContentBundle\Entity\Gallery'
+      aws: '@cde_utility.manager.aws'
+
+  cde_content.manager.comment:
+    class: CDE\ContentBundle\Entity\CommentManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: 'CDE\ContentBundle\Entity\Comment'

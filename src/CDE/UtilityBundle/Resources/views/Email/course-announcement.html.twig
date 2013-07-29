@@ -1,0 +1,66 @@
+{% extends 'CDEUtilityBundle:Email:base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('/css/email/course-announcement.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr id="header-row">
+            <td colspan="2">
+                <a href="http://istilllovecalligraphy.com">
+                    <img id="header" src="{{ asset('/img/email/announcement/i-still-love-calligraphy.png') }}" alt="I Still Love Calligraphy -- Online Course"/>
+                </a>
+            </td>
+        </tr>
+        <tr id="lines-top-row">
+            <td colspan="2">
+                <img id="lines-top" src="{{ asset('/img/email/announcement/lines.png') }}" />
+            </td>
+        </tr>
+        <tr id="gray-box">
+            <td id="announcing-image">
+                <a href="http://istilllovecalligraphy.com">
+                    <img id="announcing" src="{{ asset('/img/email/announcement/announcing.png') }}" />
+                </a>
+            </td>
+            <td id="announcing-text">
+                <a href="http://istilllovecalligraphy.com">
+                    <p>
+                        A one-of-a-kind online course for modern calligraphy in the Copperplate style
+                    </p>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="text">
+                    <p>
+                        This course is based on traditional calligraphy in the copperplate style and covers the history and traditional methods within that practice with an emphasis on developing your unique style.  Learn to use the pointed pen in eight lessons and four videos.  Each less has exercises for you to practice with your new skills as well as access to a private gallery for you to upload your work for instructor feedback.
+                    </p>
+                    <p>
+                        Work at your own pace and sign up on your own time!
+                    </p>
+                </div>
+                <img id="lines-bottom" src="{{ asset('/img/email/announcement/lines.png') }}" />
+            </td>
+            <td>
+                <img id="pen-and-ink" src="{{ asset('/img/email/announcement/pen-and-ink.png') }}" alt="Create are with pen and ink"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a href="http://istilllovecalligraphy.com/meta/sign-up">
+                    <img id="sign-up" src="{{ asset('/img/email/announcement/sign-up.png') }}" alt="Sign up for the course"/>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td id="footer" colspan="2">
+                <p>
+                    use code: <span id="code">5-OFF-EMAIL-PROMO</span> <br/> for $5 off subscriptions & downloads
+                </p>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

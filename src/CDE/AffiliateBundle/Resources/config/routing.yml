@@ -1,0 +1,25 @@
+CDEAffiliateBundle_index:
+    pattern:  /admin/affiliate
+    defaults: { _controller: CDEAffiliateBundle:Affiliate:index }
+
+CDEAffiliateBundle_view:
+    pattern:  /admin/affiliate/{id}
+    defaults: { _controller: CDEAffiliateBundle:Affiliate:view }
+    requirements:
+      id: \d+
+
+CDEAffiliateBundle_create:
+    pattern:  /affiliate/set/{name}
+    defaults: { _controller: CDEAffiliateBundle:Affiliate:create }
+
+CDEAffiliateBundle_update:
+    pattern:  /admin/affiliate/{id}/update
+    defaults: { _controller: CDEAffiliateBundle:Affiliate:update }
+    requirements:
+      id: \d+
+
+CDEAffiliateBundle_delete:
+    pattern:  /admin/affiliate/{id}/delete
+    defaults: { _controller: CDEAffiliateBundle:Affiliate:delete }
+    requirements:
+      id: \d+

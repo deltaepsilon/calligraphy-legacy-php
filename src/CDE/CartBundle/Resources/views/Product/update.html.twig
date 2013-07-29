@@ -1,0 +1,22 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <li>
+        <a href="{{ path('CDECartBundle_product_index') }}">Back to Products</a>
+    </li>
+    <li>
+        <a href="{{ path('CDECartBundle_product_update_tag', { 'id': product.id }) }}">Edit Product Tags</a>
+    </li>
+    <li>
+        <a href="{{ path('CDECartBundle_product_delete', { 'id': product.id }) }}">Delete</a>
+    </li>
+{% endblock %}
+
+{% block main %}
+    <h1>Update {{ product }}</h1>
+    <h2><a href="{{ path('CDECartBundle_product_view', { 'slug': product.slug }) }}">{{ product }}</a></h2>
+    <form action="{{ path('CDECartBundle_product_update', { 'id': product.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Update" />
+    </form>
+{% endblock %}

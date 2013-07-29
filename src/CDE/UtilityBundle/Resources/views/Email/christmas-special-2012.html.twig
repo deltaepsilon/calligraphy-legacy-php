@@ -1,0 +1,68 @@
+{% extends 'CDEUtilityBundle:Email:base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('/css/email/christmas-2012.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr id="header-row">
+            <td colspan="2">
+                <a href="http://istilllovecalligraphy.com/">
+                    <img id="header" src="{{ asset('/img/email/announcement/i-still-love-calligraphy.png') }}" alt="I Still Love Calligraphy -- Online Course"/>
+                </a>
+            </td>
+        </tr>
+        <tr id="lines-top-row">
+            <td colspan="2">
+                <img id="lines-top" src="{{ asset('/img/email/announcement/lines.png') }}" />
+            </td>
+        </tr>
+        <tr id="gray-box">
+            <td id="announcing-image">
+                <a href="http://istilllovecalligraphy.com/store/calligraphy-kit-and-workshop">
+                    <img id="announcing" src="{{ asset('/img/email/christmas2012/announcing-transparent.png') }}" />
+                </a>
+            </td>
+            <td id="announcing-text">
+                <a href="http://istilllovecalligraphy.com/store/calligraphy-kit-and-workshop">
+                    <p>
+                        Give one of only 40 limited-edition quick-start kits from I Still Love Calligraphy
+                    </p>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="text">
+                    <p>
+                        We've produced a limited run of 40 quick-start calligraphy kits and packaged them with a subscription to I Still Love Calligraphy's online modern calligraphy course.
+                    </p>
+                    <p>
+                        This calligraphy gift kit includes everything one needs to learn modern hand lettering, shipped for free from Tucson, Arizona to Timbuktu.
+                    </p>
+                    <p>
+                        Included inside is a coupon code for a month's subscription to our online modern calligraphy course, a nib holder, extra nibs, acrylic ink, a pencil with sharpener, nib cleaners, tracing paper, calligraphy paper, gift wrap, and a a hand-lettered personal message.
+                    </p>
+                </div>
+            </td>
+            <td>
+                <img id="pen-and-ink" src="{{ asset('/img/email/christmas2012/gift-of-lettering.png') }}" alt="Create are with pen and ink"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a href="http://istilllovecalligraphy.com/store/calligraphy-kit-and-workshop">
+                    <img id="sign-up" src="{{ asset('/img/email/christmas2012/click-to-purchase.png') }}" alt="Sign up for the course"/>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td id="footer" colspan="2">
+                <p>
+                    Use code <span id="code">CHRISTMASKIT2012</span> <br/> before November 27 for $15 off <strong>ANYTHING IN THE STORE!</strong>
+                </p>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

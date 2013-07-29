@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUtilityBundle_class_index') }}">
+        <li>
+            Back to Coursework
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_gallery_account_index') }}">
+        <li>
+            Back to Gallery
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Are you sure you want to delete {{ gallery }}?</h1>
+    <form action="{{ path('CDEContentBundle_gallery_account_delete', { 'id': gallery.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Delete" />
+    </form>
+{% endblock %}

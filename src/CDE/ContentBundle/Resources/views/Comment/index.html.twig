@@ -1,0 +1,14 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_gallery_index') }}">
+        <li>
+            Back to Galleries
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Comments</h1>
+    {% include 'CDEContentBundle:Comment:table.html.twig' %}
+{% endblock %}

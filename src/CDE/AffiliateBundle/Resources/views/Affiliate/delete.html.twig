@@ -1,0 +1,22 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEAffiliateBundle_update', { 'id': affiliate.id }) }}">
+        <li>
+            Back to Affiliate Edit
+        </li>
+    </a>
+    <a href="{{ path('CDEAffiliateBundle_view', { 'id': affiliate.id }) }}">
+        <li>
+            Back to Affiliate
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Are you sure you want to delete {{ affiliate }}?</h1>
+    <form action="{{ path('CDEAffiliateBundle_delete', { 'id': affiliate.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Delete" />
+    </form>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_index') }}">
+        <li>
+            Back to Pages
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_update', { 'id': page.id}) }}">
+        <li>
+            Edit Page
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_update_tag', { 'id': page.id }) }}">
+        <li>
+            Manage Tags
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_create') }}">
+        <li>
+            New Page
+        </li>
+    </a>
+    <a href="{{ path('CDEUtilityBundle_class_view', { 'tag': parentTag.slug, 'slug': page.slug }) }}">
+        <li>
+            Preview
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ page }}</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">Status</div><div class="value">{{ page.activeText}}</div>
+        </li>
+        <li>
+            <div class="key">Tags</div><div class="value">
+                {%for tag in page.tags %}
+                    {{ tag }},  
+                {% endfor %}
+            </div>
+        </li>
+    </ul>
+    <hr>
+    <iframe class="page-preview" width="100%" height="100%" src="{{ path('CDEUtilityBundle_class_view', { 'tag': parentTag.slug, 'slug': page.slug }) }}">
+    </iframe>
+{% endblock %}

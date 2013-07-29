@@ -1,0 +1,14 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottonNav %}
+
+{% endblock %}
+
+{% block main %}
+    <h2>This is administration.  Beware.</h2>
+    <ul class="button-list">
+        <a href="{{ path('CDEUtilityBundle_utility_aws_distro_info')}}"><li>CloudFront Distribution Info</li></a>
+        <a href="{{ path('CDEUtilityBundle_utility_aws_secure_distribution')}}"><li>Secure AWS Distribution</li></a>
+        <a href="{{ path('CDEUtilityBundle_utility_aws_signed_uri')}}"><li>Create Signed URL</li></a>
+    </ul>
+{% endblock %}

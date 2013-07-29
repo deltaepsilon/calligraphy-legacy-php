@@ -1,0 +1,22 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUserBundle_update', { 'id': user.id }) }}">
+        <li>
+            Back to User Edit
+        </li>
+    </a>
+    <a href="{{ path('CDEUserBundle_view', { 'id': user.id }) }}">
+        <li>
+            Back to User
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Are you sure you want to delete {{ user }}?</h1>
+    <form action="{{ path('CDEUserBundle_delete', { 'id': user.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Delete" />
+     </form>
+{% endblock %}

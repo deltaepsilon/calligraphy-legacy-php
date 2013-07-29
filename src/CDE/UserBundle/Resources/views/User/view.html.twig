@@ -1,0 +1,90 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUserBundle_update', { 'id': user.id}) }}">
+        <li>
+            Edit User
+        </li>
+    </a>
+    <a href="{{ path('CDEUserBundle_create') }}">
+        <li>
+            New User
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ user }}</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">User ID</div><div class="value">{{ user.id }}</div>
+        </li>
+        <li>
+            <div class="key">Username</div><div class="value">{{ user.username }}</div>
+        </li>
+        <li>
+            <div class="key">Email</div><div class="value">{{ user.email }}</div>
+        </li>
+        <li>
+            <div class="key">Comment Email Enabled</div><div class="value">
+            {% if user.commentEmail == 1 %}
+            Enabled
+            {% else %}
+            Disabled
+            {% endif %}
+        </div>
+        </li>
+        <li>
+            <div class="key">Enabled</div><div class="value">
+                {% if user.enabled == 1 %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </div>
+        </li>
+        <li>
+            <div class="key">Last Login</div><div class="value">{{ user.lastLogin|date('m/d/y') }}</div>
+        </li>
+        <li>
+            <div class="key">locked</div><div class="value">
+                {% if user.locked == 1 %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </div>
+        </li>
+        <li>
+            <div class="key">expired</div><div class="value">
+                {% if user.expired == 1 %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </div>
+        </li>
+        <li>
+            <div class="key">expires at</div><div class="value">{{ user.expiresAt|date('m/d/y') }}</div>
+        </li>
+        <li>
+            <div class="key">roles</div><div class="value">
+                {% for role in user.roles %}
+                    {{ role }}
+                {% endfor %}
+            </div>
+        </li>
+        <li>
+            <div class="key">credentials expired</div><div class="value">
+                {% if user.credentialsExpired == 1 %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </div>
+        </li>
+        <li>
+            <div class="key">credentials expire date</div><div class="value">{{ user.credentialsExpireAt|date('m/d/y') }}</div>
+        </li>        
+    </ul>
+{% endblock %}

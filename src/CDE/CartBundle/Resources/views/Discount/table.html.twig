@@ -1,0 +1,68 @@
+<table class="data-table" id="discount-table">
+    <thead>
+        <tr>
+            <th class="asc sortable numeric">id</th>
+            <th class="sortable alpha">code</th>
+            <th class="sortable alpha">description</th>
+            <th class="sortable numeric">expires days</th>
+            <th class="sortable alpha">expires date</th>
+            <th class="sortable numeric">uses</th>
+            <th class="sortable numeric">max uses</th>
+            <th class="sortable numeric">value</th>
+            <th class="sortable numeric">percent</th>
+            <th class="sortable numeric">product</th>
+            <th class="sortable date">created</th>
+            <th class="sortable date">updated</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for discount in discounts %}
+            <tr>
+                <td>
+                    <a href="{{ path('CDECartBundle_discount_view', { 'id': discount.id }) }}">{{ discount }}</a>
+                </td>
+                <td>
+                    {{ discount.code }}
+                </td>
+                <td>
+                    {{ discount.description }}
+                </td>
+                <td>
+                    {{ discount.expires }}
+                </td>
+                <td>
+                    {{ discount.expiresDate|date('m/d/y') }}
+                </td>
+                <td>
+                    {{ discount.uses }}
+                </td>
+                <td>
+                    {{ discount.maxUses }}
+                </td>
+                <td>
+                    ${{ discount.value }}
+                </td>
+                <td>
+                    {{ 100 * discount.percent }}%
+                </td>
+                <td>
+                    {{ discount.product }}
+                </td>
+                <td>
+                    {{ discount.created|date('m/d/y') }}
+                </td>
+                <td>
+                    {{ discount.updated|date('m/d/y') }}
+                </td>
+                <td>
+                    <a href="{{ path('CDECartBundle_discount_delete', { 'id': discount.id }) }}">delete</a>
+                </td>
+                <td>
+                    <a href="{{ path('CDECartBundle_discount_update', { 'id': discount.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

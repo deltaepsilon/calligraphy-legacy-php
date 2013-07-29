@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUserBundle_account_view') }}">
+        <li>
+            Back to Profile
+        </li>
+    </a>
+    <a href="{{ path('CDEUserBundle_account_delete') }}">
+        <li>
+            Delete Account
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ user }}</h1>
+    <form action="{{ path('CDEUserBundle_account_update') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Update" />
+    </form>
+{% endblock %}

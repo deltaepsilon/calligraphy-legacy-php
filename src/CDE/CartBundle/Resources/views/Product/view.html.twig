@@ -1,0 +1,143 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+<li xmlns="http://www.w3.org/1999/html">
+        <a href="{{ path('CDECartBundle_store_index') }}">Back to Store</a>
+    </li>
+    <li>
+        <a href="{{ path('CDECartBundle_cart_add', { 'id': product.id }) }}">Add To Cart</a>
+    </li>
+    {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+        <li>
+            <a href="{{ path('CDECartBundle_product_index') }}">Back to Products</a>
+        </li>
+        <li>
+            <a href="{{ path('CDECartBundle_product_update', { 'id': product.id}) }}">Edit Product</a>
+        </li>
+        <li>
+            <a href="{{ path('CDECartBundle_product_create', { 'type': 'physical' } ) }}">New Physical Product</a>
+        </li>
+        <li>
+            <a href="{{ path('CDECartBundle_product_create', { 'type': 'digital' } ) }}">New Digital Product</a>
+        </li>
+        <li>
+            <a href="{{ path('CDECartBundle_product_create', { 'type': 'subscription' } ) }}">New Subscription Product</a>
+        </li>
+        <li>
+            <a href="{{ path('CDECartBundle_product_create', { 'type': 'gift' } ) }}">New Gift Product</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <h1 id="product-title">{{ product.title }} <span id="product-price">${{ product.price }}</span></h1>
+
+    
+    <div class="thumbnail-gallery">
+        <img id="key-image" src="{{ product.keyImage }}" />
+        {% if product.images %}
+            {% for image in product.images %}
+                <img src="{{ image }}" />
+            {% endfor %}                
+        {% endif %}
+    </div>
+
+    {% if product.available is not none and product.tempAvailable == 0 %}
+        <div class="sold-out-large">sold out</div>
+    {% else %}
+        <a class="submit-link" href="{{ path('CDECartBundle_cart_add', { 'id': product.id }) }}">
+            <div class="submit-button add-to-cart">
+                Add to Cart
+            </div>
+        </a>
+    {% endif %}
+    
+    <ul id="product-page-details-list" class="data-list">
+        <li>
+            <div class="key">Price</div><div class="value">${{ product.price }}</div>
+        </li>
+        {% if product.available is not null %}
+            <li>
+                <div class="key">Quantity Available</div><div class="value">{{ product.tempAvailable }}</div>
+            </li>
+        {% endif %}
+        {% if product.type == 'subscription' %}
+            <li>
+                <div class="key">Days</div><div class="value">{{ product.days }}</div>
+            </li>
+            <li>
+                <div class="key">Recurring</div><div class="value">
+                    {% if product.recurring == 1 %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </div>
+            </li>
+            <li>
+                <div class="key">Subscription tags</div><div class="value">
+                <ul>
+                    {% for tag in product.tags %}
+                        <li class="normal-size">{{ tag }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            </li>
+        {% endif %}
+        {% if product.type == 'gift' %}
+            {% if product.discountPercent > 0 %}
+                <li>
+                    <div class="key">Discount Percentage</div><div class="value">{{ product.discountPercent * 100 }}%</div>
+                </li>
+            {% endif %}
+            {% if product.discountValue > 0 %}
+                <li>
+                    <div class="key">Discount Value</div><div class="value">${{ product.discountValue }}</div>
+                </li>
+            {% endif %}
+            <li>
+                <div class="key">Expiration (days)</div><div class="value">{{ product.expiration }}</div>
+            </li>
+        {% endif %}
+        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+            <li>
+                <div class="key">Active</div><div class="value">
+                    {% if product.active == 1 %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </div>
+            </li>
+            {% if product.uri %}
+                <li>
+                    <div class="key">URI</div><div class="value">{{ product.uri }}</div>
+                </li>
+            {% endif %}
+            {% if product.signedUri %}
+                <li>
+                    <div class="key">Signed URI</div><div class="value">
+                        <a href="{{ product.signedUri }}">Signed URL</a>
+                    </div>
+                </li>
+            {% endif %}
+            <li>
+                <div class="key">created</div><div class="value">{{ product.created|date('m/d/y') }}</div>
+            </li>
+            <li>
+                <div class="key">updated</div><div class="value">{{ product.updated|date('m/d/y') }}</div>
+            </li>
+<!--             <li>
+                <div class="key"></div><div class="value">
+                    <img class="thumbnail" src="{{ product.keyImage }}" />
+                </div>
+            </li> -->
+        {% endif %}
+    </ul>
+    <div id="product-page-description">
+        {{ product.description|raw }}
+    </div>
+    
+
+    
+{% endblock %}

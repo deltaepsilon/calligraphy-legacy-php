@@ -1,0 +1,4 @@
+CDE\AffiliateBundle\Entity\Affiliate:
+  properties:
+    id: 
+      - NotBlank: { groups: [csrf_only] }

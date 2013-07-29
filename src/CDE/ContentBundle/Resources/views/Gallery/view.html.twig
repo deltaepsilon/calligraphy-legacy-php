@@ -1,0 +1,60 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_gallery_index') }}">
+        <li>
+            Back to Galleries
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_gallery_update', { 'id': gallery.id}) }}">
+        <li>
+            Edit Gallery
+        </li>
+    </a>
+    <a href="{{ path('CDEContentBundle_gallery_create') }}">
+        <li>
+            New Gallery Image
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ gallery }}</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">User</div><div class="value">{{ gallery.user }}</div>
+        </li>
+        <li>
+            <div class="key">Status</div><div class="value">{{ gallery.filename }}</div>
+        </li>
+        <li>
+            <div class="key">title</div><div class="value">{{ gallery.title }}</div>
+        </li>
+        <li>
+            <div class="key">description</div><div class="value">{{ gallery.description }}</div>
+        </li>
+        <li>
+            <div class="key">created</div><div class="value">{{ gallery.created|date('d/m/y') }}</div>
+        </li>
+        <li>
+            <div class="key">updated</div><div class="value">{{ gallery.updated|date('d/m/y') }}</div>
+        </li>
+    </ul>
+    <img class="gallery-image" src="{{ gallery.signedUri }}" />
+    <ul class="data-list">
+        {% for comment in gallery.comments %}
+            <li>
+                <div class="key">
+                    <a href="{{ path('CDEContentBundle_comment_update', { 'id': comment.id }) }}">Update</a>
+                    /
+                    <a href="{{ path('CDEContentBundle_comment_delete', { 'id': comment.id }) }}">Delete</a>        
+                    &nbsp; --> &nbsp; {{ comment.created|date('d/m/y') }} {{ comment.user }}: 
+                </div>
+                <div class="value">
+                    {{ comment.comment }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+	{% include 'CDEContentBundle:Comment:create-embed.html.twig' %}
+{% endblock %}

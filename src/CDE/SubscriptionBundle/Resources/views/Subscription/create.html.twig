@@ -1,0 +1,17 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDESubscriptionBundle_index') }}">
+        <li>
+            Back to Subscriptions
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Create New Subscription</h1>
+    <form action="{{ path('CDESubscriptionBundle_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" />
+    </form>
+{% endblock %}

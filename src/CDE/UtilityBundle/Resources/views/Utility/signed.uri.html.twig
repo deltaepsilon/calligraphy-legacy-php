@@ -1,0 +1,26 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUtilityBundle_utility_index') }}">
+        <li>
+            Back to Utility
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Get Signed URL</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">Signed URL</div><div class="value">
+                {% if signedUri %}
+                    <a href="{{ signedUri }}">{{ signedUri }}</a>
+                {% endif %}
+            </div>
+        </li>
+    </ul>
+    <form action="{{ path('CDEUtilityBundle_utility_aws_signed_uri') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Get URL" />
+    </form>
+{% endblock %}

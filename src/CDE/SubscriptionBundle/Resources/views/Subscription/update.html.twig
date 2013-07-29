@@ -1,0 +1,19 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDESubscriptionBundle_index') }}">
+        <li>
+            Back to Subscriptions
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Update Subscription</h1>
+    <h2><a href="{{ path('CDESubscriptionBundle_view', { 'id': subscription.id }) }}">{{ subscription }}</a></h2>
+
+    <form action="{{ path('CDESubscriptionBundle_update', { 'id': subscription.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Update" />
+    </form>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+        <a href="{{ path('CDEUserBundle_update', { 'id': user.id}) }}">
+            <li>
+                Edit User
+            </li>
+        </a>
+        <a href="{{ path('CDEUserBundle_create') }}">
+            <li>
+                New User
+            </li>
+        </a>
+    {% endif %}
+    <a href="{{ path('CDEUserBundle_account_update') }}">
+        <li>
+            Edit Profile
+        </li>
+    </a>
+    <a href="{{ path('CDEUserBundle_address_update', { 'id': user.id }) }}">
+        <li>
+            Update Address
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ user }}</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">User ID</div><div class="value">{{ user.id }}</div>
+        </li>
+        <li>
+            <div class="key">Username</div><div class="value">{{ user.username }}</div>
+        </li>
+        <li>
+            <div class="key">Email</div><div class="value">{{ user.email }}</div>
+        </li>
+        <li>
+            <div class="key">Comment Email Enabled</div><div class="value">
+                {% if user.commentEmail == 1 %}
+                    Enabled
+                {% else %}
+                    Disabled
+                {% endif %}
+            </div>
+        </li>
+        <li>
+            <div class="key">Enabled</div><div class="value">
+                {% if user.enabled == 1 %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </div>
+        </li>
+        <li>
+            <div class="key">Last Login</div><div class="value">{{ user.lastLogin|date('m/d/y') }}</div>
+        </li>
+    </ul>
+        
+    <h2>Address</h2>
+    <ul class="data-list">
+    {% if user.address %}
+        <li>
+            <div class="key">Name</div><div class="value">{{ address.first }} {{ address.last }}</div>
+        </li>
+        <li>
+            <div class="key">Phone</div><div class="value">{{ address.phone }}</div>
+        </li>
+        <li>
+            <div class="key">Street</div><div class="value">
+                {{ address.line1 }}
+                {% if address.line2 %}
+                    <br/>{{ address.line2 }}
+                {% endif %}
+                {% if address.line3 %}
+                    <br/>{{ address.line3 }}
+                {% endif %}
+            </div>
+        </li>
+        <li>
+            <div class="key">City</div><div class="value">{{ address.city }}</div>
+        </li>
+        <li>
+            <div class="key">State</div><div class="value">{{ address.state }}</div>
+        </li>
+        <li>
+            <div class="key">Country</div><div class="value">{{ address.country }}</div>
+        </li>
+        <li>
+            <div class="key">Delivery Instructions</div><div class="value">{{ address.instructions }}</div>
+        </li>
+    {% else %}
+        <li>
+            <a href="{{ path('CDEUserBundle_address_create') }}">Add Address</a>
+        </li>
+    {% endif %}
+    </ul>
+    
+    <h1>Transactions</h1>
+    {% include 'CDECartBundle:Transaction:table.html.twig' %}
+{% endblock %}

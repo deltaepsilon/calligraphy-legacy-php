@@ -1,0 +1,48 @@
+{% extends 'CDEUtilityBundle:Email:base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('/css/email/new-calligraphy-course.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div id="header">
+       <p>
+            Over the last year, we've been hard at work developing a one-of-a-kind online course for modern calligraphy in the copperplate style
+       </p>
+    </div>
+
+    <hr id="top-hr" />
+
+    <div id="left-arrow">
+        <span>announcing</span>
+    </div>
+
+    <a href="http://istilllovecalligraphy.com">
+        <div id="gray-box">
+            <div id="i-still-love-calligraphy"></div>
+        </div>
+    </a>
+
+    <div id="hand-image"></div>
+
+    <div id="text">
+        <p>
+            This course is based on traditional calligraphy in the copperplate style and covers the history and traditional methods within that practice with an emphasis on developing your unique style.  Learn to use the pointed pen in eight lessons and four videos.  Each less has exercises for you to practice with your new skills as well as access to a private gallery for you to upload your work for instructor feedback.
+        </p>
+        <p>
+            Work at your own pace and sign up on your own time!
+        </p>
+    </div>
+
+    <hr id="bottom-hr" />
+
+    <a href="http://istilllovecalligraphy.com/meta/sign-up">
+        <div id="sign-up"></div>
+    </a>
+{% endblock %}
+
+{% block footer %}
+    <div id="footer">
+        use code: <span id="code">5-OFF-EMAIL-PROMO</span> for $5 off subscriptions & downloads
+    </div>
+{% endblock %}

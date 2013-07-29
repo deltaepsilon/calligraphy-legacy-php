@@ -1,0 +1,17 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDECartBundle_product_index') }}">
+        <li>
+            Back to Products
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Create New {{ type }} Product</h1>
+    <form action="{{ path('CDECartBundle_product_create', { 'type': type }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" />
+    </form>
+{% endblock %}

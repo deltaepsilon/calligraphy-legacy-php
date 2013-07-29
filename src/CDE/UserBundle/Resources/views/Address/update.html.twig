@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <li>
+        <a href="{{ path('CDEUserBundle_account_view') }}">Back to Account</a>
+    </li>
+    {% if app.user.cart %}
+        <li>
+            <a href="{{ path('CDECartBundle_cart_index') }}">Checkout</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <h1>Address</h1>
+    <form action="{{ path('CDEUserBundle_address_update', { 'id': address.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+     <input type="submit" value="Update" />
+     </form>
+{% endblock %}

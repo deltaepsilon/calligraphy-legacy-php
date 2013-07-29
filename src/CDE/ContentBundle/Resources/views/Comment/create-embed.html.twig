@@ -1,0 +1,5 @@
+<h1>Comment on {{ gallery }}</h1>
+<form action="{{ path('CDEContentBundle_comment_create', { 'id': gallery.id }) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+ <input type="submit" value="Comment" />
+ </form>

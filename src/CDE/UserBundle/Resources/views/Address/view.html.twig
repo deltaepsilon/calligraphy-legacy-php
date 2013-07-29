@@ -1,0 +1,63 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUserBundle_account_view') }}">
+        <li>
+            View Account
+        </li>
+    </a>
+    <a href="{{ path('CDEUserBundle_address_update', { 'id': address.id }) }}">
+        <li>
+            Update Address
+        </li>
+    </a>
+    {% if app.user.cart %}
+        <a href="{{ path('CDECartBundle_cart_index') }}">
+            <li>
+                Checkout
+            </li>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <h1>Address</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">Name</div><div class="value">{{ address.first }} {{ address.last }}</div>
+        </li>
+        <li>
+            <div class="key">Phone</div><div class="value">{{ address.phone }}</div>
+        </li>
+        <li>
+            <div class="key">Street</div><div class="value">
+                {{ address.line1 }}
+                {% if address.line2 %}
+                    <br/>{{ address.line2 }}
+                {% endif %}
+                {% if address.line3 %}
+                    <br/>{{ address.line3 }}
+                {% endif %}
+            </div>
+        </li>
+        <li>
+            <div class="key">City</div><div class="value">{{ address.city }}</div>
+        </li>
+        <li>
+            <div class="key">State</div><div class="value">{{ address.state }}</div>
+        </li>
+        <li>
+            <div class="key">Country</div><div class="value">{{ address.country }}</div>
+        </li>
+        <li>
+            <div class="key">Delivery Instructions</div><div class="value">{{ address.instructions }}</div>
+        </li>
+    </ul>
+    <ul id="cart-actions">
+        {% if app.user.cart %}
+            <li class="cart-button">
+                <a href="{{ path('CDECartBundle_cart_index') }}">Cart</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endblock %}

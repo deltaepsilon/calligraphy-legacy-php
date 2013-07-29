@@ -1,0 +1,28 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUtilityBundle_utility_index') }}">
+        <li>
+            Back to Utility
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>CloudFront/S3 Private Distro</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">Origin Access Identity ID</div><div class="value">{{ response.oaiId }}</div>
+        </li>
+        <li>
+            <div class="key">Origin Access Identity List</div><div class="value">
+                {% for oai in response.oaiList %}
+                    {{ oai }} &nbsp;
+                {% endfor %}
+            </div>
+        </li>
+        <li>
+            <div class="key">S3 Canonical ID</div><div class="value">{{ response.s3CanonicalId }}</div>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDESubscriptionBundle_update', { 'id': subscription.id }) }}">
+        <li>
+            Back to Subscription Edit
+        </li>
+    </a>
+    <a href="{{ path('CDESubscriptionBundle_view', { 'id': subscription.id }) }}">
+        <li>
+            Back to Subscription
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Are you sure you want to delete {{ subscription }}?</h1>
+    <form action="{{ path('CDESubscriptionBundle_delete', { 'id': subscription.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Delete" />
+     </form>
+{% endblock %}

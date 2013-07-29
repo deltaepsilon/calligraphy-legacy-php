@@ -1,0 +1,83 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <li class="meta">
+        <a href="{{ path('CDECartBundle_store_index') }}">Back to Store</a>
+    </li>
+    <li class="meta">
+        <a href="{{ path('CDEUserBundle_account_view') }}">Back to Account</a>
+    </li>
+    {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+        <li class="meta">
+            <a href="{{ path('CDECartBundle_transaction_index') }}">Back to Transactions</a>
+        </li>
+        <li class="meta">
+            <a href="{{ path('CDECartBundle_transaction_update', { 'id': transaction.id}) }}">Edit Transaction</a>
+        </li>
+        <li class="meta">
+            <a href="{{ path('CDECartBundle_transaction_process', { 'id': transaction.id}) }}">
+                {% if transaction.processed%}
+                    Reprocess Transaction (will add time to subscriptions)
+                {% else %}
+                    Process Transaction
+                {% endif %}
+            </a>
+        </li>
+        <li class="meta">
+            <a href="{{ path('CDECartBundle_transaction_email_neworder', { 'id': transaction.id}) }}">View New Order Email</a>
+        </li>
+        <li class="meta">
+            <a href="{{ path('CDECartBundle_transaction_email_neworder', { 'id': transaction.id, 'send': 'send'}) }}">Send New Order Email</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+   <div class="callout">Transaction Success!</div>
+    <a href="{{ path('CDEUtilityBundle_class_index') }}"><div class="go-to-coursework"></div></a>
+    <h1>{{ transaction }}</h1>
+    <ul class="data-list">
+        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+            <li>
+                <div class="key">status</div><div class="value">
+                    {% if transaction.processed%}
+                        Processed
+                    {% else %}
+                        Pending
+                    {% endif %}
+                </div>
+            </li>
+        {% endif %}
+        <li>
+            <div class="key">ID</div><div class="value">{{ transaction.id }}</div>
+        </li>
+        <li>
+            <div class="key">created</div><div class="value">{{ transaction.created|date('m/d/y') }}</div>
+        </li>
+        <li>
+            <div class="key">updated</div><div class="value">{{ transaction.updated|date('m/d/y') }}</div>
+        </li>
+        <li>
+            <div class="key">status</div><div class="value">{{ transaction.status }}</div>
+        </li>
+        {% if transaction.discountApplied %}
+            <li>
+                <div class="key">discount</div><div class="value">- ${{ transaction.discountApplied }}</div>
+            </li>        
+        {% endif %}
+        <li>
+            <div class="key">value</div><div class="value">
+                {% set total = transaction.amount - transaction.discountApplied %}
+                {% if total <= 0 %}
+                    $0
+                {% else %}
+                    ${{ transaction.amount - transaction.discountApplied }}
+                {% endif %}
+                
+            </div>
+        </li>
+    </ul>
+    
+    {% set products = transaction.products %}
+    {% include 'CDECartBundle:Transaction:product.table.html.twig' %}
+{% endblock %}

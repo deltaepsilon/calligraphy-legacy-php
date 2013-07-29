@@ -1,0 +1,21 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    {% if app.user %}
+        {% if app.user.cart %}
+            <a href="{{ path('CDECartBundle_cart_index') }}">
+                <li>
+                    Review Cart
+                </li>
+            </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <div id="store-page">
+        <div class="shop-text"></div>
+        {#<div class="stripes"></div>#}
+        {% include 'CDECartBundle:Store:grid.html.twig' %}
+    </div>
+{% endblock %}

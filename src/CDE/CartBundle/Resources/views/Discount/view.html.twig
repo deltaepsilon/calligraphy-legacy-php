@@ -1,0 +1,56 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDECartBundle_discount_index') }}">
+        <li>
+            Back to Discounts
+        </li>
+    </a>
+    <a href="{{ path('CDECartBundle_discount_update', { 'id': discount.id }) }}">
+        <li>
+            Edit Discount
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ discount }}</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">ID</div><div class="value">{{ discount }}</div>
+        </li>
+        <li>
+            <div class="key">Code</div><div class="value">{{ discount.code }}</div>
+        </li>
+        <li>
+            <div class="key">Description</div><div class="value">{{ discount.description }}</div>
+        </li>
+        <li>
+            <div class="key">Expires (days)</div><div class="value">{{ discount.expires }}</div>
+        </li>
+        <li>
+            <div class="key">Expiration Date</div><div class="value">{{ discount.expiresDate|date('m/d/y') }}</div>
+        </li>
+        <li>
+            <div class="key">Uses</div><div class="value">{{ discount.uses }}</div>
+        </li>
+        <li>
+            <div class="key">Max Uses</div><div class="value">{{ discount.maxUses }}</div>
+        </li>
+        <li>
+            <div class="key">Value</div><div class="value">${{ discount.value }}</div>
+        </li>
+        <li>
+            <div class="key">Percent</div><div class="value">{{ 100 * discount.percent }}%</div>
+        </li>
+        <li>
+            <div class="key">Product</div><div class="value">{{ discount.product }}</div>
+        </li>
+        <li>
+            <div class="key">created</div><div class="value">{{ discount.created|date('m/d/y') }}</div>
+        </li>
+        <li>
+            <div class="key">updated</div><div class="value">{{ discount.updated|date('m/d/y') }}</div>
+        </li>
+    </ul>
+{% endblock %}

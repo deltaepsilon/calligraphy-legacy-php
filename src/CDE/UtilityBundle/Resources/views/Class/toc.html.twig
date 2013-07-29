@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUtilityBundle_class_index') }}">
+        <li>
+            Subscriptions
+        </li>
+    </a>
+{% endblock %}
+
+{% block sub %}
+    <li id="gallery-link">
+        <a href="{{ path('CDEContentBundle_gallery_account_index') }}">Gallery</a>
+    </li>
+{% endblock %}
+
+{% block main %}
+    <div id="toc-page">
+        <h1>{{ tag.name }}</h1>
+        <h2>Table of Contents</h2>
+        {% include 'CDEUtilityBundle:Class:list.toc.html.twig' %}
+    </div>
+{% endblock %}

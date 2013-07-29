@@ -1,0 +1,25 @@
+<!-- If the tags are configured such that users can purchase multiple
+products with the same tag, this loop could double up some of the
+subscriptions... -->
+{% for tag in tags %}
+    {% for product in tag.products %}
+        {% for subscription in product.subscriptions %}
+            {% if subscription.daysRemaining > 0 %}
+                <a href="{{ path('CDEUtilityBundle_class_toc', { 'slug': tag.slug }) }}">
+                    <div class="subscription-wrapper">
+                        <h3>Go To {{ tag.name }}</h3>
+                        <hr/>
+                        <ul>
+                            <li>
+                                Days Left: {{ subscription.daysRemaining }}
+                            </li>
+                            <li>
+                                Expiration: {{ subscription.expires|date('m/d/y') }}
+                            </li>
+                        </ul>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endfor %}

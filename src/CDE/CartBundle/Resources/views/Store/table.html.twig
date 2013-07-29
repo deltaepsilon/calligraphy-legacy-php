@@ -1,0 +1,34 @@
+<table class="data-table" id="product-table">
+    <thead>
+        <tr>
+            <th>image</th>
+            <th class="asc sortable alpha">title</th>
+            <th class="sortable alpha">price</th>
+            <th class="sortable alpha">type</th>
+            <th>Add to Cart</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+            <tr>
+                <td>
+                    <a href="{{ path('CDECartBundle_store_view', { 'slug': product.slug }) }}">
+                        <img class="store-index-image" src="{{ product.keyImage }}" />
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('CDECartBundle_store_view', { 'slug': product.slug }) }}">{{ product.title }}</a>
+                </td>
+                <td>
+                    ${{ product.price }}
+                </td>
+                <td>
+                    {{ product.type }}
+                </td>
+                <td>
+                    <a href="{{ path('CDECartBundle_cart_add', { 'id': product.id }) }}">Add to Cart</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

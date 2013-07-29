@@ -1,0 +1,23 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDECartBundle_discount_index') }}">
+        <li>
+            Back to Discounts
+        </li>
+    </a>
+    <a href="{{ path('CDECartBundle_discount_delete', { 'id': discount.id }) }}">
+        <li>
+            Delete
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Update Discount {{ discount }}</h1>
+    <h2><a href="{{ path('CDECartBundle_discount_view', { 'id': discount.id }) }}">{{ discount }}</a></h2>
+    <form action="{{ path('CDECartBundle_discount_update', { 'id': discount.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Update" />
+    </form>
+{% endblock %}

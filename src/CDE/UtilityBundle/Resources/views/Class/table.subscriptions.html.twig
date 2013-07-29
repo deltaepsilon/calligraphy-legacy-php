@@ -1,0 +1,42 @@
+<table class="data-table" id="subscription-table">
+    <thead>
+        <tr>
+            <th class="sortable alpha">title</th>
+            <th class="sortable alpha">description</th>
+            <th class="sortable alpha">subscriptions</th>
+            <th class="sortable alpha">days remaining</th>
+            <th class="sortable alpha">expires</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subscription in subscriptions %}
+            {% if subscription.daysRemaining > 0 %}
+                <tr>
+            {% else %}
+                <tr class="subscription-expired">
+            {% endif %}
+                <td>
+                    <a href="{{ path('CDECartBundle_product_view', { 'slug': subscription.product.slug }) }}">{{ subscription.product }}</a>
+                </td>
+                <td>
+                    {{ subscription.product.description }}
+                </td>
+                <td>
+                    {% for tag in subscription.product.tags %}
+                        {{ tag }} <br/>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if subscription.daysRemaining > 0 %}
+                        {{ subscription.daysRemaining }}
+                    {% else %}
+                        Expired
+                    {% endif %}
+                </td>
+                <td>
+                    {{ subscription.expires|date('m/d/y') }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

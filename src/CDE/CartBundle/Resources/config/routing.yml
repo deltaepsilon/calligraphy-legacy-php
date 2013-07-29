@@ -1,0 +1,176 @@
+CDECartBundle_cart_index:
+    pattern:  /cart/
+    defaults: { _controller: CDECartBundle:Cart:index }
+
+CDECartBundle_cart_partial:
+    pattern:  /cart/partial
+    defaults: { _controller: CDECartBundle:Cart:partial }
+
+CDECartBundle_cart_add:
+    pattern:  /cart/{id}/add
+    defaults: { _controller: CDECartBundle:Cart:add }
+    requirements:
+      id: \d+
+
+CDECartBundle_cart_remove:
+    pattern:  /cart/{id}/remove
+    defaults: { _controller: CDECartBundle:Cart:remove }
+    requirements:
+      id: \d+
+
+CDECartBundle_cart_empty:
+    pattern:  /cart/empty
+    defaults: { _controller: CDECartBundle:Cart:empty }
+
+CDECartBundle_cart_checkout:
+    pattern:  /cart/checkout
+    defaults: { _controller: CDECartBundle:Cart:checkout }
+
+CDECartBundle_cart_free:
+    pattern:  /cart/checkout/free
+    defaults: { _controller: CDECartBundle:Cart:free }
+
+CDECartBundle_cart_success:
+    pattern:  /cart/success
+    defaults: { _controller: CDECartBundle:Cart:success }
+
+# Handle discount codes
+CDECartBundle_cart_discount:
+    pattern:  /cart/code
+    defaults: { _controller: CDECartBundle:Cart:addCode }
+
+# Store
+CDECartBundle_store_index:
+    pattern:  /store/
+    defaults: { _controller: CDECartBundle:Store:index }
+
+CDECartBundle_store_view:
+    pattern:  /store/{slug}
+    defaults: { _controller: CDECartBundle:Store:view }
+    requirements:
+      slug: (\w|-|\d)+
+
+# Products
+CDECartBundle_product_index:
+    pattern:  /admin/products/
+    defaults: { _controller: CDECartBundle:Product:index }
+
+CDECartBundle_product_view:
+    pattern:  /products/{slug}
+    defaults: { _controller: CDECartBundle:Product:view }
+    requirements:
+      id: \d+
+
+CDECartBundle_product_create:
+    pattern:  /admin/products/create/{type}
+    defaults: { _controller: CDECartBundle:Product:create }
+    requirements:
+      id: \d+
+      
+CDECartBundle_product_update:
+    pattern:  /admin/products/{id}/update
+    defaults: { _controller: CDECartBundle:Product:update }
+    requirements:
+      id: \d+
+
+CDECartBundle_product_delete:
+    pattern:  /admin/products/{id}/delete
+    defaults: { _controller: CDECartBundle:Product:delete }
+    requirements:
+      id: \d+
+      
+CDECartBundle_product_update_tag:
+    pattern:  /admin/{id}/update/tag
+    defaults: { _controller: CDECartBundle:Product:tag }
+    requirements:
+      id: \d+
+
+# Customer Transaction Views
+CDECartBundle_transaction_customer_index:
+    pattern:  /transactions/
+    defaults: { _controller: CDECartBundle:Transaction:customerIndex }
+
+CDECartBundle_transaction_customer_view:
+    pattern:  /transactions/{id}
+    defaults: { _controller: CDECartBundle:Transaction:customerView }
+    requirements:
+      id: \d+
+      
+# Transaction
+CDECartBundle_transaction_index:
+    pattern:  /admin/transactions/
+    defaults: { _controller: CDECartBundle:Transaction:index }
+
+CDECartBundle_transaction_view:
+    pattern:  /admin/transactions/{id}
+    defaults: { _controller: CDECartBundle:Transaction:view }
+    requirements:
+      id: \d+
+
+CDECartBundle_transaction_create:
+    pattern:  /admin/transactions/create/{type}
+    defaults: { _controller: CDECartBundle:Transaction:create }
+    requirements:
+      id: \d+
+      
+CDECartBundle_transaction_update:
+    pattern:  /admin/transactions/{id}/update
+    defaults: { _controller: CDECartBundle:Transaction:update }
+    requirements:
+      id: \d+
+
+CDECartBundle_transaction_delete:
+    pattern:  /admin/transactions/{id}/delete
+    defaults: { _controller: CDECartBundle:Transaction:delete }
+    requirements:
+      id: \d+
+      
+# Transaction Process
+CDECartBundle_transaction_process:
+    pattern:  /admin/transactions/{id}/process
+    defaults: { _controller: CDECartBundle:Transaction:process }
+    requirements:
+      id: \d+
+
+CDECartBundle_transaction_email_neworder:
+    pattern:  /admin/transactions/email/{id}/newOrder/{send}
+    defaults: { _controller: CDECartBundle:Transaction:emailNewOrder, send: ~ }
+    requirements:
+      id: \d+
+      name: (\w|-|\d)+
+
+CDECartBundle_transaction_email_gift:
+    pattern:  /admin/transactions/email/{id}/{productId}/gift/{send}
+    defaults: { _controller: CDECartBundle:Transaction:emailGift, send: ~ }
+    requirements:
+      id: \d+
+      giftId: \d+
+
+# Discounts
+CDECartBundle_discount_index:
+    pattern:  /admin/discount/
+    defaults: { _controller: CDECartBundle:Discount:index }
+
+CDECartBundle_discount_view:
+    pattern:  /admin/discount/{id}
+    defaults: { _controller: CDECartBundle:Discount:view }
+    requirements:
+      id: \d+
+
+CDECartBundle_discount_create:
+    pattern:  /admin/discount/create
+    defaults: { _controller: CDECartBundle:Discount:create }
+    requirements:
+      id: \d+
+      
+CDECartBundle_discount_update:
+    pattern:  /admin/discount/{id}/update
+    defaults: { _controller: CDECartBundle:Discount:update }
+    requirements:
+      id: \d+
+
+CDECartBundle_discount_delete:
+    pattern:  /admin/discount/{id}/delete
+    defaults: { _controller: CDECartBundle:Discount:delete }
+    requirements:
+      id: \d+

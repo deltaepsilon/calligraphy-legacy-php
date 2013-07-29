@@ -1,0 +1,74 @@
+<table class="data-table" id="tag-table">
+    <thead>
+        <tr>
+            <th class="sortable alpha">parent</th>
+            <th class="sortable alpha">name</th>
+            <th class="sortable alpha">active</th>
+            <th class="desc sortable date">created</th>
+            <th class="sortable date">updated</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for parent in tags %}
+            <tr>
+                <td>
+<!--                     No Parent for Parents -->
+                </td>
+                <td>
+                    <a href="{{ path('CDEContentBundle_tag_view', { 'id': parent.id }) }}">{{ parent.name }}</a>
+                </td>
+                <td>
+                    {% if parent.active %}
+                        Active
+                    {% else %}
+                        Disabled
+                    {% endif %}
+                    
+                </td>
+                <td>
+                    {{ parent.created|date('m/d/y') }}
+                </td>
+                <td>
+                    {{ parent.updated|date('m/d/y') }}
+                </td>
+                <td>
+                    <a href="{{ path('CDEContentBundle_tag_delete', { 'id': parent.id }) }}">delete</a>
+                </td>
+                <td>
+                    <a href="{{ path('CDEContentBundle_tag_update', { 'id': parent.id }) }}">edit</a>
+                </td>
+            </tr>
+            {% for child in parent.__children %}
+                <tr>
+                    <td>
+                        {{ parent.name }}
+                    </td>
+                    <td>
+                        <a href="{{ path('CDEContentBundle_tag_view', { 'id': child.id }) }}">{{ child.name }}</a>
+                    </td>
+                    <td>
+                        {% if child.active %}
+                            Active
+                        {% else %}
+                            Disabled
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ child.created|date('m/d/y') }}
+                    </td>
+                    <td>
+                        {{ child.updated|date('m/d/y') }}
+                    </td>
+                    <td>
+                        <a href="{{ path('CDEContentBundle_tag_delete', { 'id': child.id }) }}">delete</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('CDEContentBundle_tag_update', { 'id': child.id }) }}">edit</a>
+                    </td>
+            </tr>            
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>

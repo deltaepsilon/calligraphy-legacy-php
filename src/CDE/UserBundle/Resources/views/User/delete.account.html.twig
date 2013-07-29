@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUserBundle_account_update') }}">
+        <li>
+            Back to Profile Edit
+        </li>
+    </a>
+    <a href="{{ path('CDEUserBundle_account_view') }}">
+        <li>
+            Back to Profile
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ user }}, are you sure you want to delete your entire account with all of your subscriptions?</h1>
+    <form action="{{ path('CDEUserBundle_account_delete') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Delete" />
+     </form>
+{% endblock %}

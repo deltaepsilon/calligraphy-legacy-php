@@ -1,0 +1,50 @@
+<table class="data-table" id="page-table">
+    <thead>
+        <tr>
+            <th class="sortable alpha">title</th>
+            <th class="sortable alpha">tags</th>
+            <th class="sortable alpha">active</th>
+            <th class="sortable numeric">sort</th>
+            <th class="desc sortable date">created</th>
+            <th class="sortable date">updated</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for page in pages %}
+            <tr>
+                <td>
+                    <a href="{{ path('CDEContentBundle_view', { 'id': page.id }) }}">{{ page.title }}</a>
+                </td>
+                <td>
+                    <ul>
+                        {% for tag in page.tags %}
+                            <li>
+                                {{ tag }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    {{ page.activeText }}
+                </td>
+                <td>
+                    {{ page.sort }}
+                </td>
+                <td>
+                    {{ page.created|date('m/d/y') }}
+                </td>
+                <td>
+                    {{ page.updated|date('m/d/y') }}
+                </td>
+                <td>
+                    <a href="{{ path('CDEContentBundle_delete', { 'id': page.id }) }}">delete</a>
+                </td>
+                <td>
+                    <a href="{{ path('CDEContentBundle_update', { 'id': page.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

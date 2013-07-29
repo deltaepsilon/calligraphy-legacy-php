@@ -1,0 +1,68 @@
+<table class="data-table" id="address-table">
+    <thead>
+        <tr>
+            <th class="sortable alpha">username</th>
+            <th class="sortable alpha">first</th>
+            <th class="sortable alpha">last</th>
+            <th class="sortable numeric">phone</th>
+            <th class="sortable alpha">line1</th>
+            <th class="sortable alpha">line2</th>
+            <th class="sortable alpha">line3</th>
+            <th class="sortable alpha">city</th>
+            <th class="sortable alpha">state</th>
+            <th class="sortable alpha">code</th>
+            <th class="sortable alpha">country</th>
+            <th class="sortable alpha">instructions</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for address in addresses %}
+            <tr>
+                <td>
+                    <a href="{{ path('CDEUserBundle_address_view', { 'id': address.id }) }}">{{ address.user.username }}</a>
+                </td>
+                <td>
+                    {{ address.first }}
+                </td>
+                <td>
+                    {{ address.last }}
+                </td>
+                <td>
+                    {{ address.phone }}
+                </td>
+                <td>
+                    {{ address.line1 }}
+                </td>
+                <td>
+                    {{ address.line2 }}
+                </td>
+                <td>
+                    {{ address.line3 }}
+                </td>
+                <td>
+                    {{ address.city }}
+                </td>
+                <td>
+                    {{ address.state }}
+                </td>
+                <td>
+                    {{ address.code }}
+                </td>
+                <td>
+                    {{ address.country }}
+                </td>
+                <td>
+                    {{ address.instructions }}
+                </td>
+                <td>
+                    <a href="{{ path('CDEUserBundle_address_delete', { 'id': address.id }) }}">delete</a>
+                </td>
+                <td>
+                    <a href="{{ path('CDEUserBundle_address_update', { 'id': address.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

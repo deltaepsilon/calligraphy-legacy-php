@@ -1,0 +1,147 @@
+{% extends '::base.html.twig' %}
+
+{% block bottomNav %}
+    <li>
+        <a href="{{ path('CDECartBundle_store_index') }}">Back to Store</a>
+    </li>
+{% endblock %}
+
+{% block main %}
+    <h1>Checkout</h1>
+    {% if form.products.count > 0 %}
+        <form id="cart-form" action="{{ path('CDECartBundle_cart_index') }}" method="post">
+            <table id="cart-table">
+                <thead>
+                    <tr>
+                        <th class="cart-title">Image</th>
+                        <th class="cart-title sortable alpha">Title</th>
+                        <th class="cart-price sortable numeric">Price</th>
+                        <th class="cart-price sortable numeric">Quantity</th>
+                        <th class="cart-price sortable numeric">Available</th>
+                        <th class="cart-price">Update</th>
+                        <th class="cart-action">Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set total = 0 %}
+                    {% for productForm in form.products %}
+                        {% set product = productForm.get('value') %}
+                        {% set total = total + product.price * product.quantity %}
+                        <tr>
+                            <td class="cart-image thumbnail"><img class="thumbnail" src="{{ product.keyImage}}" /></td>
+                            <td class="cart-title">
+                                <a href="{{ path('CDECartBundle_product_view', { 'slug': product.slug }) }}">
+                                    {{ product.title }}
+                                </a>
+                            </td>
+                            <td class="cart-price">{{ product.price }}</td>
+                            <td class="cart-price">{{ product.quantity }}</td>
+                            <td class="cart-available">{{ product.available }}</td>
+                            <td class="cart-quantity">{{ form_widget(productForm) }}</td>
+                            <td class="cart-action"><a href="{{ path('CDECartBundle_cart_remove', { 'id': product.id }) }}">X</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+             <ul id="cart-actions">
+                <li>
+                    <input type="submit" value="Update Cart" />
+                </li>
+                 <li class="cart-button">
+                     <a href="{{ path('CDECartBundle_cart_empty') }}">Empty Cart</a>
+                 </li>
+                 <li class="cart-button">
+                     <a href="{{ path('CDECartBundle_store_index') }}">Keep Shopping</a>
+                 </li>
+             </ul>
+         
+         </form>
+     {% else %}
+        {% set total = 0 %}
+        <h2>
+            Your cart is empty. 
+            <a href="{{ path('CDECartBundle_store_index') }}">
+                Fill it up!
+            </a>
+        </h2>
+     {% endif %}
+     <ul id="cart-totals">
+         {% if cart.discount %}
+             <li class="cart-math">
+                 <div class="key">Sub-Total</div><div class="value">${{ total }}</div>
+             </li>
+             {% if cart.discount.value %}
+                 <li class="cart-math">
+                     <div class="key">Discount $</div><div class="value">
+                         - ${{ cart.discount.value }}
+                     </div>
+                 </li>
+                 {% set total = total - cart.discount.value %}
+             {% endif %}
+             {% if cart.discount.percent %}
+                
+                 <li class="cart-math">
+                     <div class="key">Discount %</div><div class="value">
+                         - ${{ total * cart.discount.percent|number_format(2) }} ({{ 100 * cart.discount.percent }})%
+                     </div>
+                 </li>
+                 {% set total = total - total * cart.discount.percent %}
+             {% endif %}
+         {% endif %}
+         
+          <li class="cart-math" id="cart-total">
+             <div class="key">Cart Total</div><div class="value">
+                 {% if total <= 0 %}
+                    $0
+                 {% else %}
+                    ${{ total }}
+                 {% endif %}
+             </div>
+             
+         </li>
+         <li>
+             {% if total <= 0 %}
+                ${{ 1 * total|number_format(2) }} remaining on discount code
+             {% endif %}
+         </li>
+         <li class="normal-size">
+             <form action="{{ path('CDECartBundle_cart_discount') }}" method="post">
+                 {{ form_widget(codeForm)}}
+                <input type="submit" value="Add Code" />
+             </form>
+         </li>
+
+     </ul>
+     <ul id="cart-checkout">
+         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {% if total <= 0 %}
+                {% if app.user.address %}
+                    {% set address = app.user.address %}
+
+                    <h2>Address</h2>
+                    {% include 'CDEUserBundle:Address:view.partial.html.twig' %}
+                    <li class="cart-button">
+                        <a href="{{ path('CDEUserBundle_address_update', { 'id': address.id }) }}">Update Address</a>
+                    </li>
+                    <li class="cart-button">
+                        <a class="cart-button free-checkout" href="{{ path('CDECartBundle_cart_free') }}">Free Checkout</a>
+                    </li>
+                {% else %}
+                    <li class="cart-button">
+                        <a href="{{ path('CDEUserBundle_address_create') }}">Add Account Address to Checkout</a>
+                    </li>
+                {% endif %}
+            {% else %}
+                <div class="arrow-right">checkout</div>
+                <li id="paypal" class="cart-button">
+                    <a class="checkout" href="{{ path('CDECartBundle_cart_checkout') }}">Checkout</a>
+                </li>
+            {% endif %}
+            
+            
+         {% else %}
+            <a class="account">Login</a> or 
+            <a href="{{ path('fos_user_registration_register')}}">register</a> to checkout
+         {% endif %}        
+     </ul>
+{% endblock %}

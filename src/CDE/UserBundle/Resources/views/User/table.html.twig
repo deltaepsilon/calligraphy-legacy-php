@@ -1,0 +1,62 @@
+<table id="task-table">
+    <thead>
+        <tr>
+            <th class="desc sortable alpha">username</th>
+            <th class="sortable alpha">email</th>
+            <th class="sortable alpha">enabled</th>
+            <th class="sortable date">last login</th>
+            <th class="sortable alpha">locked</th>
+            <th class="sortable alpha">expired</th>
+            <th class="sortable date">expired at</th>
+            <th class="sortable alpha">roles</th>
+            <th class="sortable alpha">credentials expired</th>
+            <th class="sortable date">credentials expire</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr>
+                <td>
+                    <a href="{{ path('CDEUserBundle_view', { 'id': user.id }) }}">{{ user.username }}</a>
+                </td>
+                <td>
+                    {{ user.email }}
+                </td>
+                <td>
+                    {% if user.enabled == 1 %}
+                        True
+                    {% else %}
+                        False
+                    {% endif %}
+                </td>
+                <td>
+                    {{ user.lastLogin|date('m/d/y') }}
+                </td>
+                <td>
+                    {{ user.locked }}
+                </td>                
+                <td>
+                    {{ user.expired }}
+                </td>
+                <td>
+                    {#{{ user.expiredAt|date('m/d/y') }}#}
+                </td>
+                <td>
+                    {% for role in user.roles %}
+                        {{ role }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ user.credentialsExpired }}
+                </td>
+                <td>
+                    {#{{ user.credentialsExpire|date('m/d/y') }}#}
+                </td>
+                <td>
+                    <a href="{{ path('CDEUserBundle_update', { 'id': user.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

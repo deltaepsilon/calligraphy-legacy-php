@@ -1,0 +1,117 @@
+@import "base";
+
+@width: 500px;
+
+::-moz-selection { background: @seafoam; color: @white; text-shadow: none; }
+::selection { background: @seafoam; color: @white; text-shadow: none; }
+
+
+body {
+    background: @white;
+    color: #555149;
+    position: relative;
+    width: @width;
+    margin: 41px auto 16px;
+    .light;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    padding: 0;
+    width: @width / 2;
+}
+
+a, a:visited {
+    color: #555149;
+    text-decoration: none;
+}
+
+#header-row {
+    height: 114px;
+    vertical-align: top;
+}
+#header {
+}
+
+#lines-top-row {
+    height: 55px;
+    vertical-align: top;
+}
+
+#lines-top {
+
+}
+
+#announcing {
+
+    z-index: 1;
+}
+
+#announcing-image {
+
+}
+
+#announcing-text {
+    width: 100px;
+}
+
+#gray-box {
+    background-color: #e3e1d9;
+    height: 92px;
+    p {
+        font-size: 15px;
+        line-height: 19px;
+        margin-top: 0;
+        padding-top: 18px;
+        text-align: left;
+    }
+}
+
+#pen-and-ink {
+    background: #FFFFFF;
+    border: 2px solid #F0EFEC;
+    border-right: none;
+    border-top: none;
+    float: right;
+    padding: 4px 0 4px 4px;
+}
+
+#text {
+    padding-top: 16px;
+    width: 225px;
+    p {
+        padding-left: 1px;
+        font-size: 12px;
+        line-height: 16px;
+    }
+}
+
+#lines-bottom {
+    height: 25px;
+    width: 255px;
+    z-index: -1;
+}
+
+#sign-up {
+}
+
+#footer {
+    background-color: @orange;
+    height: 60px;
+    p {
+        color: white;
+        font-size: 12px;
+        letter-spacing: 2px;
+        line-height: 20px;
+        padding: 10px;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    span {
+        color: @coal;
+        font-size: 16px;
+    }
+}

@@ -1,0 +1,43 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDESubscriptionBundle_index') }}">
+        <li>
+            Back to Subscriptions
+        </li>
+    </a>
+    <a href="{{ path('CDESubscriptionBundle_update', { 'id': subscription.id}) }}">
+        <li>
+            Edit Subscription
+        </li>
+    </a>
+    <a href="{{ path('CDESubscriptionBundle_create') }}">
+        <li>
+            New Subscription
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ subscription }}</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">User</div><div class="value">{{ subscription.user }}</div>
+        </li>
+        <li>
+            <div class="key">Option</div><div class="value">{{ subscription.product }}</div>
+        </li>
+        <li>
+            <div class="key">Days Left</div><div class="value">{{ subscription.daysRemaining }}</div>
+        </li>
+        <li>
+            <div class="key">Expires</div><div class="value">{{ subscription.expires|date('m/d/y') }}</div>
+        </li>
+        <li>
+            <div class="key">created</div><div class="value">{{ subscription.created|date('m/d/y') }}</div>
+        </li>
+        <li>
+            <div class="key">created</div><div class="value">{{ subscription.updated|date('m/d/y') }}</div>
+        </li>
+    </ul>
+{% endblock %}

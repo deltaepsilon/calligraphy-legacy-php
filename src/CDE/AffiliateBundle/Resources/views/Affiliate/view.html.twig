@@ -1,0 +1,34 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEAffiliateBundle_index') }}">
+        <li>
+            Back to Affiliates
+        </li>
+    </a>
+    <a href="{{ path('CDEAffiliateBundle_update', { 'id': affiliate.id}) }}">
+        <li>
+            Edit Affiliate
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>{{ affiliate }}</h1>
+    <ul class="data-list">
+        <li>
+            <div class="key">ID</div><div class="value">{{ affiliate.id }}</div>
+        </li>
+        <li>
+            <div class="key">Affiliate</div><div class="value">{{ affiliate }}</div>
+        </li>
+        <li>
+            <div class="key">created</div><div class="value">{{ affiliate.created|date('m/d/y') }}</div>
+        </li>
+	    <li>
+		    <div class="key">Updated</div><div class="value">{{ affiliate.updated|date('m/d/y') }}</div>
+	    </li>
+    </ul>
+
+	{% include 'CDEAffiliateBundle:Affiliate:table.html.twig' %}
+{% endblock %}

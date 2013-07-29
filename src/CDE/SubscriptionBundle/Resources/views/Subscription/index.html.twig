@@ -1,0 +1,14 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDESubscriptionBundle_create') }}">
+        <li>
+            New Subscription
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Subscriptions</h1>
+    {% include 'CDESubscriptionBundle:Subscription:table.html.twig' %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEContentBundle_gallery_index') }}">
+        <li>
+            Back to Galleries
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>New Gallery Image</h1>
+    <form action="{{ path('CDEContentBundle_gallery_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+     <input type="submit" value="Create" />
+     </form>
+{% endblock %}
