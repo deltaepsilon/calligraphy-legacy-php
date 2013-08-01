@@ -24,7 +24,8 @@
         "friendsofsymfony/jsrouting-bundle": "1.2.0",
         "gedmo/doctrine-extensions": "v2.3.6",
         "stof/doctrine-extensions-bundle": "v1.1.0",
-        "jms/serializer": "0.12.0"
+        "jms/serializer": "0.12.0",
+        "knplabs/knp-paginator-bundle": "2.3.3"
     },
     "scripts": {
         "post-install-cmd": [

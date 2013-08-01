@@ -66,8 +66,8 @@ CDEContentBundle_tag_delete:
 
 # Gallery
 CDEContentBundle_gallery_index:
-    pattern:  /gallery
-    defaults: { _controller: CDEContentBundle:Gallery:index }
+    pattern:  /gallery/{page}
+    defaults: { _controller: CDEContentBundle:Gallery:index, page: 1 }
 
 CDEContentBundle_gallery_view:
     pattern:  /gallery/{id}

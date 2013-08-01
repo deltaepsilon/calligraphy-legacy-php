@@ -32,7 +32,14 @@ interface GalleryManagerInterface
      * 
      * @return GalleryInterface
      */
-    public function find(User $user, $id);
+    public function find(User $user);
+
+    /**
+     * Finds galleries by page
+     *
+     * @return GalleryInterface
+     */
+    public function findByPage(User $user, $page, $limit);
     
     /**
      * Finds one or more galleries

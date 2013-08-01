@@ -16,11 +16,12 @@ class GalleryManager implements GalleryManagerInterface
     protected $repo;
     protected $aws;
     
-    public function __construct(EntityManager $em, $class, $aws){
+    public function __construct(EntityManager $em, $class, $aws, $paginator){
         $this->em = $em;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
         $this->aws = $aws;
+        $this->paginator = $paginator;
     }
     
     public function create()
@@ -95,6 +96,26 @@ class GalleryManager implements GalleryManagerInterface
             // throw new NotFoundHttpException();
         // }
         return $gallery;
+    }
+
+    public function findByPage(User $user, $page = 1, $limit = 20)
+    {
+        //TODO convert to DQL query and add pagination
+        $query = $this->em->createQuery('
+            select l
+            from CDEContentBundle:Gallery l
+        ');
+
+        $pagination = $this->paginator->paginate(
+            $query,
+            $page,
+            $limit
+        );
+
+        // if (count($gallery) === 0) {
+        // throw new NotFoundHttpException();
+        // }
+        return $pagination;
     }
 
     public function findAbsolute($id)

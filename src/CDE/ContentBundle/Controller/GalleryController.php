@@ -34,10 +34,10 @@ class GalleryController extends Controller
         return $this->get('serializer');
     }
     
-    public function indexAction()
+    public function indexAction($page = 1)
     {
         $user = $this->getUser();
-        $galleries = $this->getGalleryManager()->find($user);
+        $galleries = $this->getGalleryManager()->findByPage($user, $page, 25);
         return $this->render('CDEContentBundle:Gallery:index.html.twig', array(
             'galleries' => $galleries,
         ));

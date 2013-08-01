@@ -23,6 +23,7 @@ services:
       em: '@Doctrine.orm.entity_manager'
       class: 'CDE\ContentBundle\Entity\Gallery'
       aws: '@cde_utility.manager.aws'
+      paginator: '@knp_paginator'
 
   cde_content.manager.comment:
     class: CDE\ContentBundle\Entity\CommentManager
