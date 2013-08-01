@@ -37,6 +37,9 @@ class AffiliateController extends Controller
 		$affiliate->setAffiliate($name);
 		$affiliate->setIp($_SERVER['REMOTE_ADDR']);
 		$this->getAffiliateManager()->add($affiliate);
+        if (isset($_GET['redirect'])) {
+             return $this->redirect($_GET['redirect']);
+        }
 		return $this->redirect($this->generateUrl('CDEUtilityBundle_index'));
     }
 
