@@ -24,6 +24,7 @@ services:
       awsManager: '@cde_utility.manager.aws'
       productManager: '@cde_cart.manager.product'
       class: 'CDE\CartBundle\Entity\Transaction'
+      paginator: '@knp_paginator'
       
   cde_cart.manager.discount:
     class: CDE\CartBundle\Entity\DiscountManager

@@ -6,3 +6,4 @@ services:
     arguments:
       em: '@Doctrine.orm.entity_manager'
       class: 'CDE\SubscriptionBundle\Entity\Subscription'
+      paginator: '@knp_paginator'

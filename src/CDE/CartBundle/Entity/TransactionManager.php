@@ -22,7 +22,7 @@ class TransactionManager implements TransactionManagerInterface
     protected $class;
     protected $repo;
     
-    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, $productManager, $class){
+    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, $productManager, $class, $paginator){
         $this->em = $em;
         $this->mailer = $mailer;
         $this->subscriptionManager = $subscriptionManager;
@@ -31,6 +31,7 @@ class TransactionManager implements TransactionManagerInterface
         $this->productManager = $productManager;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
+        $this->paginator = $paginator;
         
     }
     
@@ -76,6 +77,22 @@ class TransactionManager implements TransactionManagerInterface
             );
         }
         return $transaction;
+    }
+
+    public function findByPage($page = 1, $limit = 10)
+    {
+        $query = $this->em->createQuery('
+            select l
+            from CDECartBundle:Transaction l
+        ');
+
+        $pagination = $this->paginator->paginate(
+            $query,
+            $page,
+            $limit
+        );
+
+        return $pagination;
     }
 
     public function findByUser($user, $id = NULL)

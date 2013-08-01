@@ -15,9 +15,9 @@ class SubscriptionController extends Controller
         return $this->get('cde_subscription.manager.subscription');
     }
     
-    public function indexAction()
+    public function indexAction($page = 1)
     {
-        $subscriptions = $this->getSubscriptionManager()->find();
+        $subscriptions = $this->getSubscriptionManager()->findByPage($page, 25);
         return $this->render('CDESubscriptionBundle:Subscription:index.html.twig', array(
             'subscriptions' => $subscriptions,
         ));

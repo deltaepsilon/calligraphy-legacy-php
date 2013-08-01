@@ -14,10 +14,11 @@ class SubscriptionManager implements SubscriptionManagerInterface
     protected $class;
     protected $repo;
     
-    public function __construct(EntityManager $em, $class){
+    public function __construct(EntityManager $em, $class, $paginator){
         $this->em = $em;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
+        $this->paginator = $paginator;
     }
     
     public function create()
@@ -64,6 +65,22 @@ class SubscriptionManager implements SubscriptionManagerInterface
             $subscription = $query->getResult();
         }
         return $subscription;
+    }
+
+    public function findByPage($page = 1, $limit = 10)
+    {
+        $query = $this->em->createQuery('
+            select l
+            from CDESubscriptionBundle:Subscription l
+        ');
+
+        $pagination = $this->paginator->paginate(
+            $query,
+            $page,
+            $limit
+        );
+
+        return $pagination;
     }
     
     public function checkExisiting(SubscriptionInterface $subscription)

@@ -34,6 +34,13 @@ interface TransactionManagerInterface
     public function find($id = null);
 
     /**
+     * Paginates transactions
+     *
+     * @return TransactionInterface
+     */
+    public function findByPage($page = 1, $limit = 10);
+
+    /**
      * Finds one or more transactions for a user
      * 
      * @return TransactionInterface

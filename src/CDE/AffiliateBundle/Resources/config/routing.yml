@@ -1,6 +1,6 @@
 CDEAffiliateBundle_index:
-    pattern:  /admin/affiliate
-    defaults: { _controller: CDEAffiliateBundle:Affiliate:index }
+    pattern:  /admin/affiliate/{page}
+    defaults: { _controller: CDEAffiliateBundle:Affiliate:index, page: 1 }
 
 CDEAffiliateBundle_view:
     pattern:  /admin/affiliate/{id}

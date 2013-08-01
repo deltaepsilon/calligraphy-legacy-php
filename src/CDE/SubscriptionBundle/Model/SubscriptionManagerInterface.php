@@ -33,6 +33,13 @@ interface SubscriptionManagerInterface
      * @return SubscriptionInterface
      */
     public function find($id);
+
+    /**
+     * Paginates subscriptions
+     *
+     * @return SubscriptionInterface
+     */
+    public function findByPage($page = 1, $limit = 10);
     
     /**
      * 

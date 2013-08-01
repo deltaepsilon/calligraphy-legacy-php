@@ -35,6 +35,11 @@ interface AffiliateManagerInterface
 	 */
 	public function find($id = null);
 
+    /**
+     * Paginates affiliates
+     */
+    public function findByPage($page = 1, $limit = 10);
+
 	/**
 	 * Finds an affiliate record by IP
 	 */

@@ -98,8 +98,8 @@ CDECartBundle_transaction_customer_view:
       
 # Transaction
 CDECartBundle_transaction_index:
-    pattern:  /admin/transactions/
-    defaults: { _controller: CDECartBundle:Transaction:index }
+    pattern:  /admin/transactions/{page}
+    defaults: { _controller: CDECartBundle:Transaction:index, page: 1}
 
 CDECartBundle_transaction_view:
     pattern:  /admin/transactions/{id}

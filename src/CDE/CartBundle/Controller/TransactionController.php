@@ -25,9 +25,9 @@ class TransactionController extends Controller
         return $this->get('mailer');
     }
 
-    public function indexAction()
+    public function indexAction($page = 1)
     {
-        $transactions = $this->getTransactionManager()->find();
+        $transactions = $this->getTransactionManager()->findByPage($page, 25);
         // foreach ($transactions as $transaction) {
             // $products = $transaction->getProducts();
             // var_dump($products);

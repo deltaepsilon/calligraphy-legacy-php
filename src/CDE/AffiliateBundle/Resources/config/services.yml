@@ -7,3 +7,4 @@ services:
     arguments:
       em: '@Doctrine.orm.entity_manager'
       class: 'CDE\AffiliateBundle\Entity\Affiliate'
+      paginator: '@knp_paginator'

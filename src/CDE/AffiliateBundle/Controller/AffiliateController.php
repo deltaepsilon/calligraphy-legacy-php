@@ -13,9 +13,10 @@ class AffiliateController extends Controller
 		return $this->get('cde_affiliate.manager.affiliate');
 	}
 
-	public function indexAction()
+	public function indexAction($page = 1)
 	{
-		$affiliates = $this->getAffiliateManager()->find();
+		$affiliates = $this->getAffiliateManager()->findByPage($page, 50);
+
 		return $this->render('CDEAffiliateBundle:Affiliate:index.html.twig', array(
 			'affiliates' => $affiliates,
 		));
