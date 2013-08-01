@@ -28,9 +28,9 @@ class AddressController extends Controller
         return $address;
     }
     
-    public function indexAction()
+    public function indexAction($page = 1)
     {
-        $addresses = $this->getAddressManager()->find();
+        $addresses = $this->getAddressManager()->findByPage($page, 10);
         return $this->render('CDEUserBundle:Address:index.html.twig', array(
             'addresses' => $addresses,
         ));

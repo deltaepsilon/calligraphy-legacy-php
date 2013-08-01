@@ -20,9 +20,14 @@ interface UserManagerInterface
     public function update($user);
     
     /**
-     * @return CDE\UserBundle\Entity\User
+     * @return User
      */
     public function find($id);
+
+    /**
+     * @return User
+     */
+    public function findByPage($page, $limit);
     
     /**
      * Sets default expiresAt and credentialsExpireAt

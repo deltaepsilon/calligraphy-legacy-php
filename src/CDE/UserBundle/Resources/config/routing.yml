@@ -51,7 +51,7 @@ CDEUserBundle_account_transaction:
     
 # Address routes
 CDEUserBundle_address_index:
-  pattern: /admin/address/{page}
+  pattern: /address/admin/{page}
   defaults: { _controller: CDEUserBundle:Address:index, page: 1}
 
 CDEUserBundle_address_view:

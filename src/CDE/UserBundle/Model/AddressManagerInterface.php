@@ -33,4 +33,11 @@ interface AddressManagerInterface
      */
     public function find($id);
 
+    /**
+     * Paginates addresses
+     *
+     * @return AddressInterface
+     */
+    public function findByPage($page = 1, $limit = 10);
+
 }

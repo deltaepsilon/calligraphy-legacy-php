@@ -57,4 +57,20 @@ class AddressManager implements AddressManagerInterface
         return $address;
     }
 
+    public function findByPage($page = 1, $limit = 10)
+    {
+        $query = $this->em->createQuery('
+            select l
+            from CDEUserBundle:Address l
+        ');
+
+        $pagination = $this->paginator->paginate(
+            $query,
+            $page,
+            $limit
+        );
+
+        return $pagination;
+    }
+
 }
