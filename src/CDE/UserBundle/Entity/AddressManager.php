@@ -13,10 +13,11 @@ class AddressManager implements AddressManagerInterface
     protected $class;
     protected $repo;
     
-    public function __construct(EntityManager $em, $class){
+    public function __construct(EntityManager $em, $class, $paginator){
         $this->em = $em;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
+        $this->paginator = $paginator;
     }
     
     public function create()

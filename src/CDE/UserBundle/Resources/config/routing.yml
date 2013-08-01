@@ -1,6 +1,6 @@
 CDEUserBundle_index:
-  pattern: /admin
-  defaults: { _controller: CDEUserBundle:User:index}
+  pattern: /admin/{page}
+  defaults: { _controller: CDEUserBundle:User:index, page: 1}
 
 CDEUserBundle_view:
   pattern: /admin/{id}
@@ -51,8 +51,8 @@ CDEUserBundle_account_transaction:
     
 # Address routes
 CDEUserBundle_address_index:
-  pattern: /admin/address
-  defaults: { _controller: CDEUserBundle:Address:index}
+  pattern: /admin/address/{page}
+  defaults: { _controller: CDEUserBundle:Address:index, page: 1}
 
 CDEUserBundle_address_view:
   pattern: /address/{id}

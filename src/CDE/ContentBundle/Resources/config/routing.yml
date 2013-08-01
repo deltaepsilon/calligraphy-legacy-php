@@ -93,8 +93,8 @@ CDEContentBundle_gallery_delete:
 
 # Comment
 CDEContentBundle_comment_index:
-    pattern:  /comment
-    defaults: { _controller: CDEContentBundle:Comment:index }
+    pattern:  /comment/{page}
+    defaults: { _controller: CDEContentBundle:Comment:index, page: 1 }
 
 CDEContentBundle_comment_view:
     pattern:  /comment/{id}

@@ -1913,9 +1913,6 @@ form input[type="submit"] {
   min-width: 10em;
   text-align: center;
 }
-form a {
-  margin: 0 1em;
-}
 div.form-header {
   margin: 1em 0;
 }

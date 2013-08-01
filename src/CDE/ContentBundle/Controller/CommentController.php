@@ -21,9 +21,9 @@ class CommentController extends Controller
         return $this->get('cde_content.manager.gallery');
     }
     
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $page = 1)
     {
-        $comments = $this->getCommentManager()->find();
+        $comments = $this->getCommentManager()->findByPage($page, 20);
         $commentCollection = new CommentCollection();
         $commentCollection->setComments($comments);
         $form = $this->createForm(new CommentCollectionType(), $commentCollection);
@@ -38,6 +38,7 @@ class CommentController extends Controller
         }
         return $this->render('CDEContentBundle:Comment:index.html.twig', array(
             'form' => $form->createView(),
+            'comments' => $comments
         ));
     }
     public function createAction(Request $request, $id)

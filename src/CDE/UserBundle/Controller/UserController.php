@@ -35,9 +35,9 @@ class UserController extends Controller
         return $this->get('cde_content.manager.tag');
     }
     
-    public function indexAction()
+    public function indexAction($page = 1)
     {
-        $users = $this->getUserManager()->find();
+        $users = $this->getUserManager()->findByPage($page, 10);
         return $this->render('CDEUserBundle:User:index.html.twig', array(
             'users' => $users,
         ));

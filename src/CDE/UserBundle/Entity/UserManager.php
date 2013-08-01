@@ -17,13 +17,14 @@ class UserManager extends ContainerAware implements UserManagerInterface
     protected $userManager;
     protected $subscriptionManager;
 
-    public function __construct(EntityManager $em, $class, $userManager, $subscriptionManager)
+    public function __construct(EntityManager $em, $class, $userManager, $subscriptionManager, $paginator)
     {
         $this->em = $em;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
         $this->userManager = $userManager;
         $this->subscriptionManager = $subscriptionManager;
+        $this->paginator = $paginator;
     }
     public function create()
     {
@@ -46,6 +47,7 @@ class UserManager extends ContainerAware implements UserManagerInterface
         $this->em->remove($user);
         $this->em->flush();
     }
+
     public function find($id = NULL)
     {
         if ($id) {
@@ -61,6 +63,23 @@ class UserManager extends ContainerAware implements UserManagerInterface
         }
         return $user;
     }
+
+    public function findByPage($page = 1, $limit = 10)
+    {
+        $query = $this->em->createQuery('
+            select l
+            from CDEUserBundle:User l
+        ');
+
+        $pagination = $this->paginator->paginate(
+            $query,
+            $page,
+            $limit
+        );
+
+        return $pagination;
+    }
+
     public function setDefaultExpires($user)
     {
         if ($user->getExpiresAt() === NULL) {

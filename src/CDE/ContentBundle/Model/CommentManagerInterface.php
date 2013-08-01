@@ -35,6 +35,13 @@ interface CommentManagerInterface
     public function find($id);
 
     /**
+     * Paginates comments
+     *
+     * @return CommentInterface
+     */
+    public function findByPage($page, $limit);
+
+    /**
      * Finds one or more comments
      * 
      * @return CommentInterface

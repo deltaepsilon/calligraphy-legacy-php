@@ -14,8 +14,10 @@ services:
       class: CDE\UserBundle\Entity\User
       userManager: '@fos_user.user_manager'
       subscriptionManager: '@cde_subscription.manager.subscription'
+      paginator: '@knp_paginator'
   cde_user.manager.address:
     class: CDE\UserBundle\Entity\AddressManager
     arguments:
       em: '@doctrine.orm.entity_manager'
       class: CDE\UserBundle\Entity\Address
+      paginator: '@knp_paginator'

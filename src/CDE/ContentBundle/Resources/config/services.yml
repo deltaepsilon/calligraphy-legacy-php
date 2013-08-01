@@ -30,3 +30,4 @@ services:
     arguments:
       em: '@Doctrine.orm.entity_manager'
       class: 'CDE\ContentBundle\Entity\Comment'
+      paginator: '@knp_paginator'

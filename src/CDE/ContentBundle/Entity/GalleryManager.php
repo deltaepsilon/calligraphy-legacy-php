@@ -100,7 +100,6 @@ class GalleryManager implements GalleryManagerInterface
 
     public function findByPage(User $user, $page = 1, $limit = 20)
     {
-        //TODO convert to DQL query and add pagination
         $query = $this->em->createQuery('
             select l
             from CDEContentBundle:Gallery l

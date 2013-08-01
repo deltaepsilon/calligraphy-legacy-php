@@ -1,0 +1,29 @@
+{
+  "name": "istilllovecalligraphy.com",
+  "version": "0.1.0",
+  "description": "IStillLoveCalligraphy Engine",
+  "main": "Gruntfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-contrib-less": "~0.6.4",
+    "grunt": "~0.4.1",
+    "grunt-contrib-watch": "~0.5.1"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deltaepsilon/calligraphy.git"
+  },
+  "keywords": [
+    "calligraphy",
+    "istilllovecalligraphy",
+    "symfony2"
+  ],
+  "author": "Christopher Esplin <chris@quiver.is> (http://christopheresplin.com/)",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/deltaepsilon/calligraphy/issues"
+  }
+}

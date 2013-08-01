@@ -1,3 +1,13 @@
+<hr>
+<br>
+<h5>Sort By:</h5>
+<ul>
+    <li>ID: {{ knp_pagination_sortable(users, 'Asc', 'l.id', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(users, 'Desc', 'l.id', {'direction': 'desc'}) }}</li>
+    <li>Username: {{ knp_pagination_sortable(users, 'Asc', 'l.username', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(users, 'Desc', 'l.username', {'direction': 'desc'}) }}</li>
+    <li>Email: {{ knp_pagination_sortable(users, 'Asc', 'l.email', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(users, 'Desc', 'l.email', {'direction': 'desc'}) }}</li>
+    <li>Roles: {{ knp_pagination_sortable(users, 'Asc', 'l.roles', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(users, 'Desc', 'l.roles', {'direction': 'desc'}) }}</li>
+</ul>
+
 <table id="task-table">
     <thead>
         <tr>
@@ -59,4 +69,9 @@
             </tr>
         {% endfor %}
     </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="100%">{{ knp_pagination_render(users) }}</td>
+    </tr>
+    </tfoot>
 </table>

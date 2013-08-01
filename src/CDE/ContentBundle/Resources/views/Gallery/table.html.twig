@@ -1,13 +1,13 @@
-<table class="data-table" id="gallery-table">
+<hr>
+<br>
+<h5>Sort By:</h5>
+<ul>
+    <li>ID: {{ knp_pagination_sortable(galleries, 'Asc', 'l.id', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(galleries, 'Desc', 'l.id', {'direction': 'desc'}) }}</li>
+    <li>Updated: {{ knp_pagination_sortable(galleries, 'Asc', 'l.updated', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(galleries, 'Desc', 'l.updated', {'direction': 'desc'}) }}</li>
+    <li>Created: {{ knp_pagination_sortable(galleries, 'Asc', 'l.created', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(galleries, 'Desc', 'l.created', {'direction': 'desc'}) }}</li>
+</ul>
 
-    <hr>
-    <br>
-    <h5>Sort By:</h5>
-    <ul>
-        <li>ID: {{ knp_pagination_sortable(galleries, 'Asc', 'l.id', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(galleries, 'Desc', 'l.id', {'direction': 'desc'}) }}</li>
-        <li>Updated: {{ knp_pagination_sortable(galleries, 'Asc', 'l.updated', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(galleries, 'Desc', 'l.updated', {'direction': 'desc'}) }}</li>
-        <li>Created: {{ knp_pagination_sortable(galleries, 'Asc', 'l.created', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(galleries, 'Desc', 'l.created', {'direction': 'desc'}) }}</li>
-    </ul>
+<table class="data-table" id="gallery-table">
     <thead>
         <tr>
             <th class="sortable alpha">user</th>

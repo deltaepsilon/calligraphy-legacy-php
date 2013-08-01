@@ -1,3 +1,10 @@
+<hr>
+<br>
+<h5>Sort By:</h5>
+<ul>
+    <li>ID: {{ knp_pagination_sortable(comments, 'Asc', 'l.id', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(comments, 'Desc', 'l.id', {'direction': 'desc'}) }}</li>
+</ul>
+
 <form action="{{ path('CDEContentBundle_comment_index') }}" method="post" {{ form_enctype(form) }}>
     <table class="data-table" id="gallery-table">
         <thead>
@@ -53,6 +60,11 @@
                 </tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="100%">{{ knp_pagination_render(comments) }}</td>
+            </tr>
+        </tfoot>
     </table>
     <p>
         <input type="submit" value="Update" />
