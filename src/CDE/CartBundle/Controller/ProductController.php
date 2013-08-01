@@ -61,7 +61,7 @@ class ProductController extends Controller
         $form = $this->createForm(new $class(), $product);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getProductManager()->add($product);
                 return $this->redirect($this->generateUrl('CDECartBundle_product_view', array('slug' => $product->getSlug())));
@@ -82,7 +82,7 @@ class ProductController extends Controller
         $form = $this->createForm(new $class(), $product);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getProductManager()->update($product);
                 return $this->redirect($this->generateUrl('CDECartBundle_product_view', array('slug' => $product->getSlug())));
@@ -120,7 +120,7 @@ class ProductController extends Controller
         $form = $this->createForm(new ProductAddTagsType(), $product);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getProductManager()->update($product);
                 return $this->redirect($this->generateUrl('CDECartBundle_product_view', array('slug' => $product->getSlug())));

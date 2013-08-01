@@ -82,3 +82,12 @@ fos_user:
     registration:
       form:
         type: cde_user_registration
+
+# Doctrine Extensions
+stof_doctrine_extensions:
+  default_locale: en_us
+  orm:
+    default:
+      timestampable: true
+      sluggable: true
+      tree: true

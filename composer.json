@@ -22,7 +22,9 @@
         "cybernox/amazon-webservices-bundle": "dev-master",
         "friendsofsymfony/user-bundle": "2.0.*@dev",
         "friendsofsymfony/jsrouting-bundle": "1.2.0",
-        "gedmo/doctrine-extensions": "v2.3.6"
+        "gedmo/doctrine-extensions": "v2.3.6",
+        "stof/doctrine-extensions-bundle": "v1.1.0",
+        "jms/serializer": "0.12.0"
     },
     "scripts": {
         "post-install-cmd": [

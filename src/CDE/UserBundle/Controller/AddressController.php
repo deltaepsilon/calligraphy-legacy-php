@@ -51,7 +51,7 @@ class AddressController extends Controller
         $form = $this->createForm(new AddressType(), $address);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getAddressManager()->update($address);
                 return $this->redirect($this->generateUrl('CDEUserBundle_address_view', array('id' => $address->getId())));
@@ -69,7 +69,7 @@ class AddressController extends Controller
         $form = $this->createForm(new AddressType(), $address);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getAddressManager()->add($address);
                 return $this->redirect($this->generateUrl('CDEUserBundle_address_view', array('id' => $address->getId())));

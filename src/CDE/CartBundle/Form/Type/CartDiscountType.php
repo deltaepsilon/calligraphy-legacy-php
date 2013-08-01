@@ -4,10 +4,12 @@ namespace CDE\CartBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CartDiscountType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
         ->add('id', 'hidden')
@@ -16,12 +18,12 @@ class CartDiscountType extends AbstractType
             'required' => FALSE,
         ));
     }
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class' => 'CDE\CartBundle\Entity\Discount',
             'validation_groups' => array('csrf_only'),
-        );
+        ));
     }
     public function getName()
     {

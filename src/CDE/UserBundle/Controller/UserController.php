@@ -69,7 +69,7 @@ class UserController extends Controller
         $form = $this->createForm(new UserType(), $user);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getUserManager()->add($user);
                 return $this->redirect($this->generateUrl('CDEUserBundle_view', array('id' => $user->getId())));
@@ -88,7 +88,7 @@ class UserController extends Controller
         $form = $this->createForm(new UserUpdateAccountType(), new UpdateUser($user));
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $validator = $this->get('validator');
                 $data = $form->getData();
@@ -127,7 +127,7 @@ class UserController extends Controller
         // Process form
         if ($request->getMethod() === 'POST') {
             $data = $request->request->get('cde_user');
-            $form->bindRequest($request);
+            $form->bind($request);
             
             // Form is not respecting roles... this is a little hack to add them back in
             $roles = $data['roles'];

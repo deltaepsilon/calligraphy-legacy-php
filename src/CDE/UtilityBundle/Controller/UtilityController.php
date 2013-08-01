@@ -42,7 +42,7 @@ class UtilityController extends Controller
         $form = $this->createFormBuilder()->add('url')->getForm();
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $data = $form->getData();
                 $uri = $data['url'];

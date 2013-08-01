@@ -25,7 +25,7 @@
                 <tbody>
                     {% set total = 0 %}
                     {% for productForm in form.products %}
-                        {% set product = productForm.get('value') %}
+                        {% set product = productForm.vars.value %}
                         {% set total = total + product.price * product.quantity %}
                         <tr>
                             <td class="cart-image thumbnail"><img class="thumbnail" src="{{ product.keyImage}}" /></td>

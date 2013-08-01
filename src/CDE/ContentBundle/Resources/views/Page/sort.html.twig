@@ -14,7 +14,7 @@
         <form action="{{ path('CDEContentBundle_sort') }}" method="post" {{ form_enctype(form) }}>
             {% for pageForm in form.pages %}
                 <div class="sort-page-item">
-                    {% set page = pageForm.get('value') %}
+                    {% set page = pageForm.vars.value %}
                     {{ page }}
                     {{ form_widget(pageForm) }}
                 </div>

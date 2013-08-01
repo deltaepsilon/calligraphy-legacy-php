@@ -2,14 +2,17 @@
 
 namespace CDE\ContentBundle\Form\Type;
 
+use PhpOption\Option;
 use Symfony\Component\Form\FormBuilder;
 use FOS\UserBundle\Form\Type\ProfileFormType as BaseType;
 use Symfony\Component\Form\AbstractType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CommentType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('comment')
@@ -20,10 +23,10 @@ class CommentType extends AbstractType
     {
         return 'cde_comment';
     }
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class'=>'CDE\ContentBundle\Entity\Comment',
-        );
+        ));
     }
 }

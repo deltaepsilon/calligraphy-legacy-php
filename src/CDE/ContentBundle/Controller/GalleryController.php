@@ -68,7 +68,7 @@ class GalleryController extends Controller
         $form = $this->createForm(new CommentType, $comment);
         
         if ($request->getMethod() === 'POST' && $id) {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getCommentManager()->add($comment);
                 $gallery = $this->getGalleryManager()->find($user, $gallery->getId());
@@ -120,7 +120,7 @@ class GalleryController extends Controller
         $form = $this->createForm(new GalleryAdminType(), $gallery);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $file = $gallery->getFilename();
                 $filename = $user->getUsername().'-'.uniqid().'.'.$file->guessExtension();
@@ -147,7 +147,7 @@ class GalleryController extends Controller
         $form = $this->createForm(new GalleryType(), $gallery);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $file = $gallery->getFilename();
                 $filename = $user->getUsername().'-'.uniqid().'.'.$file->guessExtension();
@@ -175,7 +175,7 @@ class GalleryController extends Controller
         $form = $this->createForm(new GalleryUpdateType(), $gallery);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getGalleryManager()->update($gallery);
                 return $this->redirect($this->generateUrl('CDEContentBundle_gallery_view', array('id' => $gallery->getId())));
@@ -197,7 +197,7 @@ class GalleryController extends Controller
         $form = $this->createForm(new GalleryUpdateType(), $gallery);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getGalleryManager()->update($gallery);
                 return $this->redirect($this->generateUrl('CDEContentBundle_gallery_account_index', array('id' => $gallery->getId())));

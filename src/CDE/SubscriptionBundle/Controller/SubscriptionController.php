@@ -37,7 +37,7 @@ class SubscriptionController extends Controller
         $form = $this->createForm(new SubscriptionNewType(), $subscription);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 // Add subscription to existing subscription if possible
                 $existing = $this->getSubscriptionManager()->checkExisiting($subscription);
@@ -72,7 +72,7 @@ class SubscriptionController extends Controller
         $form = $this->createForm(new SubscriptionType(), $subscription);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getSubscriptionManager()->update($subscription);
                 return $this->redirect($this->generateUrl('CDESubscriptionBundle_view', array('id' => $subscription->getId())));

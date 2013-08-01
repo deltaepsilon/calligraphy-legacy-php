@@ -45,7 +45,7 @@
         <div id="account-form" style="display: none">
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 <h1>Account Navigation</h1>
-                {% render "FOSUserBundle:Profile:show" %}
+                {% render controller("FOSUserBundle:Profile:show") %}
                 {% if is_granted("ROLE_ADMIN") %}
                     <p><a href="{{ path('CDEAdminBundle_index') }}">Admin</a></p>
                 {% elseif is_granted("ROLE_SUPER_ADMIN") %}
@@ -189,7 +189,7 @@
     <aside id="side-nav" class="side-nav-hidden">
         {% block sideNav %}
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {% render 'CDEUserBundle:User:tocPartial' %}
+                {% render controller('CDEUserBundle:User:tocPartial') %}
             {% endif %}
         {% endblock %}
     </aside>

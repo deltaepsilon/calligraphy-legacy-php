@@ -7,10 +7,12 @@ use FOS\UserBundle\Form\Type\ProfileFormType as BaseType;
 use Symfony\Component\Form\AbstractType;
 use Doctrine\ORM\EntityRepository;
 use CDE\ContentBundle\Form\Type\CommentMarkedType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CommentCollectionType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('comments', 'collection', array(
@@ -23,10 +25,10 @@ class CommentCollectionType extends AbstractType
     {
         return 'cde_comment';
     }
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class'=>'CDE\ContentBundle\Entity\CommentCollection',
-        );
+        ));
     }
 }

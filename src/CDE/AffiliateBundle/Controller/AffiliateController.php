@@ -46,7 +46,7 @@ class AffiliateController extends Controller
 		$form = $this->createForm(new AffiliateType(), $affiliate);
 		// Process form
 		if ($request->getMethod() === 'POST') {
-			$form->bindRequest($request);
+			$form->bind($request);
 			if($form->isValid()) {
 				$this->getAffiliateManager()->update($affiliate);
 				return $this->redirect($this->generateUrl('CDEAffiliateBundle_view', array('id' => $affiliate->getId())));

@@ -5,10 +5,12 @@ namespace CDE\UserBundle\Form\Type;
 use Symfony\Component\Form\FormBuilder;
 use FOS\UserBundle\Form\Type\ProfileFormType as BaseType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserUpdateAccountType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('email', 'email', array('label' => 'Update Email'))
@@ -27,11 +29,11 @@ class UserUpdateAccountType extends AbstractType
     {
         return 'cde_user';
     }
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class' => 'CDE\UserBundle\Form\Model\UpdateUser',
             'validation_groups' => 'Registration',
-        );
+        ));
     }
 }

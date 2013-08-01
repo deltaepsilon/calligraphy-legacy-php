@@ -36,7 +36,7 @@ class DiscountController extends Controller
         $form = $this->createForm(new DiscountType(), $discount);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getDiscountManager()->add($discount);
                 return $this->redirect($this->generateUrl('CDECartBundle_discount_view', array('id' => $discount->getId())));
@@ -54,7 +54,7 @@ class DiscountController extends Controller
         $form = $this->createForm(new DiscountType(), $discount);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getDiscountManager()->update($discount);
                 return $this->redirect($this->generateUrl('CDECartBundle_discount_view', array('id' => $discount->getId())));

@@ -2,13 +2,16 @@
 
 namespace CDE\CartBundle\Form\Type;
 
+use PhpOption\Option;
 use Symfony\Component\Form\FormBuilder;
 use FOS\UserBundle\Form\Type\ProfileFormType as BaseType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProductDigitalType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
         $builder
@@ -34,10 +37,10 @@ class ProductDigitalType extends AbstractType
     {
         return 'cde_product';
     }
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class'=>'CDE\CartBundle\Entity\Product',
-        );
+        ));
     }
 }

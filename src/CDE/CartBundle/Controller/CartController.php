@@ -45,7 +45,7 @@ class CartController extends Controller
         $codeForm = $this->createForm(new CartDiscountType(), $discount);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getCartManager()->update($cart);
                 $this->get('session')->getFlashBag()->add('notice', "Updated cart.");
@@ -119,7 +119,7 @@ class CartController extends Controller
         $form = $this->createForm(new CartDiscountType(), $discount);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             // I'm not validating this form, because it will always fail... it's missing required fields
             $existingDiscount = $this->getDiscountManager()->findByCode($discount->getCode());
             /**
@@ -167,7 +167,7 @@ class CartController extends Controller
         $responseUrl = parse_url($response);
         parse_str($responseUrl['path'], $responseParams);
         if ($responseParams['ACK'] == 'Failure') {
-	    //var_dump($link, $responseParams);
+//	    var_dump($link, $responseParams);
             throw new NotFoundHttpException();
         }
         $redirect = $this->getCartManager()->getRedirectLink($responseParams, $parameters);

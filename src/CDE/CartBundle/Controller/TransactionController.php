@@ -69,7 +69,7 @@ class TransactionController extends Controller
         $form = $this->createForm(new TransactionType(), $transaction);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getTransactionManager()->update($transaction);
                 return $this->redirect($this->generateUrl('CDECartBundle_transaction_view', array('id' => $transaction->getId())));

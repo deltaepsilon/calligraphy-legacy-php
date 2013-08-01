@@ -28,7 +28,7 @@ class CommentController extends Controller
         $commentCollection->setComments($comments);
         $form = $this->createForm(new CommentCollectionType(), $commentCollection);
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             foreach ($commentCollection->getComments() as $comment) {
                 if (is_bool($comment->getMarked())) {
                     $this->getCommentManager()->update($comment);
@@ -51,7 +51,7 @@ class CommentController extends Controller
         $form = $this->createForm(new CommentType(), $comment);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getCommentManager()->add($comment);
                 //Send comment notification email if the user leaving the comment is not the user who owns the gallery
@@ -84,7 +84,7 @@ class CommentController extends Controller
         $form = $this->createForm(new CommentType(), $comment);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getCommentManager()->update($comment);
                 return $this->redirect($this->generateUrl('CDEContentBundle_gallery_view', array('id' => $gallery->getId())));

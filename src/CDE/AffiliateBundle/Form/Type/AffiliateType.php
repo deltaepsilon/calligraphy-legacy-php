@@ -5,10 +5,12 @@ namespace CDE\AffiliateBundle\Form\Type;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AffiliateType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('affiliate')
@@ -19,10 +21,10 @@ class AffiliateType extends AbstractType
     {
         return 'cde_affiliate';
     }
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class'=>'CDE\AffiliateBundle\Entity\Affiliate',
-        );
+        ));
     }
 }

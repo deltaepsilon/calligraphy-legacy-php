@@ -4,10 +4,12 @@ namespace CDE\CartBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TransactionType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
         ->add('processed', 'checkbox', array(
@@ -15,11 +17,11 @@ class TransactionType extends AbstractType
             ))
         ;
     }
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class'=>'CDE\CartBundle\Entity\Transaction',
-        );
+        ));
     }
     public function getName()
     {

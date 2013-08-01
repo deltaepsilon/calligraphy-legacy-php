@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Cybernox\AmazonWebServicesBundle\CybernoxAmazonWebServicesBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

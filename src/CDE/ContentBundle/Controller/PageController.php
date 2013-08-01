@@ -42,7 +42,7 @@ class PageController extends Controller
         $form = $this->createForm(new PageType(), $page);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getPageManager()->add($page);
                 return $this->redirect($this->generateUrl('CDEContentBundle_view', array('id' => $page->getId())));
@@ -62,7 +62,7 @@ class PageController extends Controller
         $form = $this->createForm(new PageUpdateType(), $page);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getPageManager()->update($page);
                 return $this->redirect($this->generateUrl('CDEContentBundle_view', array('id' => $page->getId())));
@@ -101,7 +101,7 @@ class PageController extends Controller
         $form = $this->createForm(new AddTagsType(), $page, array('parentTag' => array('tag' => $parentTag)));
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getPageManager()->update($page);
                 return $this->redirect($this->generateUrl('CDEContentBundle_view', array('id' => $page->getId())));
@@ -122,7 +122,7 @@ class PageController extends Controller
         $pageCollection->setPages($pages);
         $form = $this->createForm(new PageSortType(), $pageCollection);
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             foreach ($pageCollection->getPages() as $page) {
                 if (is_int($page->getSort())) {
                     $this->getPageManager()->update($page);

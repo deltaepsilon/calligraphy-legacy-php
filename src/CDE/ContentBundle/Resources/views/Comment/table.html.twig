@@ -16,7 +16,7 @@
         </thead>
         <tbody>
             {% for commentForm in form.comments %}
-                {% set comment = commentForm.get('value') %}
+                {% set comment = commentForm.vars.value %}
                 <tr>
                     <td class="label-hidden">
                         {{ form_widget(commentForm) }}

@@ -36,7 +36,7 @@ class TagController extends Controller
         $form = $this->createForm(new TagType(), $tag);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getTagManager()->add($tag);
                 return $this->redirect($this->generateUrl('CDEContentBundle_tag_view', array('id' => $tag->getId())));
@@ -54,7 +54,7 @@ class TagController extends Controller
         $form = $this->createForm(new TagType(), $tag);
         // Process form
         if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
+            $form->bind($request);
             if($form->isValid()) {
                 $this->getTagManager()->add($tag);
                 return $this->redirect($this->generateUrl('CDEContentBundle_tag_view', array('id' => $tag->getId())));
