@@ -1,15 +1,31 @@
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
-
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
-
-    locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: '3306'
+    database_name: calligraphy
+    database_user: username
+    database_password: password
+    mailer_transport: gmail
+    mailer_host: 127.0.0.1
+    mailer_user: me@gmail.com
+    mailer_password: gmailpass
+    mailer_deliver_all: getallemail@gmail.com
+    aws_public: { distribution_id: 123, gallery_folder: calligraphy/galleries/ }
+    aws_distribution_id: ASDFR
+    aws_rsa_key: ../pk-ASDFR.pem
+    aws_rsa_key_pair_id: ASDFR
+    aws_key: 123ASDFR
+    aws_secret: 1231231231dasfadsfdasf1a23
+    aws_gallery_folder: 'gallery'
+    locale: en
+    secret: 123456789
+    email_name: 'I Still Love Calligraphy'
+    email_email: support@gmail.com
+    email_phone: 111-222-3333
+    admin: { admin_email: admin@gmail.com, no_reply_email: noreply@gmail.com, phone: 111-222-3333, shipping_email: shipping@gmail.com, email_from_name: 'I Still Love Calligraphy', email_name: 'I Still Love Calligraphy', email_email: support@gmail.com, email_phone: 111-222-3333 }
+    site_name: 'I Still Love Calligraphy'
+    tag_line: 'Welcome to I Still Love Calligraphy'
+#    Live
+#    cde_paypal: { paypal_username: me_api1.gmail.com, paypal_password: 123456789, paypal_signature: 213132134564a56sd4fads1f, paypal_version: '84.0', paypal_currency_code: USD, paypal_webscr: 'https://www.paypal.com/cgi-bin/webscr', paypal_nvp: 'https://api-3t.paypal.com/nvp' }
+#    Sandbox
+    cde_paypal: { paypal_username: me_1328726106_biz_api1.me.com, paypal_password: 123456789, paypal_signature: ASDFQWWERLKJKLJLKJALSDF, paypal_version: '84.0', paypal_currency_code: USD, paypal_webscr: 'https://www.sandbox.paypal.com/cgi-bin/webscr', paypal_nvp: 'https://api-3t.sandbox.paypal.com/nvp' }
