@@ -14,7 +14,7 @@
             {% endif %}
         </div>
 
-        {% for key, message in app.session.getFlashes() %}
+        {% for key, message in app.session.flashbag.all() %}
         <div class="{{ key }}">
             {{ message|trans({}, 'FOSUserBundle') }}
         </div>
