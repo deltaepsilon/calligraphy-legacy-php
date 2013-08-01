@@ -8,27 +8,35 @@
         <a href="{{ path('CDEUserBundle_account_view') }}">Back to Account</a>
     </li>
     {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
-        <li class="meta">
-            <a href="{{ path('CDECartBundle_transaction_index') }}">Back to Transactions</a>
-        </li>
-        <li class="meta">
-            <a href="{{ path('CDECartBundle_transaction_update', { 'id': transaction.id}) }}">Edit Transaction</a>
-        </li>
-        <li class="meta">
-            <a href="{{ path('CDECartBundle_transaction_process', { 'id': transaction.id}) }}">
+        <a href="{{ path('CDECartBundle_transaction_index') }}">
+            <li class="meta">
+                Back to Transactions
+            </li>
+        </a>
+        <a href="{{ path('CDECartBundle_transaction_update', { 'id': transaction.id}) }}">
+            <li class="meta">
+                Edit Transaction
+            </li>
+        </a>
+        <a href="{{ path('CDECartBundle_transaction_process', { 'id': transaction.id}) }}">
+            <li class="meta">
                 {% if transaction.processed%}
                     Reprocess Transaction (will add time to subscriptions)
                 {% else %}
                     Process Transaction
                 {% endif %}
-            </a>
-        </li>
-        <li class="meta">
-            <a href="{{ path('CDECartBundle_transaction_email_neworder', { 'id': transaction.id}) }}">View New Order Email</a>
-        </li>
-        <li class="meta">
-            <a href="{{ path('CDECartBundle_transaction_email_neworder', { 'id': transaction.id, 'send': 'send'}) }}">Send New Order Email</a>
-        </li>
+            </li>
+        </a>
+        <a href="{{ path('CDECartBundle_transaction_email_neworder', { 'id': transaction.id}) }}">
+            <li class="meta">
+                View New Order Email
+            </li>
+        </a>
+        <a href="{{ path('CDECartBundle_transaction_email_neworder', { 'id': transaction.id, 'send': 'send'}) }}">
+            <li class="meta">
+                Send New Order Email
+            </li>
+        </a>
     {% endif %}
 {% endblock %}
 

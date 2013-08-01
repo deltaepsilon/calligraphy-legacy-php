@@ -61,14 +61,14 @@ class Address implements AddressInterface
     /**
      * @var string $line2
      *
-     * @ORM\Column(name="line2", type="string", length=255)
+     * @ORM\Column(name="line2", type="string", length=255, nullable=true)
      */
     private $line2;
 
     /**
      * @var string $line3
      *
-     * @ORM\Column(name="line3", type="string", length=255)
+     * @ORM\Column(name="line3", type="string", length=255, nullable=true)
      */
     private $line3;
 

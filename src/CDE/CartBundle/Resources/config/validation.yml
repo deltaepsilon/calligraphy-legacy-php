@@ -9,14 +9,21 @@ CDE\CartBundle\Entity\Discount:
       - NotBlank: { groups: [csrf_only] }
     expires:
       - NotBlank: ~
-    uses:
-      - Min: 0
-    maxUses:
-      - Min: 0
-    value:
-      - Min: 0
-    percent:
-      - Min: 0
+#    uses:
+#      - Range:
+#      min: 0
+#    maxUses:
+#      - Range:
+#      min: 0
+#      max: 100000
+#    value:
+#      - Range:
+#      min: 0
+#      max: 100000
+#    percent:
+#      - Range:
+#      min: 0
+#      max: 100
 CDE\CartBundle\Entity\Product:
   properties:
     id: 

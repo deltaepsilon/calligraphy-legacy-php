@@ -14,7 +14,7 @@
                 <th>Edit</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="comments-list">
             {% for commentForm in form.comments %}
                 {% set comment = commentForm.vars.value %}
                 <tr>
@@ -33,7 +33,7 @@
                         <a href="{{ path('CDEUserBundle_view', { 'id': comment.galleryuser.id }) }}">{{ comment.galleryuser }}</a>
                     </td>
                     <td>
-			<a href="{{ path('CDEContentBundle_gallery_view', { 'id': comment.gallery.id}) }}">{{ comment.gallery.title }}</a>
+			            <a href="{{ path('CDEContentBundle_gallery_view', { 'id': comment.gallery.id}) }}">{{ comment.gallery.title }}</a>
                     </td>
                     <td>
                         {{ comment.comment }}
