@@ -27,7 +27,7 @@ class Subscription implements SubscriptionInterface
     /**
      * @var integer $user
      * 
-     * @ORM\ManyToOne(targetEntity="CDE\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="CDE\UserBundle\Entity\User", inversedBy="subscriptions")
      */
     private $user;
 
