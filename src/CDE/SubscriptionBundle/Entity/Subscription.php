@@ -34,7 +34,7 @@ class Subscription implements SubscriptionInterface
     /**
      * @var integer $product
      * 
-     * @ORM\ManyToOne(targetEntity="CDE\CartBundle\Entity\Product", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CDE\CartBundle\Entity\Product", cascade={"persist"}, inversedBy="subscriptions")
      */
     private $product;
 

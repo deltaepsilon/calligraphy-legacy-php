@@ -27,7 +27,7 @@ class Transaction implements TransactionInterface
     /**
      * @var object $user
      *
-     * @ORM\ManyToOne(targetEntity="CDE\UserBundle\Entity\User", inversedBy="transaction")
+     * @ORM\ManyToOne(targetEntity="CDE\UserBundle\Entity\User", inversedBy="transactions")
      */
     private $user;
 

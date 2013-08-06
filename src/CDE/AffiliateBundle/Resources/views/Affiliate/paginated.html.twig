@@ -1,0 +1,9 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+{% endblock %}
+
+{% block main %}
+    <h1>Affiliates</h1>
+    {% include 'CDEAffiliateBundle:Affiliate:paginated.table.html.twig' %}
+{% endblock %}

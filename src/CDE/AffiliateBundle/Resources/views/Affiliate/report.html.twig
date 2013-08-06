@@ -1,0 +1,39 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+{% endblock %}
+
+{% block main %}
+    <h1>Affiliates</h1>
+    <hr>
+    <br>
+
+    <table class="data-table" id="tag-table">
+        <thead>
+        <tr>
+            <th class="sortable alpha asc">affiliate</th>
+            <th class="sortable alpha">year</th>
+            <th class="sortable alpha">month</th>
+            <th class="sortable alpha">sales</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for affiliate in affiliates %}
+            <tr>
+                <td>
+                    <a href="{{ path('CDEAffiliateBundle_view', { 'id': affiliate.id }) }}">{{ affiliate.affiliate }}</a>
+                </td>
+                <td>
+                    {{ affiliate.year }}
+                </td>
+                <td>
+                    {{ affiliate.month }}
+                </td>
+                <td>
+                    ${{ affiliate.aggregate | number_format(0, '.', ',')}}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -17,10 +17,20 @@ class AffiliateController extends Controller
 	{
 		$affiliates = $this->getAffiliateManager()->findByPage($page, 50);
 
-		return $this->render('CDEAffiliateBundle:Affiliate:index.html.twig', array(
+		return $this->render('CDEAffiliateBundle:Affiliate:paginated.html.twig', array(
 			'affiliates' => $affiliates,
 		));
 	}
+
+    public function reportAction()
+    {
+
+        $affiliates = $this->getAffiliateManager()->getReport();
+
+        return $this->render('CDEAffiliateBundle:Affiliate:report.html.twig', array(
+            'affiliates' => $affiliates,
+        ));
+    }
 
 	public function viewAction($id)
 	{

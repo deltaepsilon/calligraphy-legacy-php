@@ -106,4 +106,27 @@ class AffiliateManager implements AffiliateManagerInterface
 		return $affiliate;
 	}
 
+    public function getReport()
+    {
+        $query = $this->em->createQuery('
+            select l.id, l.affiliate, SUBSTRING(n.created, 1, 4) as year, SUBSTRING(n.created, 6, 2) as month, sum(n.amount) as aggregate
+            from CDEAffiliateBundle:Affiliate l
+            join l.users m
+            join m.transactions n
+            group by year, month, l.affiliate
+            order by l.affiliate, year asc, month asc
+        ');
+
+//        select l.affiliate, YEAR(n.created), MONTH(n.created), sum(n.amount) as amount
+//            from CDEAffiliateBundle:Affiliate l
+//            join CDEUserBundle:User m on l.ip = m.ip
+//            join CDECartBundle:transaction n on m.id = n.user_id
+//            group by YEAR(n.created), MONTH(n.created), l.affiliate
+//            order by l.affiliate, YEAR(n.created) asc, MONTH(n.created) asc
+
+        $affiliates = $query->getResult();
+
+        return $affiliates;
+    }
+
 }

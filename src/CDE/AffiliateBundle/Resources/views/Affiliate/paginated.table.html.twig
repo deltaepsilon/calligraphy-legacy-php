@@ -1,0 +1,117 @@
+<hr>
+<br>
+<h5>Sort By:</h5>
+<ul>
+    <li>ID: {{ knp_pagination_sortable(affiliates, 'Asc', 'l.id', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(affiliates, 'Desc', 'l.id', {'direction': 'desc'}) }}</li>
+</ul>
+
+<table class="data-table" id="affiliate-table">
+    <thead>
+        <tr>
+            <th class="sortable alpha">id</th>
+            <th class="sortable alpha">affiliate</th>
+            <th class="sortable alpha">ip</th>
+	        <th class="sortable alpha">user</th>
+	        <th class="sortable alpha">transaction</th>
+	        <th class="sortable alpha">discount</th>
+	        <th class="sortable alpha">amount</th>
+	        <th class="sortable alpha">month</th>
+            <th class="asc sortable date">created</th>
+            <th class="sortable date">updated</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for affiliate in affiliates %}
+            {% if affiliate.users %}
+                {% for user in affiliate.users %}
+                    {% for transaction in user.transactions %}
+			            <tr>
+				            <td>
+					            <a href="{{ path('CDEAffiliateBundle_view', { 'id': affiliate.id }) }}">{{ affiliate.id }}</a>
+				            </td>
+			                <td>
+			                    <a href="{{ path('CDEAffiliateBundle_view', { 'id': affiliate.id }) }}">{{ affiliate }}</a>
+			                </td>
+			                <td>
+			                    {{ affiliate.ip }}
+			                </td>
+				            <td>
+					            <a href="{{ path('CDEUserBundle_view', { 'id': user.id }) }}">{{ user }}</a>
+				            </td>
+				            <td>
+					            <a href="{{ path('CDECartBundle_transaction_view', { 'id': transaction.id }) }}">{{ transaction.id }}</a>
+				            </td>
+				            <td>
+					            ${{ transaction.discountApplied }}
+				            </td>
+				            <td>
+					            ${{ transaction.amount }}
+				            </td>
+				            <td>
+				                {{ transaction.created|date('M')}}
+				            </td>
+			                <td>
+			                    {{ transaction.created|date('/d/y') }}
+			                </td>
+			                <td>
+			                    {{ transaction.updated|date('m/d/y') }}
+			                </td>
+			                <td>
+			                    <a href="{{ path('CDEAffiliateBundle_delete', { 'id': affiliate.id }) }}">delete</a>
+			                </td>
+			                <td>
+			                    <a href="{{ path('CDEAffiliateBundle_update', { 'id': affiliate.id }) }}">edit</a>
+			                </td>
+			            </tr>
+                    {% endfor %}
+                {%  endfor %}
+            {% else %}
+		        <tr>
+			        <td>
+				        <a href="{{ path('CDEAffiliateBundle_view', { 'id': affiliate.id }) }}">{{ affiliate.id }}</a>
+			        </td>
+			        <td>
+				        <a href="{{ path('CDEAffiliateBundle_view', { 'id': affiliate.id }) }}">{{ affiliate }}</a>
+			        </td>
+			        <td>
+				        {{ affiliate.ip }}
+			        </td>
+			        <td>
+
+			        </td>
+			        <td>
+
+			        </td>
+			        <td>
+
+			        </td>
+			        <td>
+
+			        </td>
+			        <td>
+
+			        </td>
+			        <td>
+				        {#{{ affiliate.created|date('m/d/y') }}#}
+			        </td>
+			        <td>
+				        {#{{ affiliate.updated|date('m/d/y') }}#}
+			        </td>
+			        <td>
+				        <a href="{{ path('CDEAffiliateBundle_delete', { 'id': affiliate.id }) }}">delete</a>
+			        </td>
+			        <td>
+				        <a href="{{ path('CDEAffiliateBundle_update', { 'id': affiliate.id }) }}">edit</a>
+			        </td>
+		        </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="100%">{{ knp_pagination_render(affiliates) }}</td>
+        </tr>
+    </tfoot>
+</table>

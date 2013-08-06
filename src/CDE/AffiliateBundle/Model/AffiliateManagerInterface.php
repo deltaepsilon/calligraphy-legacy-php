@@ -44,4 +44,9 @@ interface AffiliateManagerInterface
 	 * Finds an affiliate record by IP
 	 */
 	public function findByIp($ip);
+
+    /**
+     * Generates a monthly affiliate revenue report
+     */
+    public function getReport();
 }
