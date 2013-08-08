@@ -87,5 +87,17 @@
     </ul>
     
     {% set products = transaction.products %}
-    {% include 'CDECartBundle:Transaction:product.table.html.twig' %}
+    {#{% include 'CDECartBundle:Transaction:product.table.html.twig' %}#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if transactionJSON is defined %}
+        <script type="text/javascript" src="{{ asset('js/analytics/ecommerce.js') }}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                cde.trackTransaction({{ transactionJSON | raw }});
+            });
+        </script>
+    {% endif %}
 {% endblock %}

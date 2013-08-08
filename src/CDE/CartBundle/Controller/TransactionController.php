@@ -51,7 +51,7 @@ class TransactionController extends Controller
     {
         $transaction = $this->getTransactionManager()->find($id);
         return $this->render('CDECartBundle:Transaction:view.html.twig', array(
-            'transaction' => $transaction,
+            'transaction' => $transaction
         ));
     }
 
@@ -60,6 +60,7 @@ class TransactionController extends Controller
         $transaction = $this->getTransactionManager()->findByUser($this->getUser(), $id);
         return $this->render('CDECartBundle:Transaction:view.html.twig', array(
             'transaction' => $transaction,
+            'transactionJSON' => $transaction->getJSON()
         ));
     }
 

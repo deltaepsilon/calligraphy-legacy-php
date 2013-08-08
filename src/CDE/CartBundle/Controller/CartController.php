@@ -158,8 +158,8 @@ class CartController extends Controller
             $this->get('session')->getFlashBag()->add('notice', "Must be logged in to check out");
             return $this->redirect($this->generateUrl('CDECartBundle_store_index'));
         }
-		$baseUrl = 'http://'.$request->getHttpHost();
-		$parameters = $this->container->getParameter('cde_paypal');
+        $baseUrl = 'http://'.$request->getHttpHost();
+        $parameters = $this->container->getParameter('cde_paypal');
         $parameters['return_url'] = $baseUrl.$this->generateUrl('CDECartBundle_cart_success');
         $parameters['cancel_url'] = $baseUrl.$this->generateUrl('CDECartBundle_cart_index');
         $link = $this->getCartManager()->getPaypalLink($user->getCart(), $parameters);
@@ -271,7 +271,7 @@ class CartController extends Controller
 			}
 		}
         $this->getCartManager()->clear($cart, $user);
-        return $this->redirect($this->generateUrl('CDECartBundle_transaction_customer_view', array('id' => $transaction->getId())));
+        return $this->redirect($this->generateUrl('CDECartBundle_transaction_customer_view', array('id' => $transaction->getId()))."?record=true");
     }
 
     protected function sendEmail($transaction, $admin)

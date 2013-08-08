@@ -368,4 +368,35 @@ class Transaction implements TransactionInterface
         return $this->updated;
     }
 
+    /**
+     * Return stringified JSON representation of transaction
+     *
+     * @return string
+     */
+    public function getJSON() {
+        $transaction = array(
+            'id' => $this->id,
+            'amount' => $this->amount,
+            'user' => array(
+                'id' => $this->user->getId(),
+                'affiliate' => $this->user->getAffiliate(),
+                'username' => $this->user->getUsername()
+            )
+        );
+
+        $products = array();
+        foreach($this->products->toArray() as $product) {
+            $products[] = array(
+                'id' => $product->getId(),
+                'title' => $product->getTitle(),
+                'category' => $product->getType(),
+                'price' => $product->getPrice(),
+                'quantity' => $product->getQuantity()
+            );
+        }
+        $transaction['products'] = $products;
+
+        return json_encode($transaction);
+    }
+
 }

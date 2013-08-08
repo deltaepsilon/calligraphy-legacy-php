@@ -233,4 +233,8 @@ class User extends BaseUser
 		$this->ip = $ip;
 	}
 
+  public function getAffiliate() {
+      return $this->affiliate;
+  }
+
 }
