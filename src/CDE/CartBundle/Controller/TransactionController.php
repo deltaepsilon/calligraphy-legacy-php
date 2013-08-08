@@ -34,7 +34,7 @@ class TransactionController extends Controller
         // }
         // exit;
         
-        return $this->render('CDECartBundle:Transaction:index.html.twig', array(
+        return $this->render('CDECartBundle:Transaction:paginated.index.html.twig', array(
             'transactions' => $transactions,
         ));
     }

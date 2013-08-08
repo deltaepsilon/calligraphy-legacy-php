@@ -1,0 +1,10 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+
+{% endblock %}
+
+{% block main %}
+    <h1>Transactions</h1>
+    {% include 'CDECartBundle:Transaction:paginated.table.html.twig' %}
+{% endblock %}

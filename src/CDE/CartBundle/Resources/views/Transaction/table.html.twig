@@ -1,72 +1,60 @@
-<hr>
-<br>
-<h5>Sort By:</h5>
-<ul>
-    <li>ID: {{ knp_pagination_sortable(transactions, 'Asc', 'l.id', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(transactions, 'Desc', 'l.id', {'direction': 'desc'}) }}</li>
-</ul>
-
 <table class="data-table" id="transaction-table">
     <thead>
-        <tr>
-            <th class="sortable numeric">ID</th>
-            <th class="sortable alpha">user</th>
-            <th class="sortable numeric">products</th>
-            <th class="sortable alpha">status</th>
-            <th class="sortable alpha">processed</th>
-            <th class="sortable date">created</th>
-            <th class="sortable date">updated</th>
-            {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
-                <th>Delete</th>
-                <th>Edit</th>
-            {% endif %}
-        </tr>
+    <tr>
+        <th class="sortable numeric">ID</th>
+        <th class="sortable alpha">user</th>
+        <th class="sortable numeric">products</th>
+        <th class="sortable alpha">status</th>
+        <th class="sortable alpha">processed</th>
+        <th class="sortable date">created</th>
+        <th class="sortable date">updated</th>
+        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+            <th>Delete</th>
+            <th>Edit</th>
+        {% endif %}
+    </tr>
     </thead>
     <tbody>
-        {% for transaction in transactions %}
-            <tr>
-                <td>
-                    {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
-                        <a href="{{ path('CDECartBundle_transaction_view', { 'id': transaction.id }) }}">{{ transaction }}</a>
-                    {% else %}
-                        <a href="{{ path('CDEUserBundle_account_transaction', { 'id': transaction.id }) }}">{{ transaction }}</a>
-                    {% endif %}
-                </td>
-                <td>
-                    {{ transaction.user }}
-                </td>
-                <td>
-                    {{ transaction.products|length }}
-                </td>
-                <td>
-                    {{ transaction.status }}
-                </td>
-                <td>
-                    {% if transaction.processed %}
-                        True
-                    {% else %}
-                        False
-                    {% endif %}
-                </td>
-                <td>
-                    {{ transaction.created|date('m/d/y') }}
-                </td>
-                <td>
-                    {{ transaction.updated|date('m/d/y') }}
-                </td>
-                {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
-                    <td>
-                        <a href="{{ path('CDECartBundle_transaction_delete', { 'id': transaction.id }) }}">delete</a>
-                    </td>
-                    <td>
-                        <a href="{{ path('CDECartBundle_transaction_update', { 'id': transaction.id }) }}">edit</a>
-                    </td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-    </tbody>
-    <tfoot>
+    {% for transaction in transactions %}
         <tr>
-            <td colspan="100%">{{ knp_pagination_render(transactions) }}</td>
+            <td>
+                {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+                    <a href="{{ path('CDECartBundle_transaction_view', { 'id': transaction.id }) }}">{{ transaction }}</a>
+                {% else %}
+                    <a href="{{ path('CDEUserBundle_account_transaction', { 'id': transaction.id }) }}">{{ transaction }}</a>
+                {% endif %}
+            </td>
+            <td>
+                {{ transaction.user }}
+            </td>
+            <td>
+                {{ transaction.products|length }}
+            </td>
+            <td>
+                {{ transaction.status }}
+            </td>
+            <td>
+                {% if transaction.processed %}
+                    True
+                {% else %}
+                    False
+                {% endif %}
+            </td>
+            <td>
+                {{ transaction.created|date('m/d/y') }}
+            </td>
+            <td>
+                {{ transaction.updated|date('m/d/y') }}
+            </td>
+            {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+                <td>
+                    <a href="{{ path('CDECartBundle_transaction_delete', { 'id': transaction.id }) }}">delete</a>
+                </td>
+                <td>
+                    <a href="{{ path('CDECartBundle_transaction_update', { 'id': transaction.id }) }}">edit</a>
+                </td>
+            {% endif %}
         </tr>
-    </tfoot>
+    {% endfor %}
+    </tbody>
 </table>

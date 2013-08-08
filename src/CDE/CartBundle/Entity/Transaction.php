@@ -385,6 +385,7 @@ class Transaction implements TransactionInterface
         );
 
         $products = array();
+
         foreach($this->products->toArray() as $product) {
             $products[] = array(
                 'id' => $product->getId(),
