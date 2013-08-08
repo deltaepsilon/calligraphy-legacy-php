@@ -229,7 +229,7 @@
 
             window._gaq.push(['_require', 'inpage_linkid', pluginUrl]);
 
-            if (environment === 'dev' || sub === 'calligraphy' || sub === 'dev') {
+            if (environment === 'dev' || sub === 'calligraphy' || sub === 'dev' || sub === 'local') {
                 window._gaq = [['_setAccount','UA-6859198-11'],['_trackPageview'],['_trackPageLoadTime']];
             } else {
                 window._gaq = [['_setAccount','UA-6859272-12'],['_trackPageview'],['_trackPageLoadTime']];
