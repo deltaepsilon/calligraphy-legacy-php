@@ -15,6 +15,6 @@ class RegistrationFormType extends BaseType
     
     public function getName()
     {
-        return 'cde_user_user';
+        return 'cde_user_registration';
     }
 }

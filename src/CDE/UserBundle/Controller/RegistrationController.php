@@ -10,8 +10,20 @@
 
 namespace CDE\UserBundle\Controller;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
+
+use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\GetResponseUserEvent;
+use FOS\UserBundle\Event\UserEvent;
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use FOS\UserBundle\Model\UserInterface;
+
 
 class RegistrationController extends BaseController
 {
@@ -19,35 +31,47 @@ class RegistrationController extends BaseController
 	{
 		return $this->container->get('cde_user.manager.user');
 	}
+        
+         public function registerAction(Request $request)
+        {
+          /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+          $formFactory = $this->container->get('fos_user.registration.form.factory');
+          /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+          $userManager = $this->container->get('fos_user.user_manager');
+          /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+          $dispatcher = $this->container->get('event_dispatcher');
 
-	public function registerAction()
-	{
-		$form = $this->container->get('fos_user.registration.form');
-		$formHandler = $this->container->get('fos_user.registration.form.handler');
-		$confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
+          $user = $userManager->createUser();
+          $user->setEnabled(true);
 
-		$process = $formHandler->process($confirmationEnabled);
-		if ($process) {
-			$user = $form->getData();
-			$this->getUserManager()->setIp($user);
+          $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
 
-			if ($confirmationEnabled) {
-				$this->container->get('session')->set('fos_user_send_confirmation_email/email', $user->getEmail());
-				$route = 'fos_user_registration_check_email';
-			} else {
-				$this->authenticateUser($user);
-				$route = 'fos_user_registration_confirmed';
-			}
+          $form = $formFactory->createForm();
+          $form->setData($user);
 
-			$this->getFlashBag()->add('fos_user_success', 'registration.flash.user_created');
-			$url = $this->container->get('router')->generate($route);
+          if ('POST' === $request->getMethod()) {
+              $form->bind($request);
 
-			return new RedirectResponse($url);
-		}
+              if ($form->isValid()) {
+                  $event = new FormEvent($form, $request);
+                  $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
-		return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
-			'form' => $form->createView(),
-			'theme' => $this->container->getParameter('fos_user.template.theme'),
-		));
+                  $this->getUserManager()->setIp($user);
+                  $userManager->updateUser($user);
+
+                  if (null === $response = $event->getResponse()) {
+                      $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
+                      $response = new RedirectResponse($url);
+                  }
+
+                  $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+
+                  return $response;
+              }
+          }
+
+          return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
+              'form' => $form->createView(),
+          ));
 	}
 }
