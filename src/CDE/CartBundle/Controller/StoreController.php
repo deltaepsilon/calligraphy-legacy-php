@@ -43,11 +43,17 @@ class StoreController extends Controller
     {
 		$user = $this->getUser();
         $product = $this->getProductManager()->findActiveBySlug($slug);
-		$cart = $this->getCartManager()->find($user);
-		$product = $this->getProductManager()->setTempAvailable($product, $cart->getProducts());
-        return $this->render('CDECartBundle:Product:view.html.twig', array(
-            'product' => $product,
-        ));
+
+        if (isset($product)) {
+            $cart = $this->getCartManager()->find($user);
+            $product = $this->getProductManager()->setTempAvailable($product, $cart->getProducts());
+            return $this->render('CDECartBundle:Product:view.html.twig', array(
+                'product' => $product,
+            ));
+        } else {
+            return $this->redirect($this->generateUrl('CDECartBundle_store_index'));
+        }
+
     }
 
 }

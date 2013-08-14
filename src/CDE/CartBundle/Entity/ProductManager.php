@@ -105,7 +105,12 @@ class ProductManager implements ProductManagerInterface
         $product = $this->repo->findBy(
                 array('slug' => $slug, 'active' => TRUE)
             );
-        return $product[0];
+        if (isset($product[0])) {
+            return $product[0];
+        } else {
+            return null;
+        }
+
     }
     
     public function saveTags(ProductInterface $product) {
