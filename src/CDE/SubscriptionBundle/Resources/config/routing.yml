@@ -1,7 +1,7 @@
 # Subscription
 CDESubscriptionBundle_index:
-    pattern:  /
-    defaults: { _controller: CDESubscriptionBundle:Subscription:index }
+    pattern:  /paginated/{page}
+    defaults: { _controller: CDESubscriptionBundle:Subscription:index, page: 1 }
 
 CDESubscriptionBundle_view:
     pattern:  /{id}
