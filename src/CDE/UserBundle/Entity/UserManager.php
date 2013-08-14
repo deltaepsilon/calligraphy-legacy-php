@@ -28,7 +28,10 @@ class UserManager extends ContainerAware implements UserManagerInterface
     }
     public function create()
     {
-        return $this->userManager->createUser();
+        $user = $this->userManager->createUser();
+        $user->setIp($_SERVER['REMOTE_ADDR']);
+        return $user;
+
     }
     public function add($user)
     {
@@ -110,6 +113,5 @@ class UserManager extends ContainerAware implements UserManagerInterface
     }
 	public function setIp($user) {
 		$user->setIp($_SERVER['REMOTE_ADDR']);
-		$this->update($user);
 	}
 }
