@@ -1,13 +1,15 @@
 {% extends 'CDECartBundle:Mail:base.txt.twig' %}
 
 {% block title %}
-    You have received a gallery comment
+    You have received a gift certificate!
 {% endblock %}
 
 {% block main %}
-Visit {{ site_name|raw }} at
-    {{ url('CDECartBundle_store_index') }}
-to shop around.  You'll get a chance to claim your gift card at checkout.
+Claim your gift certificate at
+
+{{ url('CDECartBundle_store_index') }}
+
+Be sure to enter your code at checkout.
 
 {{ product|raw|upper }}
 {% if product.discountValue %}    
