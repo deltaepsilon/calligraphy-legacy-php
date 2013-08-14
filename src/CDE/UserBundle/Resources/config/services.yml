@@ -14,6 +14,7 @@ services:
       class: CDE\UserBundle\Entity\User
       userManager: '@fos_user.user_manager'
       subscriptionManager: '@cde_subscription.manager.subscription'
+      affiliateManager: '@cde_affiliate.manager.affiliate'
       paginator: '@knp_paginator'
   cde_user.manager.address:
     class: CDE\UserBundle\Entity\AddressManager

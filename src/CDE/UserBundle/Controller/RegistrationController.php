@@ -43,7 +43,6 @@ class RegistrationController extends BaseController
 
       $user = $this->getUserManager()->create();
       $user->setEnabled(true);
-      $user->setIP($_SERVER['REMOTE_ADDR']);
 
       $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
 

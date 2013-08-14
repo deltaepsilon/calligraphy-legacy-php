@@ -106,6 +106,12 @@ class AffiliateManager implements AffiliateManagerInterface
 		return $affiliate;
 	}
 
+    public function findOneByIp($ip)
+    {
+        $affiliate = $this->repo->findOneByIp($ip);
+        return $affiliate;
+    }
+
     public function getReport()
     {
         $query = $this->em->createQuery('

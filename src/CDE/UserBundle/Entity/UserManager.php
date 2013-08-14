@@ -17,19 +17,20 @@ class UserManager extends ContainerAware implements UserManagerInterface
     protected $userManager;
     protected $subscriptionManager;
 
-    public function __construct(EntityManager $em, $class, $userManager, $subscriptionManager, $paginator)
+    public function __construct(EntityManager $em, $class, $userManager, $subscriptionManager, $affiliateManager, $paginator)
     {
         $this->em = $em;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
         $this->userManager = $userManager;
         $this->subscriptionManager = $subscriptionManager;
+        $this->affiliateManager = $affiliateManager;
         $this->paginator = $paginator;
     }
     public function create()
     {
         $user = $this->userManager->createUser();
-        $user->setIp($_SERVER['REMOTE_ADDR']);
+        $this->setAffiliate($user);
         return $user;
 
     }
@@ -111,7 +112,11 @@ class UserManager extends ContainerAware implements UserManagerInterface
         return $tags[0];
 
     }
-	public function setIp($user) {
-		$user->setIp($_SERVER['REMOTE_ADDR']);
+	public function setAffiliate($user) {
+        $affiliate = $this->affiliateManager->findOneByIp($_SERVER['REMOTE_ADDR']);
+        if(isset($affiliate)) {
+            $user->setAffiliate($affiliate);
+        }
+		return $user;
 	}
 }

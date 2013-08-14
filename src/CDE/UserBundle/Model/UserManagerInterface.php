@@ -35,7 +35,7 @@ interface UserManagerInterface
     public function setDefaultExpires($user);
 
 	/**
-	 * Sets user IP address
+	 * Sets user's affiliate
 	 */
-	public function setIp($user);
+	public function setAffiliate($ip);
 }

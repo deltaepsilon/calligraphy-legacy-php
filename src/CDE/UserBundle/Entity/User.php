@@ -1,6 +1,7 @@
 <?php
 namespace CDE\UserBundle\Entity;
 
+use CDE\AffiliateBundle\Entity\Affiliate;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -54,19 +55,12 @@ class User extends BaseUser
     private $subscriptions;
 
 	/**
-	 * @var string $ip
-	 *
-	 * @ORM\Column(name="ip", type="string", length=100, nullable=true)
-	 */
-	private $ip;
-
-	/**
 	 * @var string $affiliate
 	 *
-	 * @ORM\ManyToOne(targetEntity="CDE\AffiliateBundle\Entity\Affiliate", inversedBy="users")
-	 * @ORM\JoinColumn(name="ip", referencedColumnName="ip")
+     * @ORM\ManyToOne(targetEntity="CDE\AffiliateBundle\Entity\Affiliate", inversedBy="users")
 	 */
 	private $affiliate;
+
 
     public function __construct() {
         parent::__construct();
@@ -225,16 +219,13 @@ class User extends BaseUser
         return $this;
     }
 
-	public function getIp() {
-		return $this->ip;
-	}
+    public function setAffiliate(Affiliate $affiliate) {
+        $this->affiliate = $affiliate;
+        return $this;
+    }
 
-	public function setIp($ip) {
-		$this->ip = $ip;
-	}
-
-  public function getAffiliate() {
+    public function getAffiliate() {
       return $this->affiliate;
-  }
+    }
 
 }
