@@ -45,7 +45,12 @@ class AffiliateController extends Controller
     {
 		$affiliate = $this->getAffiliateManager()->create();
 		$affiliate->setAffiliate($name);
-		$affiliate->setIp($_SERVER['REMOTE_ADDR']);
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $affiliate->setIp($_SERVER['HTTP_X_FORWARDED_FOR']);
+        } else {
+            $affiliate->setIp($_SERVER['REMOTE_ADDR']);
+        }
+
 		$this->getAffiliateManager()->add($affiliate);
         if (isset($_GET['redirect'])) {
              return $this->redirect($_GET['redirect']);
