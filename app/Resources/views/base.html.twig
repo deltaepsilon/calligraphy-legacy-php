@@ -58,9 +58,11 @@
                 {% render controller('CDEUserBundle:User:loginPartial') %}
             {% endif %}
         </div>
-        <div id="cart" style="display: none;">
-            {% render controller("CDECartBundle:Cart:partial") %}
-        </div>
+        {% block cartPartial %}
+            <div id="cart" style="display: none;">
+                {% render controller("CDECartBundle:Cart:partial") %}
+            </div>
+        {% endblock %}
         <div id="TOC" style="display: none;">
             {% block TOC %}
             

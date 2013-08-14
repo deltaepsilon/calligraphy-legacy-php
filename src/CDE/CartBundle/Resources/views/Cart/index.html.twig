@@ -1,5 +1,8 @@
 {% extends '::base.html.twig' %}
 
+{% block cartPartial %}
+{% endblock %}
+
 {% block bottomNav %}
     <li>
         <a href="{{ path('CDECartBundle_store_index') }}">Back to Store</a>
@@ -60,10 +63,15 @@
         {% set total = 0 %}
         <h2>
             Your cart is empty. 
-            <a href="{{ path('CDECartBundle_store_index') }}">
-                Fill it up!
+
+        </h2>
+         <br>
+        <h2>
+            <a href="{{ path('CDEUtilityBundle_index_purchase', { 'slug': 'online-calligraphy-course' }) }}">
+                Start The Course
             </a>
         </h2>
+
      {% endif %}
      <ul id="cart-totals">
          {% if cart.discount %}

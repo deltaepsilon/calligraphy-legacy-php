@@ -43,6 +43,7 @@ class RegistrationController extends BaseController
 
       $user = $this->getUserManager()->create();
       $user->setEnabled(true);
+      $user->setIP($_SERVER['REMOTE_ADDR']);
 
       $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
 
@@ -59,7 +60,8 @@ class RegistrationController extends BaseController
               $userManager->updateUser($user);
 
               if (null === $response = $event->getResponse()) {
-                  $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
+//                  $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
+                  $url = $this->container->get('router')->generate('CDECartBundle_cart_index');
                   $response = new RedirectResponse($url);
               }
 
