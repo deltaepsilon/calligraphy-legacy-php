@@ -113,7 +113,12 @@ class UserManager extends ContainerAware implements UserManagerInterface
 
     }
 	public function setAffiliate($user) {
-        $affiliate = $this->affiliateManager->findOneByIp($_SERVER['REMOTE_ADDR']);
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        $affiliate = $this->affiliateManager->findOneByIp($ip);
         if(isset($affiliate)) {
             $user->setAffiliate($affiliate);
         }

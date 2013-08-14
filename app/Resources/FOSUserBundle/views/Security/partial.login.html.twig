@@ -16,8 +16,12 @@
         <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
         <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
     </div>
+
     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+    <hr>
     <a id="register" href="{{ path('fos_user_registration_register') }}">Register</a>
+    <br>
+    <br>
     <a id="reset-password" href="{{ path('fos_user_resetting_request') }}">Reset Password</a>
 </form>
 {% endblock fos_user_content %}
