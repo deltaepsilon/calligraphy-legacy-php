@@ -1172,6 +1172,9 @@ section#main .gallery:after {
   margin-top: -0.5em;
   z-index: 200;
 }
+section#main #gallery-count {
+  min-width: 45px;
+}
 section#main form#cart-form input[type="number"] {
   width: 2em;
   margin-left: 1em;
