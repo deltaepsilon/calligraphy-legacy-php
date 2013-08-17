@@ -10,7 +10,7 @@ use CDE\UserBundle\Form\Type\UserUpdateAccountType;
 use CDE\UserBundle\Form\Model\UpdateUser;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\FormError;
-use Symfony\Bundle\SecurityBundle\Validator\Constraint\UserPassword;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use \Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
