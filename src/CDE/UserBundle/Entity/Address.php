@@ -103,7 +103,7 @@ class Address implements AddressInterface
     /**
      * @var text $instructions
      *
-     * @ORM\Column(name="instructions", type="text")
+     * @ORM\Column(name="instructions", type="text", nullable=true)
      */
     private $instructions;
 
