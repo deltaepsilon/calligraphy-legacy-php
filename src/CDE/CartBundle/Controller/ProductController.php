@@ -46,7 +46,10 @@ class ProductController extends Controller
             }
         }
 		//Update product with cart quantities
-		$product = $this->getProductManager()->setTempAvailable($product, $cart->getProducts());
+        if (isset($product)) {
+            $product = $this->getProductManager()->setTempAvailable($product, $cart->getProducts());
+        }
+
 		return $this->render('CDECartBundle:Product:view.html.twig', array(
             'product' => $product
         ));
