@@ -14,7 +14,10 @@ class SubscriptionNewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', 'entity', array('class' => 'CDEUserBundle:User'))
+            ->add('user', 'entity', array('class' => 'CDEUserBundle:User', 'query_builder' => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('u')->orderBy('u.username', 'asc');
+                },
+            ))
             ->add('product', 'entity', array(
                 'class' => 'CDECartBundle:Product',
                 'label' => 'Product',

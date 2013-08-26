@@ -16,7 +16,7 @@
         "symfony/swiftmailer-bundle": "2.3.*",
         "symfony/monolog-bundle": "2.3.*",
         "sensio/distribution-bundle": "2.3.*",
-        "sensio/framework-extra-bundle": "2.3.*",
+        "sensio/framework-extra-bundle": "v2.3.3",
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "cybernox/amazon-webservices-bundle": "dev-master",
@@ -25,7 +25,9 @@
         "gedmo/doctrine-extensions": "v2.3.6",
         "stof/doctrine-extensions-bundle": "v1.1.0",
         "jms/serializer": "0.12.0",
-        "knplabs/knp-paginator-bundle": "2.3.3"
+        "knplabs/knp-paginator-bundle": "2.3.3",
+        "friendsofsymfony/rest-bundle": "0.13.1",
+        "jms/serializer-bundle": "0.12.0"
     },
     "scripts": {
         "post-install-cmd": [
