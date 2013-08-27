@@ -67,6 +67,14 @@ class Gallery implements GalleryInterface
     private $description;
 
     /**
+     * @Expose
+     * @var boolean $marked
+     *
+     * @ORM\Column(name="marked", type="boolean")
+     */
+    private $marked;
+
+    /**
      * @var datetime $created
      * 
      * @Expose
@@ -275,6 +283,28 @@ class Gallery implements GalleryInterface
     public function getSignedUri()
     {
         return $this->signedUri;
+    }
+
+    /**
+     * Set marked
+     *
+     * @param text $marked
+     * @return Comment
+     */
+    public function setMarked($marked)
+    {
+        $this->marked = $marked;
+        return $this;
+    }
+
+    /**
+     * Get marked
+     *
+     * @return text
+     */
+    public function getMarked()
+    {
+        return $this->marked;
     }
 
 }
