@@ -54,14 +54,14 @@ class Gallery implements GalleryInterface
      * @var string $title
      *
      * @Expose
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255, nullable=true)
      */
     private $title;
 
     /**
      * @var text $description
      * @Expose
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
