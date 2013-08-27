@@ -4,9 +4,13 @@ namespace CDE\UserBundle\Entity;
 use CDE\AffiliateBundle\Entity\Affiliate;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 
 /**
+ *
+ * @ExclusionPolicy("all")
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
  */

@@ -6,6 +6,10 @@ CDEContentBundle:
     resource: "@CDEContentBundle/Resources/config/routing.yml"
     prefix:   /admin/content
 
+CDEContentBundleAPI:
+    resource: "@CDEContentBundle/Resources/config/routingAPI.yml"
+    prefix:   /api
+
 CDESubscriptionBundle:
     resource: "@CDESubscriptionBundle/Resources/config/routing.yml"
     prefix:   /admin/subscription

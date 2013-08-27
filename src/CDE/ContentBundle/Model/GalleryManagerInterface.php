@@ -39,7 +39,7 @@ interface GalleryManagerInterface
      *
      * @return GalleryInterface
      */
-    public function findByPage(User $user, $page, $limit);
+    public function findByPage($page, $limit);
     
     /**
      * Finds one or more galleries

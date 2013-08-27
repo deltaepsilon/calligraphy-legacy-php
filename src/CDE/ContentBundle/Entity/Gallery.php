@@ -28,6 +28,7 @@ class Gallery implements GalleryInterface
     private $id;
 
     /**
+     * @Expose
      * @var integer $user
      * 
      * @ORM\ManyToOne(targetEntity="CDE\UserBundle\Entity\User")
@@ -35,9 +36,9 @@ class Gallery implements GalleryInterface
     private $user;
     
     /**
+     * @Expose
      * @var integer $comments
      * 
-     * @Expose
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="gallery", cascade={"persist", "remove"})
      */
     private $comments;

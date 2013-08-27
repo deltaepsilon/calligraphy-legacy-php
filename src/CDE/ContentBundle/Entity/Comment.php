@@ -5,16 +5,20 @@ namespace CDE\ContentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use CDE\ContentBundle\Model\CommentInterface;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * CDE\ContentBundle\Entity\Comment
  *
+ * @ExclusionPolicy("all")
  * @ORM\Table()
  * @ORM\Entity
  */
 class Comment implements CommentInterface
 {
     /**
+     * @Expose
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer")
@@ -38,6 +42,7 @@ class Comment implements CommentInterface
     private $galleryuser;
 
     /**
+     * @Expose
      * @var integer $gallery
      *
      * @ORM\ManyToOne(targetEntity="Gallery", inversedBy="comments")
@@ -45,6 +50,7 @@ class Comment implements CommentInterface
     private $gallery;
 
     /**
+     * @Expose
      * @var text $comment
      *
      * @ORM\Column(name="comment", type="text")
@@ -52,6 +58,7 @@ class Comment implements CommentInterface
     private $comment;
     
     /**
+     * @Expose
      * @var boolean $marked
      *
      * @ORM\Column(name="marked", type="boolean")
@@ -59,6 +66,7 @@ class Comment implements CommentInterface
     private $marked;
 
     /**
+     * @Expose
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")
@@ -67,6 +75,7 @@ class Comment implements CommentInterface
     private $created;
 
     /**
+     * @Expose
      * @var datetime $updated
      *
      * @Gedmo\Timestampable(on="update")

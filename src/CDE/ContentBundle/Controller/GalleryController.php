@@ -37,7 +37,7 @@ class GalleryController extends Controller
     public function indexAction($page = 1)
     {
         $user = $this->getUser();
-        $galleries = $this->getGalleryManager()->findByPage($user, $page, 25);
+        $galleries = $this->getGalleryManager()->findByPage($page, 25);
         return $this->render('CDEContentBundle:Gallery:index.html.twig', array(
             'galleries' => $galleries,
         ));

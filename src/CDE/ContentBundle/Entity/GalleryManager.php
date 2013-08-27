@@ -98,7 +98,7 @@ class GalleryManager implements GalleryManagerInterface
         return $gallery;
     }
 
-    public function findByPage(User $user, $page = 1, $limit = 20)
+    public function findByPage($page = 1, $limit = 20)
     {
         $query = $this->em->createQuery('
             select l

@@ -104,3 +104,18 @@ knp_paginator:
     template:
         pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+# FOS RestBundle
+fos_rest:
+  view:
+    formats:
+      json: true
+
+# JMS Serializer
+jms_serializer:
+  metadata:
+    auto_detection: true
+    directories:
+      FOSUserBundle:
+        namespace_prefix: "FOS\\UserBundle"
+        path: "@CDEUserBundle/Resources/config/serializer/fos"
