@@ -70,7 +70,7 @@ class Gallery implements GalleryInterface
      * @Expose
      * @var boolean $marked
      *
-     * @ORM\Column(name="marked", type="boolean")
+     * @ORM\Column(name="marked", type="boolean", nullable=true)
      */
     private $marked;
 
