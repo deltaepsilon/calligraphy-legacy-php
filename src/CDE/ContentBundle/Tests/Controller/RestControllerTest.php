@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RestControllerTest extends BaseUserTest
 {
+    protected $comment;
+
     public function __construct() {
         parent::__construct();
         $this->logIn($this->getUser('ROLE_ADMIN'), new Response());
@@ -54,18 +56,24 @@ class RestControllerTest extends BaseUserTest
         ));
 
         $response = $client->getResponse();
-        $jsonResponse = json_decode($response->getContent());
-        $this->assertEquals($jsonResponse->comment, 'testing testing 123');
-        $this->assertFalse($jsonResponse->marked);
+        $this->comment = json_decode($response->getContent());
+        $this->assertEquals($this->comment->comment, 'testing testing 123');
+        $this->assertFalse($this->comment->marked);
         $this->assertEquals($response->getStatusCode(), 200);
-        var_dump($response);
     }
 
     public function getComment()
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', 'api/getComment');
+        $crawler = $client->request('GET', 'api/getComment/'.$this->comment->id);
+
+        $response = $client->getResponse();
+        $comment = json_decode($response->getContent());
+        $this->assertEquals($comment->comment, 'testing testing 123');
+        $this->assertFalse($comment->marked);
+        $this->assertEquals($response->getStatusCode(), 200);
+
     }
 
     public function updateComment()
