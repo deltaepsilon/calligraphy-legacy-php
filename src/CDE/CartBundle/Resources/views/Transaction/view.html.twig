@@ -87,7 +87,7 @@
     </ul>
     
     {% set products = transaction.products %}
-    {#{% include 'CDECartBundle:Transaction:product.table.html.twig' %}#}
+    {% include 'CDECartBundle:Transaction:product.table.html.twig' %}
 {% endblock %}
 
 {% block javascripts %}
