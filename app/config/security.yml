@@ -31,6 +31,7 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
         - { path: ^/user/admin, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+        - { path: ^/api, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
         - { path: ^/_internal, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
         - { path: ^/class, role: ROLE_USER }
         - { path: ^/user, role: ROLE_USER }

@@ -23,9 +23,29 @@ class RestControllerTest extends BaseUserTest
         return $this->container->get('cde_utility.manager.aws');
     }
 
+    private function getJSONResponse($client) {
+        try {
+            $content = $client->getResponse()->getContent();
+            $json = json_decode($content);
+        } catch (\ErrorException $e) {
+            return array();
+        }
+        return $json;
+    }
+    
+    private function getClient() {
+        $client = static::createClient();
+        $client->getCookieJar()->set($this->cookie);
+        return $client;
+    }
+
+    /**
+     * Copy test.jpeg into web folder to simulate an upload
+     * Prepare new gallery with dummy data and save to DB.
+     */
     public function createGallery()
     {
-        //        Copy test.jpeg into the web folder
+
         $filename = 'gallery/user-test.jpg';
         copy(__DIR__.'/../Mock/test.jpeg', __DIR__.'/../../../../../web/'.$filename);
         $this->getAWSManager()->copyGalleryFile($filename);
@@ -41,67 +61,85 @@ class RestControllerTest extends BaseUserTest
         $this->assertEquals($gallery->getMarked(), false);
     }
 
+    /**
+     * Create comment
+     * Set cookie on client so that createCommentAction can access a user.
+     */
     public function createComment()
     {
         $galleries = $this->getGalleryManager()->findByUser($this->getUser());
         $gallery = $galleries[0];
 
-        $client = static::createClient();
-        $client->getCookieJar()->set($this->cookie);
-//        $client = static::createClient(array(), new History(), $cookieJar);
-
+        $client = $this->getClient();
+        
         $crawler = $client->request('POST', 'api/createComment/'.$gallery->getId(), array(
             'comment' => 'testing testing 123',
             'marked' => 'false'
         ));
 
-        $response = $client->getResponse();
-        $this->comment = json_decode($response->getContent());
-        $this->assertEquals($this->comment->comment, 'testing testing 123');
-        $this->assertFalse($this->comment->marked);
-        $this->assertEquals($response->getStatusCode(), 200);
+        $this->comment = $comment = $this->getJSONResponse($client);
+        $this->assertEquals($comment->comment, 'testing testing 123');
+        $this->assertFalse($comment->marked);
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
     }
 
     public function getComment()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
+        $client->request('GET', 'api/getComment/'.$this->comment->id);
 
-        $crawler = $client->request('GET', 'api/getComment/'.$this->comment->id);
-
-        $response = $client->getResponse();
-        $comment = json_decode($response->getContent());
+        $comment = $this->getJSONResponse($client);
         $this->assertEquals($comment->comment, 'testing testing 123');
         $this->assertFalse($comment->marked);
-        $this->assertEquals($response->getStatusCode(), 200);
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
 
     }
 
     public function updateComment()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
+        $client->request('POST', 'api/updateComment/'.$this->comment->id, array(
+            'comment' => 'testing 456',
+            'marked' => 'true'
+        ));
 
-        $crawler = $client->request('GET', 'api/updateComment');
-    }
-
-    public function deleteComment()
-    {
-        $client = static::createClient();
-
-        $crawler = $client->request('DELETE', 'api/deleteComment');
+        $comment = $this->getJSONResponse($client);
+        $this->assertEquals($comment->comment, 'testing 456');
+        $this->assertTrue($comment->marked);
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
     }
 
     public function getComments()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
+        $client->request('GET', 'api/getComments');
 
-        $crawler = $client->request('GET', 'api/getComments');
+        $comments = $this->getJSONResponse($client);
+        $comment = $comments[0]; //Test first comment... it could be anything, so don't try to get specific
+        $this->assertEquals(count($comments), 10);
+        $this->assertTrue(isset($comment->comment));
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
     }
 
     public function getGalleries()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
+        $client->request('GET', 'api/getGalleries');
 
-        $crawler = $client->request('GET', 'api/getGalleries');
+        $galleries = $this->getJSONResponse($client);
+        $gallery = $galleries[0];
+        $this->assertEquals(count($galleries), 10);
+        $this->assertTrue(isset($gallery->filename));
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+    }
+
+    public function deleteComment()
+    {
+        $client = $this->getClient();
+        $client->request('DELETE', 'api/deleteComment/'.$this->comment->id);
+
+        $jsonResponse = $this->getJSONResponse($client);
+        $this->assertEquals($jsonResponse->id, $this->comment->id);
     }
 
     public function removeGallery() {
