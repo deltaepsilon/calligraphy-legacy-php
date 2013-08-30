@@ -70,12 +70,6 @@ class BaseUserTest extends WebTestCase {
     }
 
     public function logIn(User $user, Response $response) {
-//
-//        $request = new Request();
-//        $session = new Session(new MockFileSessionStorage());
-//        $request->setSession($session);
-//        $this->container->set('request', $request);
-
         $this->session->start();
 
         $this->cookie = new Cookie('MOCKSESSID', $this->storage->getId());

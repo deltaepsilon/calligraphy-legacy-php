@@ -96,7 +96,10 @@ class Gallery implements GalleryInterface
 
     public function __toString()
     {
-        return $this->title;
+        if (isset($this->title)) {
+            return $this->title;
+        }
+        return 'Untitled';
     }
 
     /**
