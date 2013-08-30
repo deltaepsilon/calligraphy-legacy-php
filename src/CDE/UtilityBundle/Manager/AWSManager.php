@@ -180,7 +180,7 @@ class AWSManager
     
     public function copyGalleryFile($filename)
     {
-        $folder = '../web/';
+        $folder = __DIR__.'/../../../../web/';
         $source = $folder.$filename;
         $bucketname = $this->getBucketName();
         $file = fopen($source, 'r');
@@ -201,6 +201,7 @@ class AWSManager
         $distroConfig = $this->getDistroConfig();
         $bucketname = (string)$distroConfig->body->CNAME;
         $response = $this->s3->delete_object($bucketname, $filename);
+        return $response;
     }
 
     public function getBucketName() {

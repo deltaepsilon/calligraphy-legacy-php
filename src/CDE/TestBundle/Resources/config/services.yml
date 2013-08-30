@@ -1,0 +1,7 @@
+parameters:
+#    cde_test.example.class: CDE\TestBundle\Example
+
+services:
+#    cde_test.example:
+#        class: %cde_test.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

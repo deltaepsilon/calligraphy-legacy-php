@@ -2,6 +2,10 @@ parameters:
 #    cde_user.example.class: CDE\UserBundle\Example
 
 services:
+  fos_user.user_provider:
+    class: FOS\UserBundle\Security\UserProvider
+    arguments:
+      userManager: '@fos_user.user_manager'
   cde_user.registration.form.type:
     class: CDE\UserBundle\Form\Type\RegistrationFormType
     arguments: [%fos_user.model.user.class%]
@@ -13,6 +17,7 @@ services:
       em: '@doctrine.orm.entity_manager'
       class: CDE\UserBundle\Entity\User
       userManager: '@fos_user.user_manager'
+      userProvider: '@fos_user.user_provider'
       subscriptionManager: '@cde_subscription.manager.subscription'
       affiliateManager: '@cde_affiliate.manager.affiliate'
       paginator: '@knp_paginator'

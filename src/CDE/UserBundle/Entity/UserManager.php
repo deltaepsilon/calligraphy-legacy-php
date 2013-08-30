@@ -2,27 +2,31 @@
 
 namespace CDE\UserBundle\Entity;
 
+use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use CDE\UserBundle\Model\UserManagerInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserManager extends ContainerAware implements UserManagerInterface
 {
     protected $em;
     protected $repo;
     protected $class;
+    protected $userProvider;
     protected $userManager;
     protected $subscriptionManager;
 
-    public function __construct(EntityManager $em, $class, $userManager, $subscriptionManager, $affiliateManager, $paginator)
+    public function __construct(EntityManager $em, $class, \FOS\UserBundle\Model\UserManagerInterface $userManager, UserProviderInterface $userProvider, $subscriptionManager, $affiliateManager, $paginator)
     {
         $this->em = $em;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
         $this->userManager = $userManager;
+        $this->userProvider = $userProvider;
         $this->subscriptionManager = $subscriptionManager;
         $this->affiliateManager = $affiliateManager;
         $this->paginator = $paginator;
@@ -115,7 +119,7 @@ class UserManager extends ContainerAware implements UserManagerInterface
 	public function setAffiliate($user) {
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
+        } else if (isset($_SERVER['REMOTE_ADDR'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
         $affiliate = $this->affiliateManager->findOneByIp($ip);
@@ -124,4 +128,12 @@ class UserManager extends ContainerAware implements UserManagerInterface
         }
 		return $user;
 	}
+
+    public function updatePassword(UserInterface $user) {
+        return $this->userManager->updatePassword($user);
+    }
+
+    public function loadByUsername($username) {
+        return $this->userProvider->loadUserByUsername($username);
+    }
 }

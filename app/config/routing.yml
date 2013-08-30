@@ -1,3 +1,7 @@
+cde_test:
+    resource: "@CDETestBundle/Resources/config/routing.yml"
+    prefix:   /
+
 CDECartBundle:
     resource: "@CDECartBundle/Resources/config/routing.yml"
     prefix:   /
