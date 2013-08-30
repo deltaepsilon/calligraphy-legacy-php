@@ -54,8 +54,9 @@ class RestControllerTest extends BaseUserTest
         ));
 
         $response = $client->getResponse();
-        var_dump($response->getContent());
-        $this->assertEquals($response->getContent(), 'test');
+        $jsonResponse = json_decode($response->getContent());
+        $this->assertEquals($jsonResponse->comment, 'testing testing 123');
+        $this->assertFalse($jsonResponse->marked);
         $this->assertEquals($response->getStatusCode(), 200);
         var_dump($response);
     }

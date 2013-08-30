@@ -82,7 +82,7 @@ class BaseUserTest extends WebTestCase {
         $this->cookieJar = new CookieJar();
         $this->cookieJar->set($this->cookie);
         $this->token = new UsernamePasswordToken($user, 'user', 'main', $user->getRoles());
-        $this->session->set('_security_main', $this->token);
+        $this->session->set('_security_main', serialize($this->token));
 
 
         $this->getSecurityManager()->loginUser(
