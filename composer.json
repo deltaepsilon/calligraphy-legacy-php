@@ -27,7 +27,8 @@
         "jms/serializer": "0.12.0",
         "knplabs/knp-paginator-bundle": "2.3.3",
         "friendsofsymfony/rest-bundle": "0.13.1",
-        "jms/serializer-bundle": "0.12.0"
+        "jms/serializer-bundle": "0.12.0",
+        "nelmio/cors-bundle": "1.1.1"
     },
     "scripts": {
         "post-install-cmd": [
