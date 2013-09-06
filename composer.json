@@ -28,7 +28,9 @@
         "knplabs/knp-paginator-bundle": "2.3.3",
         "friendsofsymfony/rest-bundle": "0.13.1",
         "jms/serializer-bundle": "0.12.0",
-        "nelmio/cors-bundle": "1.1.1"
+        "nelmio/cors-bundle": "1.1.1",
+        "knplabs/knp-markdown-bundle": "1.2.0",
+        "exercise/htmlpurifier-bundle": "1.0.*@dev"
     },
     "scripts": {
         "post-install-cmd": [

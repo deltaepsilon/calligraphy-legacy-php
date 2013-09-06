@@ -43,7 +43,7 @@
 			            <a href="{{ path('CDEContentBundle_gallery_view', { 'id': comment.gallery.id}) }}">{{ comment.gallery.title }}</a>
                     </td>
                     <td>
-                        {{ comment.comment }}
+                        {{ comment.comment | markdown | purify | raw }}
                     </td>
                     <td>
                         {{ comment.created|date('m/d/y') }}

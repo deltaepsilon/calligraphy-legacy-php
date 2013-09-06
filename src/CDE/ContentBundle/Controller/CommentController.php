@@ -57,7 +57,7 @@ class CommentController extends Controller
                 $this->getCommentManager()->add($comment);
                 //Send comment notification email if the user leaving the comment is not the user who owns the gallery
                 $galleryUser = $gallery->getUser();
-                if ($user->getId() != $galleryUser->getId() && $galleryUser->getCommentEmail()) {
+                if (( $user->getId() != $galleryUser->getId() ) && $galleryUser->getCommentEmail()) {
                     $admin = $this->container->getParameter('admin');
                     $message = \Swift_Message::newInstance()
                         ->setSubject($this->container->getParameter('site_name').': New Gallery Comment')
@@ -65,7 +65,8 @@ class CommentController extends Controller
                         ->setTo($comment->getGalleryuser()->getEmail())
                         ->setBody($this->renderView('CDEContentBundle:Mail:newcomment.txt.twig', array(
                         'comment' => $comment
-                    )));
+                        )))
+                        ->setContentType("text/html");
                     $this->get('mailer')->send($message);
                 }
                 return $this->redirect($this->generateUrl('CDEContentBundle_gallery_view', array('id' => $gallery->getId())));

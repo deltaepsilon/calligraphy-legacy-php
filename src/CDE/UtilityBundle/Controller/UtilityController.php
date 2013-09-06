@@ -19,6 +19,14 @@ class UtilityController extends Controller
     {
         return $this->get('serializer');
     }
+
+    protected function getMarkdownParser() {
+        return $this->get('markdown.parser');
+    }
+
+    protected function getHTMLPurifier() {
+        return $this->get('exercise_html_purifier.default');
+    }
     
     public function indexAction()
     {
@@ -88,6 +96,8 @@ class UtilityController extends Controller
 //        $serialized = $this->getSerializer()->serialize($galleries, 'json');
 //        $serialized = $serializer->serialize($galleries, 'json');
         $serialized = array();
+        $markdownParser = $this->getMarkdownParser();
+        $htmlPurifier = $this->getHTMLPurifier();
         foreach ($galleries as $gallery) {
             $newGallery = array(
                 'id' => $gallery->getId(),
@@ -98,8 +108,10 @@ class UtilityController extends Controller
 
             );
             foreach($gallery->getComments() as $comment) {
+                $markdown = $markdownParser->transformMarkdown($comment->getComment());
+                $htmlComment = $htmlPurifier->purify($markdown);
                 $newGallery['comments'][] = array(
-                    'comment' => $comment->getComment(),
+                    'comment' => $htmlComment,
                     'created' => $comment->getCreated(),
                     'user' => array(
                         'username' => $comment->getUser()->getUsername()

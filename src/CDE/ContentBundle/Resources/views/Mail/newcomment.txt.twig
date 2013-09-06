@@ -1,12 +1,17 @@
 {% extends 'CDECartBundle:Mail:base.txt.twig' %}
 
 {% block title %}
-You have a new gallery comment on {{ comment.gallery.title }}.
+You have a new comment on the gallery titled "{{ comment.gallery.title }}".
 {% endblock %}
 
 {% block main %}
-Comment:
-        {{ comment.comment | raw }}
+<p>
+    Comment:
+    {{ comment.comment | markdown | purify | raw }}
+</p>
 
-View all comments at {{ url('CDEContentBundle_gallery_account_index', { 'id': comment.id }) }}
+<p>
+    View all comments at {{ url('CDEContentBundle_gallery_account_index', { 'id': comment.gallery.id }) }}
+</p>
+
 {% endblock %}

@@ -1,4 +1,7 @@
+<hr>
 <h1>Comment on {{ gallery }}</h1>
+<a href="http://dillinger.io/" target="_blank">Open Dillinger for Markdown editing</a>
+<br><br>
 <form action="{{ path('CDEContentBundle_comment_create', { 'id': gallery.id }) }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
  <input type="submit" value="Comment" />
