@@ -1647,6 +1647,9 @@ section#main div#user-gallery-page div.comments div.comment span {
   margin: 1em auto;
   padding-left: 1em;
 }
+#cde_comment_comment {
+  min-height: 15em;
+}
 footer {
   position: absolute;
   bottom: 0;
