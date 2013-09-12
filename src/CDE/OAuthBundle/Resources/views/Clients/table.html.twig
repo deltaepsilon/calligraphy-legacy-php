@@ -14,7 +14,7 @@
         <th class="sortable alpha">auth token</th>
         <th class="sortable alpha">auth expiration</th>
         <th class="sortable alpha">user email</th>
-        <th>Delete</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody class="comments-list">
@@ -29,11 +29,9 @@
             <td>
                 {{ client.secret }}
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td colspan="3"></td>
             <td>
-                <a href="{{ path('CDEOAuthBundle_oauth_delete', { 'id': client.id }) }}">delete</a>
+                <a href="{{ path('CDEOAuthBundle_client_delete', { 'id': client.id }) }}">delete</a>
             </td>
         </tr>
         {% for code in client.authCode %}
@@ -64,7 +62,9 @@
                 <td>
                     {{ token.user.email }}
                 </td>
-                <td></td>
+                <td>
+                    <a href="{{ path('CDEOAuthBundle_forward')}}?redirect={{ smart_client }}">Smart Client</a>
+                </td>
             </tr>
 
         {% endfor %}
@@ -80,7 +80,9 @@
                 <td>
                     {{ token.user.email }}
                 </td>
-                <td></td>
+                <td>
+                    <a href="{{ path('CDEOAuthBundle_client_refresh', { 'token': token.token}) }}">refresh</a>
+                </td>
             </tr>
 
         {% endfor %}

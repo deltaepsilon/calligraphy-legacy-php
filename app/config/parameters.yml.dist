@@ -29,3 +29,4 @@ parameters:
 #    cde_paypal: { paypal_username: me_api1.gmail.com, paypal_password: 123456789, paypal_signature: 213132134564a56sd4fads1f, paypal_version: '84.0', paypal_currency_code: USD, paypal_webscr: 'https://www.paypal.com/cgi-bin/webscr', paypal_nvp: 'https://api-3t.paypal.com/nvp' }
 #    Sandbox
     cde_paypal: { paypal_username: me_1328726106_biz_api1.me.com, paypal_password: 123456789, paypal_signature: ASDFQWWERLKJKLJLKJALSDF, paypal_version: '84.0', paypal_currency_code: USD, paypal_webscr: 'https://www.sandbox.paypal.com/cgi-bin/webscr', paypal_nvp: 'https://api-3t.sandbox.paypal.com/nvp' }
+    smart_client: http://client.istilllovecalligraphy.com

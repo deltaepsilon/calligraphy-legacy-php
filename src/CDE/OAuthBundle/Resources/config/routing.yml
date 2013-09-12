@@ -1,17 +1,25 @@
-CDEOAuthBundle_oauth_client:
-    pattern: /admin/oauth/index/{page}
-    defaults: { _controller: CDEOAuthBundle:OAuth:index, page: 1 }
+CDEOAuthBundle_client_index:
+    pattern: /admin/oauth/clients/{page}
+    defaults: { _controller: CDEOAuthBundle:OAuth:clients, page: 1 }
     requirements:
       id: \d+
 
-CDEOAuthBundle_oauth_create:
-    pattern: /admin/oauth/create
-    defaults: { _controller: CDEOAuthBundle:OAuth:create }
+CDEOAuthBundle_client_create:
+    pattern: /admin/oauth/client/create
+    defaults: { _controller: CDEOAuthBundle:OAuth:clientCreate }
 
-CDEOAuthBundle_oauth_delete:
-    pattern: /admin/oauth/delete/{id}
-    defaults: { _controller: CDEOAuthBundle:OAuth:delete }
+CDEOAuthBundle_client_delete:
+    pattern: /admin/oauth/client/delete/{id}
+    defaults: { _controller: CDEOAuthBundle:OAuth:clientDelete }
 
-CDEOAuthBundle_oauth_token:
-    pattern: /admin/oauth/token
+CDEOAuthBundle_client_token:
+    pattern: /admin/oauth/client/token
     defaults: { _controller: CDEOAuthBundle:OAuth:token }
+
+CDEOAuthBundle_client_refresh:
+    pattern: /admin/oauth/client/refresh/{token}
+    defaults: { _controller: CDEOAuthBundle:OAuth:refresh }
+
+CDEOAuthBundle_forward:
+    pattern: /admin/oauth/forward
+    defaults: { _controller: CDEOAuthBundle:OAuth:forward }

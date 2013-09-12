@@ -8,5 +8,7 @@ services:
       em: '@Doctrine.orm.entity_manager'
       class: CDE\OAuthBundle\Entity\Client
       codeClass: CDE\OAuthBundle\Entity\AuthCode
+      accessClass: CDE\OAuthBundle\Entity\AccessToken
+      refreshClass: CDE\OAuthBundle\Entity\RefreshToken
       clientManager: '@fos_oauth_server.client_manager.default'
       paginator: '@knp_paginator'

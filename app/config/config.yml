@@ -30,6 +30,7 @@ twig:
       email_email: %email_email%
       tag_line: %tag_line%
       admin: %admin%
+      smart_client: %smart_client%
 
 # Assetic Configuration
 assetic:
