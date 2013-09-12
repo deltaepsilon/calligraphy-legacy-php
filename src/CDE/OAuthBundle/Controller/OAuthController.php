@@ -6,14 +6,34 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class OAuthController extends Controller
 {
+    private function getCode() {
+        if (isset($_GET['response_type']) && $_GET['response_type'] === 'code') {
+            $inputs = explode('_', $_GET['client_id']);
+            $clientID = $inputs[0];
+            $clientRandomId = $inputs[1];
+            $client = $this->getClientManager()->find($clientID);
+            foreach ($client->getAuthCode() as $authCode) {
+                $code = $authCode->getToken();
+            }
+            if (isset($code) && $clientRandomId === $client->getRandomId()) {
+                return $code;
+            }
+        }
+        if (isset($_GET['code'])) {
+            return $_GET['code'];
+        }
+        return false;
+    }
+
     protected  function getClientManager() {
         return $this->get('cde_oauth.manager.client');
     }
     public function clientsAction($page = 1)
     {
-        if (isset($_GET['code'])) {
+        $code = $this->getCode();
+        if (isset($code) && $code !== false) {
             return $this->redirect($this->generateUrl('CDEOAuthBundle_client_token', array(
-                'code' => $_GET['code'],
+                'code' => $code,
             )));
         }
 
@@ -48,7 +68,8 @@ class OAuthController extends Controller
     }
 
     public function tokenAction() {
-        $code = $_GET['code'];
+        $code = $this->getCode();
+
         $authCode = $this->getClientManager()->findByAuthCode($code);
         $client = $authCode->getClient();
         if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
@@ -56,15 +77,20 @@ class OAuthController extends Controller
         } else {
             $proto = 'http';
         }
-        $json = file_get_contents($proto.'://'.$_SERVER['HTTP_HOST'].$this->generateUrl('fos_oauth_server_token', array(
+        $url = $this->generateUrl('fos_oauth_server_token', array(
             'client_id' => $client->getId().'_'.$client->getRandomId(),
             'client_secret' => $client->getSecret(),
             'grant_type' => 'authorization_code',
             'code' => $code,
             'redirect_uri' => $this->generateUrl('CDEOAuthBundle_client_index'),
-        )));
-        $token = json_decode($json);
-        return $this->redirect($this->generateUrl('CDEOAuthBundle_client_index', (array) $token));
+        ));
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $json = file_get_contents($proto.'://'.$_SERVER['HTTP_HOST'].$url);
+            $token = json_decode($json);
+            return $this->redirect($this->generateUrl('CDEOAuthBundle_client_index', (array) $token));
+        }
+        return $this->redirect($url);
+
     }
 
     public function refreshAction($token) {

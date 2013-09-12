@@ -50,6 +50,11 @@ class BaseUserTest extends WebTestCase {
         return $client;
     }
 
+    protected function getLoggedOutClient() {
+        $client = static::createClient();
+        return $client;
+    }
+
     public function getUser($role = null) {
         if (!isset($this->user)) {
             $user = $this->getUserManager()->loadByUsername('user');

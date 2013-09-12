@@ -8,56 +8,70 @@ use Symfony\Component\HttpFoundation\Response;
 class OAuthControllerTest extends BaseUserTest
 {
 
+    protected $accessToken;
+
     public function __construct() {
         parent::__construct();
         $this->logIn($this->getUser('ROLE_ADMIN'), new Response());
 
     }
 
+    public function getClientManager() {
+        return $this->container->get('cde_oauth.manager.client');
+    }
+
     public function create() {
         $client = $this->getClient();
 
-        $crawler = $client->request('GET', '/admin/oauth/create');
-
-        $metaTag = $crawler->filter('a');
-        $href = $metaTag->attr('href');
-
-        $this->assertEquals(preg_match("/\/oauth\/v2\/auth\?client_id=/", $href), 1);
-        $this->assertEquals($client->getResponse()->getStatusCode(), 302);
-
-        $crawler = $client->followRedirect();
-
-//        $content = $client->getResponse()->getContent();
+        $crawler = $client->followRedirects(); // Follow all redirects
+        $crawler = $client->request('GET', '/admin/oauth/client/create');
 
 
         $buttonCrawlerNode = $crawler->selectButton("Allow");
         $form = $buttonCrawlerNode->form();
-
-        //TODO form submission is not causing a successful submission of the form.
-        //TODO Either bail at this point. or fight for the code.
         $crawler = $client->submit($form);
 
         $content = $client->getResponse()->getContent();
-        var_dump($content);
+        $json = json_decode($content);
 
-        $code = $crawler->filter('a')->attr('href');
-
-        return $code;
+        $this->assertEquals($json->token_type, 'bearer');
+        return $json;
 
     }
 
-    public function index()
+    public function api()
     {
+        $client = $this->getLoggedOutClient();
+//        $client = $this->getClient();
+
+        //TODO Set up FOS OAuth bundle as a security provider
+        $crawler = $client->request('GET', '/api/getComments', array(
+            'token_type' => 'access_token',
+            'access_token' => $this->accessToken,
+        ));
+
+
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+
+        $contents = $client->getResponse()->getContent();
+        $comments = json_decode($contents);
+        $this->assertTrue(is_array($comments));
 
     }
 
     public function delete() {
+        $refreshToken = $this->getClientManager()->findByRefreshToken($this->accessToken->refresh_token);
+        $oAuthClient = $refreshToken->getClient();
 
+        $client = $this->getClient();
+        $crawler = $client->request('GET', '/admin/oauth/client/delete/'.$oAuthClient->getId());
+
+        $this->assertEquals($client->getResponse()->getStatusCode(), 302);
     }
 
     public function testAll() {
-        $this->create();
-        $this->index();
+        $this->accessToken = $this->create();
+        $this->api();
         $this->delete();
 
     }

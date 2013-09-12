@@ -61,11 +61,11 @@ class ClientManager {
     }
 
     public function findByAuthCodeId($id) {
-        return $client = $this->codeRepo->find($id);
+        return $authCode = $this->codeRepo->find($id);
     }
 
     public function findByRefreshToken($token) {
-        return $client = $this->refreshRepo->findOneByToken($token);
+        return $refreshToken = $this->refreshRepo->findOneByToken($token);
     }
 
     public function findByPage($page = 1, $limit = 10) {
