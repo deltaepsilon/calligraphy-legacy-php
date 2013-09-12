@@ -32,12 +32,7 @@ class RestControllerTest extends BaseUserTest
         }
         return $json;
     }
-    
-    private function getClient() {
-        $client = static::createClient();
-        $client->getCookieJar()->set($this->cookie);
-        return $client;
-    }
+
 
     /**
      * Copy test.jpeg into web folder to simulate an upload

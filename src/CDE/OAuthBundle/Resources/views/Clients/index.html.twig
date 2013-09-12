@@ -1,0 +1,19 @@
+{% extends '::admin.html.twig' %}
+
+{% block bottomNav %}
+    <a href="{{ path('CDEUtilityBundle_utility_index') }}">
+        <li>
+            Back to Utility
+        </li>
+    </a>
+    <a href="{{ path('CDEOAuthBundle_oauth_create') }}">
+        <li>
+            Create Client
+        </li>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <h1>Comments</h1>
+    {% include 'CDEOAuthBundle:Clients:table.html.twig' %}
+{% endblock %}

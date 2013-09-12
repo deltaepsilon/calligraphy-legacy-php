@@ -1,3 +1,7 @@
+o_auth:
+    resource: "@CDEOAuthBundle/Resources/config/routing.yml"
+    prefix:   /
+
 cde_test:
     resource: "@CDETestBundle/Resources/config/routing.yml"
     prefix:   /
@@ -62,3 +66,10 @@ fos_user_change_password:
 # FOS JS Routing Bundle
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+# FOS OAuth Server Bundle
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"

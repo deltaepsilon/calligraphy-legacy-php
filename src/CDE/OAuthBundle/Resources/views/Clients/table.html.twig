@@ -1,0 +1,94 @@
+<hr>
+<br>
+<h5>Sort By:</h5>
+<ul>
+    <li>ID: {{ knp_pagination_sortable(clients, 'Asc', 'l.id', {'direction': 'asc'}) }} / {{ knp_pagination_sortable(clients, 'Desc', 'l.id', {'direction': 'desc'}) }}</li>
+</ul>
+
+<table class="data-table" id="client-table">
+    <thead>
+    <tr>
+        <th class="desc sortable numeric">id</th>
+        <th class="sortable alpha">random id</th>
+        <th class="sortable alpha">secret</th>
+        <th class="sortable alpha">auth token</th>
+        <th class="sortable alpha">auth expiration</th>
+        <th class="sortable alpha">user email</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody class="comments-list">
+    {% for client in clients %}
+        <tr>
+            <td>
+                {{ client.id }}
+            </td>
+            <td>
+                {{ client.randomID }}
+            </td>
+            <td>
+                {{ client.secret }}
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <a href="{{ path('CDEOAuthBundle_oauth_delete', { 'id': client.id }) }}">delete</a>
+            </td>
+        </tr>
+        {% for code in client.authCode %}
+            <tr>
+                <td colspan="3"><strong>Auth Code</strong></td>
+                <td>
+                    {{ code.token }}
+                </td>
+                <td>
+                    {{ code.expiresAt | date('m/d/y H:i e') }}
+                </td>
+                <td>
+                    {{ code.user.email }}
+                </td>
+                <td></td>
+            </tr>
+
+        {% endfor %}
+        {% for token in client.accessToken %}
+            <tr>
+                <td colspan="3"><strong>Access Token</strong></td>
+                <td>
+                    {{ token.token }}
+                </td>
+                <td>
+                    {{ token.expiresAt | date('m/d/y H:i e') }}
+                </td>
+                <td>
+                    {{ token.user.email }}
+                </td>
+                <td></td>
+            </tr>
+
+        {% endfor %}
+        {% for token in client.refreshToken %}
+            <tr>
+                <td colspan="3"><strong>Refresh Token</strong></td>
+                <td>
+                    {{ token.token }}
+                </td>
+                <td>
+                    {{ token.expiresAt | date('m/d/y H:i e') }}
+                </td>
+                <td>
+                    {{ token.user.email }}
+                </td>
+                <td></td>
+            </tr>
+
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="100%">{{ knp_pagination_render(clients) }}</td>
+    </tr>
+    </tfoot>
+</table>

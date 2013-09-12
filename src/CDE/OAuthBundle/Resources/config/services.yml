@@ -1,0 +1,12 @@
+parameters:
+#    o_auth.example.class: CDE\OAuthBundle\Example
+
+services:
+  cde_oauth.manager.client:
+    class: CDE\OAuthBundle\Entity\ClientManager
+    arguments:
+      em: '@Doctrine.orm.entity_manager'
+      class: CDE\OAuthBundle\Entity\Client
+      codeClass: CDE\OAuthBundle\Entity\AuthCode
+      clientManager: '@fos_oauth_server.client_manager.default'
+      paginator: '@knp_paginator'

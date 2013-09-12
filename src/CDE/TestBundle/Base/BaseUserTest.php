@@ -44,6 +44,12 @@ class BaseUserTest extends WebTestCase {
 
     }
 
+    protected function getClient() {
+        $client = static::createClient();
+        $client->getCookieJar()->set($this->cookie);
+        return $client;
+    }
+
     public function getUser($role = null) {
         if (!isset($this->user)) {
             $user = $this->getUserManager()->loadByUsername('user');

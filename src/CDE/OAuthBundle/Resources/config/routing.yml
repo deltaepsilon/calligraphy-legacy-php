@@ -1,0 +1,17 @@
+CDEOAuthBundle_oauth_client:
+    pattern: /admin/oauth/index/{page}
+    defaults: { _controller: CDEOAuthBundle:OAuth:index, page: 1 }
+    requirements:
+      id: \d+
+
+CDEOAuthBundle_oauth_create:
+    pattern: /admin/oauth/create
+    defaults: { _controller: CDEOAuthBundle:OAuth:create }
+
+CDEOAuthBundle_oauth_delete:
+    pattern: /admin/oauth/delete/{id}
+    defaults: { _controller: CDEOAuthBundle:OAuth:delete }
+
+CDEOAuthBundle_oauth_token:
+    pattern: /admin/oauth/token
+    defaults: { _controller: CDEOAuthBundle:OAuth:token }

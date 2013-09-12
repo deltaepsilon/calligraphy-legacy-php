@@ -135,9 +135,12 @@ nelmio_cors:
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             max_age: 3600
 
-#fos_oauth_server:
-#  db_driver: orm
-#  client_class:        Acme\ApiBundle\Entity\Client
-#  access_token_class:  Acme\ApiBundle\Entity\AccessToken
-#  refresh_token_class: Acme\ApiBundle\Entity\RefreshToken
-#  auth_code_class:     Acme\ApiBundle\Entity\AuthCode
+fos_oauth_server:
+  db_driver: orm
+  client_class:        CDE\OAuthBundle\Entity\Client
+  access_token_class:  CDE\OAuthBundle\Entity\AccessToken
+  refresh_token_class: CDE\OAuthBundle\Entity\RefreshToken
+  auth_code_class:     CDE\OAuthBundle\Entity\AuthCode
+#  service:
+#    options:
+#      auth_code_lifetime: 365
