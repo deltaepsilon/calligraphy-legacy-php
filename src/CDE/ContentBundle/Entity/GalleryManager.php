@@ -109,6 +109,7 @@ class GalleryManager implements GalleryManagerInterface
         $counter = 0;
         $params = array();
         foreach($queryFilter as $k => $v) {
+            $k = preg_replace('/_/', '.', $k);
             $counter += 1;
             $params['param'.$counter] = $v;
             $queryText .= 'where '.$k.' = :param'.$counter;
