@@ -110,9 +110,19 @@ class RestController extends FOSRestController
     /**
      * Galleries
      */
-    public function getGalleriesAction($page = 1, $limit = 10)
+    public function getGalleriesAction($page = 1, $limit = 10, Request $request)
     {
-        $comments = $this->getGalleryManager()->findByPage($page, $limit);
+//        $all = $request->all();
+        $params = $request->query->all();
+        $queryFilter = array();
+        foreach ($params as $k => $v) {
+            $filter = explode(':', $k);
+            if (count($filter) === 2) {
+                $queryFilter[$filter[1]] = $v;
+            }
+        }
+
+        $comments = $this->getGalleryManager()->findByPage($page, $limit, $queryFilter);
         $view = $this->view($comments->getItems(), 200)->setFormat('json');
         return $this->handleView($view);
     }

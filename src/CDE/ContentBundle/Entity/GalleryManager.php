@@ -98,12 +98,27 @@ class GalleryManager implements GalleryManagerInterface
         return $gallery;
     }
 
-    public function findByPage($page = 1, $limit = 20)
+    public function findByPage($page = 1, $limit = 20, $queryFilter = array())
     {
-        $query = $this->em->createQuery('
+        $queryText = '
             select l
             from CDEContentBundle:Gallery l
-        ');
+            join l.user m
+        ';
+
+        $counter = 0;
+        $params = array();
+        foreach($queryFilter as $k => $v) {
+            $counter += 1;
+            $params['param'.$counter] = $v;
+            $queryText .= 'where '.$k.' = :param'.$counter;
+        }
+
+        $query = $this->em->createQuery($queryText);
+
+        foreach($params as $k => $v) {
+            $query = $query->setParameter($k, $v);
+        }
 
         $pagination = $this->paginator->paginate(
             $query,

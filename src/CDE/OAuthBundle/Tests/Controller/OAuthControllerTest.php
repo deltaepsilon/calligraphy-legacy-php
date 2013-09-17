@@ -35,19 +35,18 @@ class OAuthControllerTest extends BaseUserTest
         $json = json_decode($content);
 
         $this->assertEquals($json->token_type, 'bearer');
+        $this->accessToken = $json;
         return $json;
 
     }
 
     public function api()
     {
-        $client = $this->getLoggedOutClient();
-//        $client = $this->getClient();
+        $client = $this->getLoggedOutClient(); // You wouldn't want to test this in a logged in state would you?
 
-        //TODO Set up FOS OAuth bundle as a security provider
         $crawler = $client->request('GET', '/api/getComments', array(
-            'token_type' => 'access_token',
-            'access_token' => $this->accessToken,
+            'token_type' => 'bearer',
+            'access_token' => $this->accessToken->access_token,
         ));
 
 
@@ -70,7 +69,7 @@ class OAuthControllerTest extends BaseUserTest
     }
 
     public function testAll() {
-        $this->accessToken = $this->create();
+        $this->create();
         $this->api();
         $this->delete();
 

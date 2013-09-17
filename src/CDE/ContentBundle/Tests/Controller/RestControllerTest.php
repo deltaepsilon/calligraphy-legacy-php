@@ -2,12 +2,15 @@
 
 namespace CDE\ContentBundle\Tests\Controller;
 
+use CDE\OAuthBundle\Tests\Controller\OAuthControllerTest;
 use CDE\TestBundle\Base\BaseUserTest;
 use Symfony\Component\HttpFoundation\Response;
 
 class RestControllerTest extends BaseUserTest
 {
     protected $comment;
+    protected $accessToken;
+    protected $oAuthControllerTest;
 
     public function __construct() {
         parent::__construct();
@@ -31,6 +34,15 @@ class RestControllerTest extends BaseUserTest
             return array();
         }
         return $json;
+    }
+
+    private function getAccessToken() {
+        if (!isset($this->accessToken)) {
+            $this->oAuthControllerTest = new OAuthControllerTest();
+            $this->accessToken = $this->oAuthControllerTest->create();
+        }
+
+        return $this->accessToken->access_token;
     }
 
 
@@ -69,7 +81,9 @@ class RestControllerTest extends BaseUserTest
         
         $crawler = $client->request('POST', 'api/createComment/'.$gallery->getId(), array(
             'comment' => 'testing testing 123',
-            'marked' => 'false'
+            'marked' => 'false',
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
         ));
 
         $this->comment = $comment = $this->getJSONResponse($client);
@@ -81,7 +95,10 @@ class RestControllerTest extends BaseUserTest
     public function getComment()
     {
         $client = $this->getClient();
-        $client->request('GET', 'api/getComment/'.$this->comment->id);
+        $client->request('GET', 'api/getComment/'.$this->comment->id, array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
 
         $comment = $this->getJSONResponse($client);
         $this->assertEquals($comment->comment, 'testing testing 123');
@@ -95,7 +112,9 @@ class RestControllerTest extends BaseUserTest
         $client = $this->getClient();
         $client->request('POST', 'api/updateComment/'.$this->comment->id, array(
             'comment' => 'testing 456',
-            'marked' => 'true'
+            'marked' => 'true',
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
         ));
 
         $comment = $this->getJSONResponse($client);
@@ -107,7 +126,10 @@ class RestControllerTest extends BaseUserTest
     public function getComments()
     {
         $client = $this->getClient();
-        $client->request('GET', 'api/getComments');
+        $client->request('GET', 'api/getComments', array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
 
         $comments = $this->getJSONResponse($client);
         $comment = $comments[0]; //Test first comment... it could be anything, so don't try to get specific
@@ -119,7 +141,10 @@ class RestControllerTest extends BaseUserTest
     public function getGalleries()
     {
         $client = $this->getClient();
-        $client->request('GET', 'api/getGalleries');
+        $client->request('GET', 'api/getGalleries', array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
 
         $galleries = $this->getJSONResponse($client);
         $gallery = $galleries[0];
@@ -131,7 +156,10 @@ class RestControllerTest extends BaseUserTest
     public function deleteComment()
     {
         $client = $this->getClient();
-        $client->request('DELETE', 'api/deleteComment/'.$this->comment->id);
+        $client->request('GET', 'api/deleteComment/'.$this->comment->id, array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
 
         $jsonResponse = $this->getJSONResponse($client);
         $this->assertEquals($jsonResponse->id, $this->comment->id);
@@ -145,15 +173,34 @@ class RestControllerTest extends BaseUserTest
 
     }
 
+    public function getFilteredGalleries() {
+        $user = $this->getUser();
+        $client = $this->getClient();
+        $client->request('GET', 'api/getGalleries', array(
+            'filter:m.username' => $user->getUsername(),
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $galleries = $this->getJSONResponse($client);
+
+        $this->assertTrue(count($galleries) > 0);
+        foreach($galleries as $gallery) {
+            $this->assertEquals($gallery->user->username, $user->getUsername());
+        }
+
+    }
+
     public function testComments() {
         $this->createGallery();
-        $this->createComment();
-        $this->getComment();
-        $this->updateComment();
-        $this->deleteComment();
-        $this->getComments();
-        $this->getGalleries();
+//        $this->createComment();
+//        $this->getComment();
+//        $this->updateComment();
+//        $this->deleteComment();
+//        $this->getComments();
+//        $this->getGalleries();
+        $this->getFilteredGalleries();
         $this->removeGallery();
+        $this->oAuthControllerTest->delete();
     }
 
 }

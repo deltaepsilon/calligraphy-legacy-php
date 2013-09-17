@@ -142,6 +142,7 @@ fos_oauth_server:
   access_token_class:  CDE\OAuthBundle\Entity\AccessToken
   refresh_token_class: CDE\OAuthBundle\Entity\RefreshToken
   auth_code_class:     CDE\OAuthBundle\Entity\AuthCode
-#  service:
-#    options:
-#      auth_code_lifetime: 365
+  service:
+    options:
+      access_token_lifetime: 1209600
+      refresh_token_lifetime: 7776000
