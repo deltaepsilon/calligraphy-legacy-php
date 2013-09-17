@@ -34,3 +34,10 @@ CDEContentBundle_api_get_comments:
 CDEContentBundle_api_get_gallieries:
     pattern: getGalleries/{page}/{limit}
     defaults: { _controller: CDEContentBundle:Rest:getGalleries, page: 1, limit: 10 }
+
+CDEContentBundle_api_update_gallery:
+    pattern: updateGallery/{id}
+    defaults: { _controller: CDEContentBundle:Rest:updateGallery }
+    methods: [PUT, POST]
+    requirements:
+      id: \d+

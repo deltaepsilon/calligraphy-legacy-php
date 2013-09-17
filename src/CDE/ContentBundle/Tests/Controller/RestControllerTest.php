@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RestControllerTest extends BaseUserTest
 {
+    protected $gallery;
     protected $comment;
     protected $accessToken;
     protected $oAuthControllerTest;
@@ -64,6 +65,7 @@ class RestControllerTest extends BaseUserTest
         $gallery->setTitle('test gallery');
         $gallery->setDescription('test gallery description');
         $gallery->setMarked(false);
+        $this->gallery = $gallery;
         $this->getGalleryManager()->add($gallery);
         $this->assertEquals($gallery->getMarked(), false);
     }
@@ -165,12 +167,18 @@ class RestControllerTest extends BaseUserTest
         $this->assertEquals($jsonResponse->id, $this->comment->id);
     }
 
-    public function removeGallery() {
-        $galleries = $this->getGalleryManager()->findByUser($this->getUser());
-        foreach ($galleries as $gallery) {
-            $this->getGalleryManager()->remove($gallery);
-        }
+    public function updateGallery()
+    {
+        $client = $this->getClient();
+        $client->request('POST', 'api/updateGallery/'.$this->gallery->getId(), array(
+            'marked' => 'true',
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
 
+        $gallery = $this->getJSONResponse($client);
+        $this->assertTrue($gallery->marked);
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
     }
 
     public function getFilteredGalleries() {
@@ -190,15 +198,24 @@ class RestControllerTest extends BaseUserTest
 
     }
 
+    public function removeGallery() {
+        $galleries = $this->getGalleryManager()->findByUser($this->getUser());
+        foreach ($galleries as $gallery) {
+            $this->getGalleryManager()->remove($gallery);
+        }
+
+    }
+
     public function testComments() {
         $this->createGallery();
-//        $this->createComment();
-//        $this->getComment();
-//        $this->updateComment();
-//        $this->deleteComment();
-//        $this->getComments();
-//        $this->getGalleries();
+        $this->createComment();
+        $this->getComment();
+        $this->updateComment();
+        $this->deleteComment();
+        $this->getComments();
+        $this->getGalleries();
         $this->getFilteredGalleries();
+        $this->updateGallery();
         $this->removeGallery();
         $this->oAuthControllerTest->delete();
     }

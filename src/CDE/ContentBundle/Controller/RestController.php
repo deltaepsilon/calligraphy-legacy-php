@@ -30,6 +30,22 @@ class RestController extends FOSRestController
         return $comment;
     }
 
+    private function setGalleryParameters(Request $request, $gallery)
+    {
+        $marked = $request->request->get('marked');
+
+        if (isset($marked)) {
+            if (strtolower($marked) === 'true') {
+                $marked = true;
+            } else if (strtolower($marked) === 'false') {
+                $marked = false;
+            }
+            $gallery->setMarked($marked);
+        }
+        $this->getGalleryManager()->update($gallery);
+        return $gallery;
+    }
+
     /**
      * Managers
      */
@@ -124,6 +140,15 @@ class RestController extends FOSRestController
 
         $comments = $this->getGalleryManager()->findByPage($page, $limit, $queryFilter);
         $view = $this->view($comments->getItems(), 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function updateGalleryAction($id, Request $request)
+    {
+        $gallery = $this->getGalleryManager()->find($this->getUser(), $id);
+
+        $this->setGalleryParameters($request, $gallery);
+        $view = $this->view($gallery, 200)->setFormat('json');
         return $this->handleView($view);
     }
 
