@@ -14,6 +14,12 @@ class RestController extends FOSRestController
     {
         $text = $request->request->get('comment');
         $marked = $request->request->get('marked');
+        if (!isset($text)) {
+            $text = $request->query->get('comment');
+        }
+        if (!isset($marked)) {
+            $marked = $request->query->get('marked');
+        }
         if (isset($text)) {
             $comment->setComment($text);
         }
@@ -32,7 +38,10 @@ class RestController extends FOSRestController
 
     private function setGalleryParameters(Request $request, $gallery)
     {
-        $marked = $request->request->get('marked');
+        $marked = $request->query->get('marked');
+        if (!isset($marked)) {
+            $marked = $request->request->get('marked');
+        }
 
         if (isset($marked)) {
             if (strtolower($marked) === 'true') {
