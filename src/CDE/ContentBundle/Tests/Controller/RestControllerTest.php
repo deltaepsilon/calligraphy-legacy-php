@@ -181,6 +181,19 @@ class RestControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
     }
 
+    public function getGallery()
+    {
+        $client = $this->getClient();
+        $client->request('POST', 'api/getGallery/'.$this->gallery->getId(), array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+
+        $gallery = $this->getJSONResponse($client);
+        $this->assertEquals($gallery->id, $this->gallery->getId());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+    }
+
     public function getFilteredGalleries() {
         $user = $this->getUser();
         $client = $this->getClient();
@@ -216,6 +229,7 @@ class RestControllerTest extends BaseUserTest
         $this->getGalleries();
         $this->getFilteredGalleries();
         $this->updateGallery();
+        $this->getGallery();
         $this->removeGallery();
         $this->oAuthControllerTest->delete();
     }

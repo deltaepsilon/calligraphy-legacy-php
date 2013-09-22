@@ -147,8 +147,19 @@ class RestController extends FOSRestController
             }
         }
 
-        $comments = $this->getGalleryManager()->findByPage($page, $limit, $queryFilter);
-        $view = $this->view($comments->getItems(), 200)->setFormat('json');
+        $pagination = $this->getGalleryManager()->findByPage($page, $limit, $queryFilter);
+        $view = $this->view($pagination->getItems(), 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function getGalleryAction($id)
+    {
+        $gallery = $this->getGalleryManager()->find($this->getUser(), $id);
+        if (!isset($gallery)) {
+            $view = $this->view(array('id' => $id, 'error' => 'Gallery not found'), 404)->setFormat('json');
+        } else {
+            $view = $this->view($gallery, 200)->setFormat('json');
+        }
         return $this->handleView($view);
     }
 
