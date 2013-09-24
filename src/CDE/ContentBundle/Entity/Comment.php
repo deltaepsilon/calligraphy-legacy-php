@@ -28,6 +28,7 @@ class Comment implements CommentInterface
     private $id;
 
     /**
+     * @Expose
      * @var integer $user
      * 
      * @ORM\ManyToOne(targetEntity="CDE\UserBundle\Entity\User")
