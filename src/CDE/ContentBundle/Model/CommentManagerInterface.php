@@ -4,6 +4,7 @@ namespace CDE\ContentBundle\Model;
 
 use CDE\ContentBundle\Model\CommentInterface;
 use CDE\UserBundle\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
 
 interface CommentManagerInterface
 {
@@ -39,7 +40,7 @@ interface CommentManagerInterface
      *
      * @return CommentInterface
      */
-    public function findByPage($page, $limit);
+    public function findByPage($page, $limit, $queryFilter);
 
     /**
      * Finds one or more comments

@@ -55,6 +55,18 @@ class RestController extends FOSRestController
         return $gallery;
     }
 
+    private function getQueryFilter(Request $request) {
+        $params = $request->query->all();
+        $queryFilter = array();
+        foreach ($params as $k => $v) {
+            $filter = explode(':', $k);
+            if (count($filter) === 2) {
+                $queryFilter[$filter[1]] = $v;
+            }
+        }
+        return $queryFilter;
+    }
+
     /**
      * Managers
      */
@@ -139,9 +151,9 @@ class RestController extends FOSRestController
         return $this->handleView($view);
     }
 
-    public function getCommentsAction($page = 1, $limit = 10)
+    public function getCommentsAction($page = 1, $limit = 10, Request $request)
     {
-        $comments = $this->getCommentManager()->findByPage($page, $limit);
+        $comments = $this->getCommentManager()->findByPage($page, $limit, $this->getQueryFilter($request));
         $view = $this->view($comments->getItems(), 200)->setFormat('json');
         return $this->handleView($view);
     }
@@ -151,17 +163,7 @@ class RestController extends FOSRestController
      */
     public function getGalleriesAction($page = 1, $limit = 10, Request $request)
     {
-//        $all = $request->all();
-        $params = $request->query->all();
-        $queryFilter = array();
-        foreach ($params as $k => $v) {
-            $filter = explode(':', $k);
-            if (count($filter) === 2) {
-                $queryFilter[$filter[1]] = $v;
-            }
-        }
-
-        $pagination = $this->getGalleryManager()->findByPage($page, $limit, $queryFilter);
+        $pagination = $this->getGalleryManager()->findByPage($page, $limit, $this->getQueryFilter($request));
         $view = $this->view($pagination->getItems(), 200)->setFormat('json');
         return $this->handleView($view);
     }

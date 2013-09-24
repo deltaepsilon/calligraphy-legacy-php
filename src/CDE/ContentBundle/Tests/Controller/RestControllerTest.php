@@ -155,6 +155,23 @@ class RestControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
     }
 
+    public function getFilteredComments() {
+        $user = $this->getUser();
+        $client = $this->getClient();
+        $client->request('GET', 'api/getComments', array(
+            'filter:m.username' => $user->getUsername(),
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $comments = $this->getJSONResponse($client);
+
+        $this->assertTrue(count($comments) > 0);
+        foreach($comments as $comment) {
+            $this->assertEquals($comment->gallery->user->username, $user->getUsername());
+        }
+
+    }
+
     public function deleteComment()
     {
         $client = $this->getClient();
@@ -224,6 +241,7 @@ class RestControllerTest extends BaseUserTest
         $this->createComment();
         $this->getComment();
         $this->updateComment();
+        $this->getFilteredComments();
         $this->deleteComment();
         $this->getComments();
         $this->getGalleries();

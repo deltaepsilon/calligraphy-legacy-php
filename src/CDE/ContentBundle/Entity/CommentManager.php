@@ -61,12 +61,33 @@ class CommentManager implements CommentManagerInterface
         return $comment;
     }
 
-    public function findByPage($page = 1, $limit = 10)
+    public function findByPage($page = 1, $limit = 10, $queryFilter = array())
     {
-        $query = $this->em->createQuery('
-            select l
+        $queryText = '
+            select l, m
             from CDEContentBundle:Comment l
-        ');
+            join l.user m
+        ';
+
+        $counter = 0;
+        $params = array();
+        foreach($queryFilter as $k => $v) {
+            $k = preg_replace('/_/', '.', $k);
+            $counter += 1;
+            if (strtolower($v) === 'false') {
+                $v = false;
+            } else if (strtolower($v) === 'true') {
+                $v = true;
+            }
+            $params['param'.$counter] = $v;
+            $queryText .= 'where '.$k.' = :param'.$counter;
+        }
+
+        $query = $this->em->createQuery($queryText);
+
+        foreach($params as $k => $v) {
+            $query = $query->setParameter($k, $v);
+        }
 
         $pagination = $this->paginator->paginate(
             $query,
