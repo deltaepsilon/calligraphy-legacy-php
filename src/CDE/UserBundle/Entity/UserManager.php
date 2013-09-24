@@ -117,6 +117,7 @@ class UserManager extends ContainerAware implements UserManagerInterface
 
     }
 	public function setAffiliate($user) {
+        $ip = null;
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else if (isset($_SERVER['REMOTE_ADDR'])) {
