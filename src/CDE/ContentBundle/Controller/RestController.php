@@ -85,8 +85,22 @@ class RestController extends FOSRestController
             $comment->setGallery($gallery);
             $comment->setUser($user);
             $comment->setGalleryuser($gallery->getUser());
-
             $this->setCommentParameters($request, $comment);
+            $galleryUser = $gallery->getUser();
+            if (( $user->getId() != $galleryUser->getId() ) && $galleryUser->getCommentEmail()) {
+                $admin = $this->container->getParameter('admin');
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($this->container->getParameter('site_name').': New Gallery Comment')
+                    ->setFrom($admin['no_reply_email'])
+                    ->setTo($comment->getGalleryuser()->getEmail())
+                    ->setBody($this->renderView('CDEContentBundle:Mail:newcomment.txt.twig', array(
+                        'comment' => $comment
+                    )))
+                    ->setContentType("text/html");
+                $this->get('mailer')->send($message);
+            }
+
+
 
             $view = $this->view($comment, 200)->setFormat('json');
         }
