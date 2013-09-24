@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "IStillLoveCalligraphy Engine",
   "main": "Gruntfile.js",
-  "dependencies": {},
+  "dependencies": {
+    "grunt-contrib-coffee": "~0.7.0"
+  },
   "devDependencies": {
     "grunt-contrib-less": "~0.6.4",
     "grunt": "~0.4.1",

@@ -1,14 +1,17 @@
 (function() {
   var cde;
+
   window.$.fn.center = function() {
     this.css('margin-top', -0.5 * this.outerHeight());
     this.css('margin-left', -0.5 * this.outerWidth());
     return this;
   };
+
   window.$.fn.centerSides = function() {
     this.css('margin-left', -0.5 * this.outerWidth());
     return this;
   };
+
   cde = {
     gallery: {
       serialized: ''
@@ -286,7 +289,6 @@
           reTitle = /\$\$user\$\$/;
           reDate = /\$\$date\$\$/;
           reComment = /\$\$comment\$\$/;
-          console.log(comment.created.date);
           date = new Date(comment.created.date.replace(/[A-Z ].+/, ''));
           day = date.getDate();
           month = date.getMonth() + 1;
@@ -363,6 +365,7 @@
       });
     }
   };
+
   $(document).ready(function() {
     var attributes, galleries, userGallery;
     cde.layout();
@@ -387,4 +390,5 @@
       return cde.layoutResize();
     });
   });
+
 }).call(this);

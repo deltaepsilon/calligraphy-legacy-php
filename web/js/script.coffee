@@ -216,7 +216,6 @@ cde =
         reTitle = /\$\$user\$\$/
         reDate = /\$\$date\$\$/
         reComment = /\$\$comment\$\$/
-        console.log(comment.created.date);
         date = new Date(comment.created.date.replace(/[A-Z ].+/, ''))
         day = date.getDate()
         month = date.getMonth() + 1
