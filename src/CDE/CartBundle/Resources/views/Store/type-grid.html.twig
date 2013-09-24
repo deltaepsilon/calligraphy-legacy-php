@@ -1,0 +1,29 @@
+{% for type, products in types %}
+    <h1>{{ attribute(names, type) }}</h1>
+    {% for product in products %}
+        {% if type == product.type %}
+            <div class="store-product">
+                <div class="store-product-title">
+                    <span class="product-title">{{ product.title }}</span><br />
+                    <span class="product-price">${{ product.price }}</span>
+                </div>
+                <a href="{{ path('CDECartBundle_store_view', { 'slug': product.slug }) }}">
+                    <div class="store-product-image">
+                        <span>No Product Image</span>
+                        <img class="store-index-image" src="{{ product.keyImage }}" />
+                    </div>
+                </a>
+                {% if product.tempAvailable is not none and product.tempAvailable == 0 %}
+                    <div class="sold-out-small">sold out</div>
+                {% else %}
+                    <a href="{{ path('CDECartBundle_cart_add', { 'id': product.id }) }}">
+                        <div class="store-product-actions">
+                            <div class="add-to-cart-small"></div>
+                        </div>
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+<hr style="clear: both; margin: 0 0 2rem; position: relative; top: 1em;">
+{% endfor %}

@@ -34,8 +34,28 @@ class StoreController extends Controller
 
 		}
 
-		return $this->render('CDECartBundle:Store:index.html.twig', array(
-            'products' => $resultProducts,
+        $types = array(
+            'subscription' => array(),
+            'digital' => array(),
+            'physical' => array(),
+            'gift' => array(),
+        );
+        $names = array(
+            'subscription' => 'Workshops',
+            'digital' => 'Downloads',
+            'physical' => 'Physical Goods',
+            'gift' => 'Gift Certificates'
+        );
+
+        foreach ($resultProducts as $product) {
+            $types[$product->getType()][] = $product;
+        }
+
+
+        return $this->render('CDECartBundle:Store:index.html.twig', array(
+//            'products' => $resultProducts,
+            'names' => $names,
+            'types' => $types,
         ));
     }
 
