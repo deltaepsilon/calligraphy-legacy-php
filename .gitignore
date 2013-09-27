@@ -1,3 +1,4 @@
+.DS_Store
 /web/bundles/
 /app/bootstrap.php.cache
 /app/cache/*
@@ -10,3 +11,4 @@
 .idea
 *.pem
 node_modules
+islc-angular

@@ -98,3 +98,10 @@ CDEUtilityBundle_utility_aws_distro_info:
 CDEUtilityBundle_email_view:
   pattern: /email/{name}
   defaults: { _controller: CDEUtilityBundle:Email:view, name: ~ }
+
+#Angular Partials
+CDEUtilityBundle_angular_login:
+    pattern: /angular/login
+    defaults: { _controller: CDEUtilityBundle:Angular:login }
+    options:
+      expose: true

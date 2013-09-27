@@ -232,7 +232,13 @@ class UserController extends Controller
 
         $csrfToken = $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate');
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Security:partial.login.html.'.$this->container->getParameter('fos_user.template.engine'), array(
+        if (getenv('ISLC_ANGULAR') === 'true') {
+            $template = 'CDEUtilityBundle:Angular:login.html.twig';
+        } else {
+            $template = 'FOSUserBundle:Security:partial.login.html.'.$this->container->getParameter('fos_user.template.engine');
+        }
+
+        return $this->container->get('templating')->renderResponse($template, array(
             'last_username' => $lastUsername,
             'error'         => $error,
             'csrf_token' => $csrfToken,

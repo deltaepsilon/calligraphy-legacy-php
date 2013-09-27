@@ -79,3 +79,4 @@ CDEUserBundle_address_delete:
 #New routes required by Symfony 2.3
 CDEUserBundle_login_partial:
   pattern: /login/partial
+  defaults: { _controller: CDEUserBundle:User:loginPartial}

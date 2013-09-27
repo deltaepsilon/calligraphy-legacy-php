@@ -3,6 +3,8 @@
 namespace CDE\UtilityBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class FrontController extends Controller
@@ -16,11 +18,21 @@ class FrontController extends Controller
         return $this->get('cde_cart.manager.cart');
     }
     
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->render('CDEUtilityBundle:Front:index.html.twig', array(
-            'user' => $this->getUser(),
-        ));
+        if (getenv('ISLC_ANGULAR') === 'true') {
+            $index = file_get_contents(getenv('ISLC_ANGULAR_ROOT').'/index.html');
+            $response = new Response($index, 200, array(
+                'content-type' => 'text/html'
+            ));
+            $response->prepare($request);
+            return $response;
+        } else {
+            return $this->render('CDEUtilityBundle:Front:index.html.twig', array(
+                'user' => $this->getUser(),
+            ));
+        }
+
     }
     
     public function metaAction($name)
