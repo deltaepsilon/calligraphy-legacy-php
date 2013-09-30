@@ -99,9 +99,15 @@ CDEUtilityBundle_email_view:
   pattern: /email/{name}
   defaults: { _controller: CDEUtilityBundle:Email:view, name: ~ }
 
-#Angular Partials
+#Angular Utility
 CDEUtilityBundle_angular_login:
     pattern: /angular/login
     defaults: { _controller: CDEUtilityBundle:Angular:login }
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_image_list:
+    pattern: /angular/images/{prefix}
+    defaults: { _controller: CDEUtilityBundle:Angular:listImages }
     options:
       expose: true
