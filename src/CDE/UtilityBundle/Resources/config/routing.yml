@@ -111,3 +111,9 @@ CDEUtilityBundle_angular_image_list:
     defaults: { _controller: CDEUtilityBundle:Angular:listImages }
     options:
       expose: true
+
+CDEUtilityBundle_angular_user:
+    pattern: /angular/user
+    defaults: { _controller: CDEUtilityBundle:Angular:user }
+    options:
+      expose: true

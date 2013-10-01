@@ -23,6 +23,15 @@ class AngularController extends FOSRestController
         $response = $this->getAWSService()->listImages($prefix);
         $view = $this->view($response, 200)
             ->setHeader('Expires', gmdate('D, d M Y H:i:s', strtotime('+1 days')) . ' GMT')
+            ->setHeader('Cache-Control', 'max-age=86400, public')
+            ->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function userAction()
+    {
+        $user = $this->getUser();
+        $view = $this->view($user, 200)
             ->setFormat('json');
         return $this->handleView($view);
     }
