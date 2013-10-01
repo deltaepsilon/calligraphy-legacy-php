@@ -5,6 +5,7 @@ namespace CDE\UtilityBundle\Controller;
 use CDE\UserBundle\Controller\UserController;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class AngularController extends FOSRestController
 {

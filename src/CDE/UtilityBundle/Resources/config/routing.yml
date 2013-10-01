@@ -101,7 +101,7 @@ CDEUtilityBundle_email_view:
 
 #Angular Utility
 CDEUtilityBundle_angular_login:
-    pattern: /angular/login
+    pattern: /angular/login.html
     defaults: { _controller: CDEUtilityBundle:Angular:login }
     options:
       expose: true

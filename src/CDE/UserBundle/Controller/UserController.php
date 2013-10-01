@@ -238,11 +238,14 @@ class UserController extends Controller
             $template = 'FOSUserBundle:Security:partial.login.html.'.$this->container->getParameter('fos_user.template.engine');
         }
 
+        $response = new Response('', 200, array('content-type' => 'text/html'));
+
         return $this->container->get('templating')->renderResponse($template, array(
             'last_username' => $lastUsername,
             'error'         => $error,
             'csrf_token' => $csrfToken,
-        ));
+        ),
+        $response);
     }
 
     public function tocPartialAction()
