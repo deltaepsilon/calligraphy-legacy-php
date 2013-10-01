@@ -237,13 +237,14 @@ class AWSManager
 
     public function listImages($prefix) {
         $bucket = $this->container->getParameter('aws_images_bucket');
+        $path = $this->container->getParameter('aws_images_path');
         $prefix = preg_replace('/\|/', '/', $prefix);
         $response = $this->s3->list_objects($bucket, array('prefix' => $prefix));
         $result = array();
         foreach($response->body->Contents as $object) {
             $key = (String) $object->Key;
             if ($key !== $prefix && $key !== $prefix.'/') {
-                $result[] = 'http://'.$bucket.'/'.$key;
+                $result[] = $path.'/'.$key;
             }
         }
         return $result;
