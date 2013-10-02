@@ -134,4 +134,13 @@ class AngularControllerTest extends BaseUserTest
 
     }
 
+    public function testGetAddress()
+    {
+        $client = $this->getClient();
+        $crawler = $client->request('GET', '/angular/address');
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->first, 'first');
+    }
+
 }

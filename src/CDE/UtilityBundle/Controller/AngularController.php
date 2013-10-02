@@ -120,6 +120,13 @@ class AngularController extends FOSRestController
         return $this->handleView($view);
     }
 
+    public function addressAction()
+    {
+        $user = $this->getUser();
+        $view = $this->view($user->getAddress(), 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
     public function addressUpdateAction(Request $request) {
         $user = $this->getUser();
         if (!$user) {
