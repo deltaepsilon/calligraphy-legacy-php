@@ -45,6 +45,17 @@ class AngularController extends FOSRestController
         }
     }
 
+    protected function getParameters($request, $names) {
+        $params = $request->request->all();
+        foreach ($names as $name) {
+            if (!isset($params[$name])) {
+                $result[$name] = null;
+            }
+        }
+        return $params;
+
+    }
+
     /**
      * Actions
      */
@@ -114,9 +125,33 @@ class AngularController extends FOSRestController
         if (!$user) {
             $view = $this->view(array('error' => 'Not found'), 401)->setFormat('json');
         } else {
-            $address = $user->getAddress();
-            $params = $request->query;
-            $this->getAddressManager()->update($address);
+            $params = $request->request->all();
+            if (!isset($params['first']) || !isset($params['last'])) {
+                $view = $this->view(array('error' => 'First and last name are required'), 200)->setFormat('json');
+            } else {
+                $params = $this->getParameters($request, array('first', 'last', 'phone', 'line1', 'line2', 'line3', 'city', 'state', 'code', 'country', 'instructions'));
+                $address = $user->getAddress();
+                if (!isset($address)) {
+                    $address = $this->getAddressManager()->create();
+                    $address->setUser($user);
+                }
+                $address->setFirst($params['first']);
+                $address->setLast($params['last']);
+                $address->setPhone($params['phone']);
+                $address->setLine1($params['line1']);
+                $address->setLine2($params['line2']);
+                $address->setLine3($params['line3']);
+                $address->setCity($params['city']);
+                $address->setState($params['state']);
+                $address->setCode($params['code']);
+                $address->setCountry($params['country']);
+                $address->setInstructions($params['instructions']);
+
+                $this->getAddressManager()->update($address);
+
+                $view = $this->view($address, 200)->setFormat('json');
+            }
+
         }
         return $this->handleView($view);
     }

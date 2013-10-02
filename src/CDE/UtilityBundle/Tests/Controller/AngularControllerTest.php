@@ -100,4 +100,38 @@ class AngularControllerTest extends BaseUserTest
 
     }
 
+    public function testUpdateAddress()
+    {
+        $client = $this->getClient();
+
+        // Add an address
+        $crawler = $client->request('POST', '/angular/address', array(
+            'first' => 'first',
+            'last' => 'last',
+            'last' => 'last',
+            'phone' => 'phone',
+            'line1' => 'line1',
+            'line2' => 'line2',
+            'line3' => 'line3',
+            'city' => 'city',
+            'state' => 'state',
+            'code' => 'code',
+            'country' => 'country',
+            'instructions' => 'instructions'
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals('first', $response->first);
+        $this->assertEquals('last', $response->last);
+
+        // Forget the last name
+        $crawler = $client->request('POST', '/angular/address', array(
+            'first' => 'first'
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals('First and last name are required', $response->error);
+
+    }
+
 }
