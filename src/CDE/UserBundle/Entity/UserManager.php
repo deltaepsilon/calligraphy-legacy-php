@@ -3,13 +3,13 @@
 namespace CDE\UserBundle\Entity;
 
 use FOS\UserBundle\Model\UserInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use CDE\UserBundle\Model\UserManagerInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Validator\Constraints\Email;
 
 class UserManager extends ContainerAware implements UserManagerInterface
 {
@@ -19,8 +19,11 @@ class UserManager extends ContainerAware implements UserManagerInterface
     protected $userProvider;
     protected $userManager;
     protected $subscriptionManager;
+    protected $paginator;
+    protected $encoderFactory;
+    protected $validator;
 
-    public function __construct(EntityManager $em, $class, \FOS\UserBundle\Model\UserManagerInterface $userManager, UserProviderInterface $userProvider, $subscriptionManager, $affiliateManager, $paginator)
+    public function __construct(EntityManager $em, $class, \FOS\UserBundle\Model\UserManagerInterface $userManager, UserProviderInterface $userProvider, $subscriptionManager, $affiliateManager, $paginator, $encoderFactory, $validator)
     {
         $this->em = $em;
         $this->repo = $this->em->getRepository($class);
@@ -30,6 +33,8 @@ class UserManager extends ContainerAware implements UserManagerInterface
         $this->subscriptionManager = $subscriptionManager;
         $this->affiliateManager = $affiliateManager;
         $this->paginator = $paginator;
+        $this->encoderFactory = $encoderFactory;
+        $this->validator = $validator;
     }
     public function create()
     {
@@ -137,4 +142,16 @@ class UserManager extends ContainerAware implements UserManagerInterface
     public function loadByUsername($username) {
         return $this->userProvider->loadUserByUsername($username);
     }
+
+    public function checkPassword($user, $password) {
+        $encoder = $this->encoderFactory->getEncoder($user);
+        $encodedPassword = $encoder->encodePassword($password, $user->getSalt());
+        return $encodedPassword === $user->getPassword();
+    }
+
+    public function validateEmail($email) {
+        $constraint = new Email();
+        return $this->validator->validateValue($email, $constraint);
+    }
+
 }

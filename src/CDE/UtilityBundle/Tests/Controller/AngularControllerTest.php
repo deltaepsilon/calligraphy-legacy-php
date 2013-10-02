@@ -40,4 +40,64 @@ class AngularControllerTest extends BaseUserTest
 
     }
 
+    public function testUpdateUser()
+    {
+        $client = $this->getClient();
+        $newEmail = 'newemail@quiver.is';
+        $newPassword = 'newPassword';
+        $oldPassword = 'user';
+
+        // Bad verification
+        $crawler = $client->request('POST', '/angular/user', array(
+            'email' => $newEmail,
+            'password' => $newPassword,
+            'verification' => 'bad verification',
+            'oldpassword' => $oldPassword,
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Passwords do not match');
+
+        // Test bad password
+        $crawler = $client->request('POST', '/angular/user', array(
+            'email' => $newEmail,
+            'password' => $newPassword,
+            'verification' => $newPassword,
+            'oldpassword' => 'badpassword',
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Bad password');
+
+        // Bad email
+        $crawler = $client->request('POST', '/angular/user', array(
+            'email' => 'bademail',
+            'oldpassword' => $newPassword,
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Invalid email');
+
+        // Successful update
+        $crawler = $client->request('POST', '/angular/user', array(
+            'email' => $newEmail,
+            'password' => $newPassword,
+            'verification' => $newPassword,
+            'oldpassword' => $oldPassword,
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->email, $newEmail);
+
+        // Change password back
+        $crawler = $client->request('POST', '/angular/user', array(
+            'email' => $newEmail,
+            'password' => $oldPassword,
+            'verification' => $oldPassword,
+            'oldpassword' => $newPassword,
+        ));
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+
+    }
+
 }

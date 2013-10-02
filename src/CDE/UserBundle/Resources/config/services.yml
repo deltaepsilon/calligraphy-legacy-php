@@ -21,6 +21,8 @@ services:
       subscriptionManager: '@cde_subscription.manager.subscription'
       affiliateManager: '@cde_affiliate.manager.affiliate'
       paginator: '@knp_paginator'
+      encoderFactory: '@security.encoder_factory'
+      validator: '@validator'
   cde_user.manager.address:
     class: CDE\UserBundle\Entity\AddressManager
     arguments:

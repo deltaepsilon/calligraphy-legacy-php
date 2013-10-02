@@ -112,8 +112,32 @@ CDEUtilityBundle_angular_image_list:
     options:
       expose: true
 
+#User Actions
 CDEUtilityBundle_angular_user:
     pattern: /angular/user
     defaults: { _controller: CDEUtilityBundle:Angular:user }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_user_update:
+    pattern: /angular/user
+    defaults: { _controller: CDEUtilityBundle:Angular:userUpdate }
+    methods: [POST]
+    options:
+      expose: true
+
+#Address Actions
+CDEUtilityBundle_angular_address:
+    pattern: /angular/address
+    defaults: { _controller: CDEUtilityBundle:Angular:address }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_address_update:
+    pattern: /angular/address
+    defaults: { _controller: CDEUtilityBundle:Angular:addressUpdate }
+    methods: [POST]
     options:
       expose: true
