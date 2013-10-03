@@ -5,6 +5,7 @@ namespace CDE\UtilityBundle\Controller;
 use CDE\UserBundle\Controller\UserController;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Tests\RequestTest;
 use Symfony\Component\Validator\Constraints\Email;
 
 class AngularController extends FOSRestController
@@ -71,6 +72,20 @@ class AngularController extends FOSRestController
         $userController = new UserController();
         $userController->container = $this->container;
         return $userController->loginPartialAction();
+    }
+
+    public function registerAction(Request $request)
+    {
+        $userController = new UserController();
+        $userController->container = $this->container;
+        return $userController->registerPartialAction($request);
+    }
+
+    public function resetAction()
+    {
+        $userController = new UserController();
+        $userController->container = $this->container;
+        return $userController->resetPartialAction();
     }
 
     public function listImagesAction($prefix)

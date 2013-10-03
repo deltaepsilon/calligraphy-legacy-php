@@ -106,6 +106,18 @@ CDEUtilityBundle_angular_login:
     options:
       expose: true
 
+CDEUtilityBundle_angular_register:
+    pattern: /angular/register.html
+    defaults: { _controller: CDEUtilityBundle:Angular:register }
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_reset:
+    pattern: /angular/reset.html
+    defaults: { _controller: CDEUtilityBundle:Angular:reset }
+    options:
+      expose: true
+
 CDEUtilityBundle_angular_image_list:
     pattern: /angular/images/{prefix}
     defaults: { _controller: CDEUtilityBundle:Angular:listImages }

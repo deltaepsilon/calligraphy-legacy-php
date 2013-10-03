@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use \Symfony\Component\HttpFoundation\Response;
+use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Event\UserEvent;
 
 class UserController extends Controller
 {
@@ -246,6 +248,59 @@ class UserController extends Controller
             'csrf_token' => $csrfToken,
         ),
         $response);
+    }
+
+    public function registerPartialAction(Request $request)
+    {
+        /**
+         * This function is nearly identical to FOSUserBundle:Registration:register;
+         * however, it returns register.html.twig, which exists only for the Angular smart client.
+         */
+
+        /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+        $formFactory = $this->container->get('fos_user.registration.form.factory');
+        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+        $userManager = $this->container->get('fos_user.user_manager');
+        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        $dispatcher = $this->container->get('event_dispatcher');
+
+        $user = $userManager->createUser();
+        $user->setEnabled(true);
+
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
+
+        $form = $formFactory->createForm();
+        $form->setData($user);
+
+        if ('POST' === $request->getMethod()) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $event = new FormEvent($form, $request);
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+
+                $userManager->updateUser($user);
+
+                if (null === $response = $event->getResponse()) {
+                    $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
+                    $response = new RedirectResponse($url);
+                }
+
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+
+                return $response;
+            }
+        }
+        $template = 'CDEUtilityBundle:Angular:register.html.twig';
+        return $this->container->get('templating')->renderResponse($template, array(
+            'form' => $form->createView(),
+        ));
+
+    }
+
+    public function resetPartialAction()
+    {
+        return $this->container->get('templating')->renderResponse('CDEUtilityBundle:Angular:reset.html.twig');
     }
 
     public function tocPartialAction()
