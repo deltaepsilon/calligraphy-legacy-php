@@ -36,9 +36,16 @@ class AngularController extends FOSRestController
     /**
      * Convenience Methods
      */
-    protected function getParameter($request, $name) {
+    protected function getParameter($request, $name, $normalize = false) {
         $params = $request->request->all();
         if (isset($params[$name])) {
+            if ($normalize) {
+                if (strtolower($params[$name]) === 'true') {
+                    $params[$name] = true;
+                } else if (strtolower($params[$name]) === 'false') {
+                    $params[$name] = false;
+                }
+            }
             return $params[$name];
         } else {
             return null;
@@ -92,7 +99,7 @@ class AngularController extends FOSRestController
             $verification = $this->getParameter($request, 'verification');
             $oldPassword = $this->getParameter($request, 'oldpassword');
             $email = $this->getParameter($request, 'email');
-            $commentEmail = $this->getParameter($request, 'comment_email');
+            $commentEmail = $this->getParameter($request, 'comment_email', true);
 
             if ( isset($password) && ($password !== $verification) ) {
                 $view = $this->view(array('error' => 'Passwords do not match'), 200)->setFormat('json');
@@ -115,11 +122,7 @@ class AngularController extends FOSRestController
                 }
 
                 if (isset($commentEmail)) {
-                    if (strtolower($commentEmail) === 'true') {
-                        $user->setCommentEmail(true);
-                    } else if (strtolower($commentEmail) === 'false') {
-                        $user->setCommentEmail(false);
-                    }
+                    $user->setCommentEmail($commentEmail);
                 }
 
                 $this->getUserManager()->update($user);

@@ -96,7 +96,7 @@ class AngularControllerTest extends BaseUserTest
             'email' => $newEmail,
             'password' => $oldPassword,
             'verification' => $oldPassword,
-            'comment_email' => 'true',
+            'comment_email' => true,
             'oldpassword' => $newPassword,
         ));
         $response = json_decode($client->getResponse()->getContent());
