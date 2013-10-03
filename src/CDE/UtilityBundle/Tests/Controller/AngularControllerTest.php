@@ -83,7 +83,7 @@ class AngularControllerTest extends BaseUserTest
             'email' => $newEmail,
             'password' => $newPassword,
             'verification' => $newPassword,
-            'commentEmail' => 'false',
+            'comment_email' => 'false',
             'oldpassword' => $oldPassword,
         ));
         $response = json_decode($client->getResponse()->getContent());
@@ -96,7 +96,7 @@ class AngularControllerTest extends BaseUserTest
             'email' => $newEmail,
             'password' => $oldPassword,
             'verification' => $oldPassword,
-            'commentEmail' => 'true',
+            'comment_email' => 'true',
             'oldpassword' => $newPassword,
         ));
         $response = json_decode($client->getResponse()->getContent());
