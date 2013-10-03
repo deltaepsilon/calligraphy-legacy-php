@@ -24,6 +24,7 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @Expose
      * @var boolean $commentEmail
      *
      * @ORM\Column(type="boolean")

@@ -83,20 +83,25 @@ class AngularControllerTest extends BaseUserTest
             'email' => $newEmail,
             'password' => $newPassword,
             'verification' => $newPassword,
+            'commentEmail' => 'false',
             'oldpassword' => $oldPassword,
         ));
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals($response->email, $newEmail);
+        $this->assertEquals($response->comment_email, false);
 
         // Change password back
         $crawler = $client->request('POST', '/angular/user', array(
             'email' => $newEmail,
             'password' => $oldPassword,
             'verification' => $oldPassword,
+            'commentEmail' => 'true',
             'oldpassword' => $newPassword,
         ));
+        $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->comment_email, true);
 
     }
 

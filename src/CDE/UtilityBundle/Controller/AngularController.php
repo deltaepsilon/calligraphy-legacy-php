@@ -92,6 +92,7 @@ class AngularController extends FOSRestController
             $verification = $this->getParameter($request, 'verification');
             $oldPassword = $this->getParameter($request, 'oldpassword');
             $email = $this->getParameter($request, 'email');
+            $commentEmail = $this->getParameter($request, 'commentEmail');
 
             if ( isset($password) && ($password !== $verification) ) {
                 $view = $this->view(array('error' => 'Passwords do not match'), 200)->setFormat('json');
@@ -112,6 +113,15 @@ class AngularController extends FOSRestController
                     $user->setPlainPassword($password);
                     $this->getUserManager()->updatePassword($user);
                 }
+
+                if (isset($commentEmail)) {
+                    if (strtolower($commentEmail) === 'true') {
+                        $user->setCommentEmail(true);
+                    } else if (strtolower($commentEmail) === 'false') {
+                        $user->setCommentEmail(false);
+                    }
+                }
+
                 $this->getUserManager()->update($user);
                 $view = $this->view($user, 200)->setFormat('json');
             }

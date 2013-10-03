@@ -10,7 +10,10 @@ FOS\UserBundle\Model\User:
       groups: [details]
     email:
       expose: true
-      groups: [me]
+      groups: [list, details]
     roles:
       expose: true
       groups: [details]
+    commentEmail:
+      expose: true
+      groups: [list, details]
