@@ -34,6 +34,11 @@ class AngularController extends FOSRestController
         return $this->get('cde_user.manager.user');
     }
 
+    public function getTransactionManager()
+    {
+        return $this->get('cde_cart.manager.transaction');
+    }
+
     /**
      * Convenience Methods
      */
@@ -190,6 +195,19 @@ class AngularController extends FOSRestController
             }
 
         }
+        return $this->handleView($view);
+    }
+
+    public function transactionAction($id = null)
+    {
+        $user = $this->getUser();
+        if (isset($id)) {
+            $transaction = $this->getTransactionManager()->findByUser($this->getUser(), $id);
+        } else {
+            $transaction = $user->getTransactions()->getValues();
+        }
+
+        $view = $this->view($transaction, 200)->setFormat('json');
         return $this->handleView($view);
     }
 

@@ -153,3 +153,11 @@ CDEUtilityBundle_angular_address_update:
     methods: [POST]
     options:
       expose: true
+
+#Transaction Actions
+CDEUtilityBundle_angular_transaction:
+    pattern: /angular/transaction/{id}
+    defaults: { _controller: CDEUtilityBundle:Angular:transaction, id: null }
+    methods: [GET]
+    options:
+      expose: true

@@ -12,12 +12,25 @@ class AngularControllerTest extends BaseUserTest
         $this->logIn($this->getUser('ROLE_ADMIN'), new Response());
 
     }
-//    public function testLogin()
-//    {
-//        $client = static::createClient();
-//
-//        $crawler = $client->request('GET', '/login');
-//    }
+
+    /**
+     * Managers
+     */
+    protected function getTransactionManager() {
+        return $this->container->get('cde_cart.manager.transaction');
+    }
+
+    protected function getCartManager() {
+        return $this->container->get('cde_cart.manager.cart');
+    }
+
+    protected function getProductManager() {
+        return $this->container->get('cde_cart.manager.product');
+    }
+
+    /**
+     * Test
+     */
 
     public function testListBucket()
     {
@@ -147,6 +160,42 @@ class AngularControllerTest extends BaseUserTest
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals($response->first, 'first');
+    }
+
+    public function testGetTransaction()
+    {
+        $products = $this->getProductManager()->findActive();
+
+        $transaction1 = $this->getTransactionManager()->create();
+        $transaction1->setProducts($products);
+        $transaction1->setUser($this->user);
+        $transaction1->setAmount('100');
+        $transaction1->setStatus('yes');
+        $this->getTransactionManager()->add($transaction1);
+
+        $transaction2 = $this->getTransactionManager()->create();
+        $transaction2->setProducts($products);
+        $transaction2->setUser($this->user);
+        $transaction2->setAmount('100');
+        $transaction2->setStatus('yes');
+        $this->getTransactionManager()->add($transaction2);
+
+        $client = $this->getClient();
+        $crawler = $client->request('GET', '/angular/transaction');
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $response1 = json_decode($client->getResponse()->getContent());
+        $this->assertTrue(is_array($response1));
+
+        $crawler = $client->request('GET', '/angular/transaction/'.$response1[0]->id);
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $response2 = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($response2->id, $response1[0]->id);
+
+
+        foreach ($this->user->getTransactions() as $transaction) {
+            $this->getTransactionManager()->remove($transaction);
+        }
+
     }
 
 }

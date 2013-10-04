@@ -6,10 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use CDE\CartBundle\Model\TransactionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * CDE\CartBundle\Entity\Transaction
  *
+ * @ExclusionPolicy("all")
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CDE\CartBundle\Entity\TransactionRepository")
  */
@@ -18,6 +21,7 @@ class Transaction implements TransactionInterface
     /**
      * @var integer $id
      *
+     * @Expose
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -27,6 +31,7 @@ class Transaction implements TransactionInterface
     /**
      * @var object $user
      *
+     * @Expose
      * @ORM\ManyToOne(targetEntity="CDE\UserBundle\Entity\User", inversedBy="transactions")
      */
     private $user;
@@ -34,6 +39,7 @@ class Transaction implements TransactionInterface
     /**
      * @var object $discount
      *
+     * @Expose
      * @ORM\ManyToOne(targetEntity="Discount", inversedBy="transaction")
      */
     private $discount;
@@ -41,6 +47,7 @@ class Transaction implements TransactionInterface
     /**
      * @var object $discountApplied
      *
+     * @Expose
      * @ORM\Column(name="discountApplied", type="float", nullable=true)
      */
     private $discountApplied;
@@ -48,6 +55,7 @@ class Transaction implements TransactionInterface
     /**
      * @var array $products
      *
+     * @Expose
      * @ORM\Column(name="products", type="array")
      */
     private $products;
@@ -55,6 +63,7 @@ class Transaction implements TransactionInterface
     /**
      * @var array $details
      *
+     * @Expose
      * @ORM\Column(name="details", type="array")
      */
     private $details;
@@ -76,6 +85,7 @@ class Transaction implements TransactionInterface
     /**
      * @var string $status
      *
+     * @Expose
      * @ORM\Column(name="status", type="string", length=255)
      */
     private $status;
@@ -83,6 +93,7 @@ class Transaction implements TransactionInterface
     /**
      * @var boolean $processed
      *
+     * @Expose
      * @ORM\Column(name="processed", type="boolean")
      */
     private $processed;
@@ -90,6 +101,7 @@ class Transaction implements TransactionInterface
     /**
      * @var datetime $created
      *
+     * @Expose
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
@@ -98,6 +110,7 @@ class Transaction implements TransactionInterface
     /**
      * @var datetime $updated
      *
+     * @Expose
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      */
