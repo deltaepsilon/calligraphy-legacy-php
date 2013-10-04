@@ -39,6 +39,11 @@ class AngularController extends FOSRestController
         return $this->get('cde_cart.manager.transaction');
     }
 
+    public function getProductManager()
+    {
+        return $this->get('cde_cart.manager.product');
+    }
+
     /**
      * Convenience Methods
      */
@@ -201,13 +206,31 @@ class AngularController extends FOSRestController
     public function transactionAction($id = null)
     {
         $user = $this->getUser();
-        if (isset($id)) {
-            $transaction = $this->getTransactionManager()->findByUser($this->getUser(), $id);
+        if (!isset($user)) {
+            $view = $this->view(401)->setFormat('json');
         } else {
-            $transaction = $user->getTransactions()->getValues();
+            if (isset($id)) {
+                $transaction = $this->getTransactionManager()->findByUser($this->getUser(), $id);
+            } else {
+                $transaction = $user->getTransactions()->getValues();
+            }
+
+            $view = $this->view($transaction, 200)->setFormat('json');
         }
 
-        $view = $this->view($transaction, 200)->setFormat('json');
+
+        return $this->handleView($view);
+    }
+
+    public function productAction($id = null)
+    {
+        if (isset($id)) {
+            $product = $this->getProductManager()->find($id);
+        } else {
+            $product = $this->getProductManager()->findActive();
+        }
+
+        $view = $this->view($product, 200)->setFormat('json');
         return $this->handleView($view);
     }
 

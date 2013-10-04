@@ -183,18 +183,33 @@ class AngularControllerTest extends BaseUserTest
         $client = $this->getClient();
         $crawler = $client->request('GET', '/angular/transaction');
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
-        $response1 = json_decode($client->getResponse()->getContent());
-        $this->assertTrue(is_array($response1));
+        $transactions = json_decode($client->getResponse()->getContent());
+        $this->assertTrue(is_array($transactions));
 
-        $crawler = $client->request('GET', '/angular/transaction/'.$response1[0]->id);
+        $crawler = $client->request('GET', '/angular/transaction/'.$transactions[0]->id);
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
-        $response2 = json_decode($client->getResponse()->getContent());
-        $this->assertEquals($response2->id, $response1[0]->id);
+        $transaction = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($transaction->id, $transactions[0]->id);
 
 
-        foreach ($this->user->getTransactions() as $transaction) {
-            $this->getTransactionManager()->remove($transaction);
+        foreach ($this->user->getTransactions() as $actualTransaction) {
+            $this->getTransactionManager()->remove($actualTransaction);
         }
+
+    }
+
+    public function testGetProduct()
+    {
+        $client = $this->getClient();
+        $crawler = $client->request('GET', '/angular/product');
+        $products = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertTrue(is_array($products));
+
+        $crawler = $client->request('GET', '/angular/product/'.$products[0]->id);
+        $product = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($product->id, $products[0]->id);
 
     }
 

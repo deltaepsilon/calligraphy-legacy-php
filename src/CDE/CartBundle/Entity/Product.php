@@ -6,11 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use CDE\CartBundle\Model\ProductInterface;
 use CDE\ContentBundle\Model\TagInterface;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 
 /**
  * CDE\CartBundle\Entity\Product
  *
+ * @ExclusionPolicy("all")
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CDE\CartBundle\Entity\ProductRepository")
  */
@@ -18,7 +21,7 @@ class Product implements ProductInterface
 {
     /**
      * @var integer $id
-     *
+     * @Expose
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -45,6 +48,7 @@ class Product implements ProductInterface
     /**
      * @var string $title
      *
+     * @Expose
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
@@ -52,6 +56,7 @@ class Product implements ProductInterface
     /**
      * @var text $description
      *
+     * @Expose
      * @ORM\Column(name="description", type="text")
      */
     private $description;
@@ -59,6 +64,7 @@ class Product implements ProductInterface
     /**
      * @var string $type
      *
+     * @Expose
      * @ORM\Column(name="type", type="string", length=255)
      */
     private $type;
@@ -66,6 +72,7 @@ class Product implements ProductInterface
     /**
      * @var string $slug
      *
+     * @Expose
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(name="slug", type="string", length=255)
      */
@@ -74,6 +81,7 @@ class Product implements ProductInterface
     /**
      * @var float $price
      *
+     * @Expose
      * @ORM\Column(name="price", type="float")
      */
     private $price;
@@ -81,6 +89,7 @@ class Product implements ProductInterface
 	/**
 	 * @var integer $available
 	 *
+     * @Expose
 	 * @ORM\Column(name="available", type="integer", nullable=TRUE)
 	 */
 	private $available;
@@ -88,6 +97,7 @@ class Product implements ProductInterface
     /**
      * @var boolean $active
      *
+     * @Expose
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
@@ -95,6 +105,7 @@ class Product implements ProductInterface
     /**
      * @var string $keyImage
      *
+     * @Expose
      * @ORM\Column(name="keyImage", type="string", length=255, nullable=TRUE)
      */
     private $keyImage;
@@ -102,6 +113,7 @@ class Product implements ProductInterface
     /**
      * @var array $images
      *
+     * @Expose
      * @ORM\Column(name="images", type="array", nullable=TRUE)
      */
     private $images;
@@ -109,6 +121,7 @@ class Product implements ProductInterface
     /**
      * @var string $uri
      *
+     * @Expose
      * @ORM\Column(name="uri", type="string", length=255, nullable=TRUE)
      */
     private $uri;
@@ -116,6 +129,7 @@ class Product implements ProductInterface
     /**
      * @var integer $days
      *
+     * @Expose
      * @ORM\Column(name="days", type="integer", nullable=TRUE)
      */
     private $days;
@@ -123,13 +137,14 @@ class Product implements ProductInterface
     /**
      * @var boolean $recurring
      *
+     * @Expose
      * @ORM\Column(name="recurring", type="boolean", nullable=TRUE)
      */
     private $recurring;
 
     /**
      * @var integer $tag
-     * 
+     *
      * @ORM\ManyToMany(targetEntity="CDE\ContentBundle\Entity\Tag", inversedBy="products")
      * 
      */
@@ -138,6 +153,7 @@ class Product implements ProductInterface
     /**
      * @var float $discountPercent
      *
+     * @Expose
      * @ORM\Column(name="discountPercent", type="float", nullable=TRUE)
      */
     private $discountPercent;
@@ -145,6 +161,7 @@ class Product implements ProductInterface
     /**
      * @var float $discountValue
      *
+     * @Expose
      * @ORM\Column(name="discountValue", type="float", nullable=TRUE)
      */
     private $discountValue;
@@ -152,6 +169,7 @@ class Product implements ProductInterface
     /**
      * @var datetime $expiration
      *
+     * @Expose
      * @ORM\Column(name="expiration", type="integer", nullable=TRUE)
      */
     private $expiration;
@@ -159,6 +177,7 @@ class Product implements ProductInterface
     /**
      * @var datetime $created
      *
+     * @Expose
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
@@ -167,6 +186,7 @@ class Product implements ProductInterface
     /**
      * @var datetime $updated
      *
+     * @Expose
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      */
