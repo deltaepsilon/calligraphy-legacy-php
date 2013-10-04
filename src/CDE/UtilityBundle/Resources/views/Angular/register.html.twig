@@ -1,8 +1,95 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
-    {{ form_widget(form) }}
-    <div>
-        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+{#<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">#}
+    {#{{ form_widget(form) }}#}
+    {#<div>#}
+        {#<input type="submit" value="{{ 'registration.submit'|trans }}" />#}
+    {#</div>#}
+{#</form>#}
+<div class="pure-g-r account-register padded-wrapper">
+    <div id="register" class="pure-u-1">
+        <form class="qv-form full-width-form centered" name="registerForm" action="{{ path('fos_user_registration_register') }}" method="POST" class="fos_user_registration_register">
+            <h3 class="clearfix text-green2">Register.</h3>
+
+            {{ form_widget(form._token) }}
+            <br>
+            <div class="clearfix pure-g-r">
+                <input
+                    id="fos_user_registration_form_username"
+                    class="pure-u-2-5 pull-left"
+                    type="text"
+                    name="username"
+                    required="required"
+                    ng-maxlength="255"
+                    ng-minlength="3"
+                    ng-model="registration.username"
+                    qv-focus
+                    placeholder="Username..."
+                />
+                <div class="form-error pure-u-3-5" ng-show="registerForm.username.$error.minlength">Your username is too short</div>
+                <div class="form-error pure-u-3-5" ng-show="registerForm.username.$error.maxlength">Your username is too long</div>
+            </div>
+            <div class="clearfix pure-g-r">
+                <input
+                    id="fos_user_registration_form_email"
+                    class="pure-u-2-5 pull-left"
+                    type="email"
+                    name="email"
+                    ng-required="true"
+                    ng-model="registration.email"
+                    placeholder="Email..."
+                />
+                <div class="form-error pure-u-3-5" ng-show="registerForm.email.$invalid">That email looks invalid</div>
+            </div>
+            <div class="clearfix pure-g-r">
+                <input
+                    id="fos_user_registration_form_plainPassword_first"
+                    class="pure-u-2-5 pull-left"
+                    type="password"
+                    name="password"
+                    ng-required="true"
+                    ng-model="registration.password"
+                    ng-minlength="3"
+                    placeholder="Password..."
+                />
+                <div class="form-error pure-u-3-5" ng-show="registerForm.password.$error.minlength">Your password is too short</div>
+            </div>
+            <div class="clearfix pure-g-r">
+                <input
+                    id="fos_user_registration_form_plainPassword_second"
+                    class="pure-u-2-5 pull-left"
+                    type="password"
+                    name="verification"
+                    ng-required="true"
+                    ng-model="registration.verification"
+                    qv-password-verify="registration.password"
+                    password-verification="registration.verification"
+                    form-verification="registerForm.verification"
+                    placeholder="Verify password..."
+                />
+                <div class="form-error pure-u-3-5" ng-show="registerForm.verification.$error.verify">Verification does not match</div>
+            </div>
+
+            <div class="clearfix pure-g-r">
+                <div class="pure-u-1-5">
+                    <button
+                        class="button-primary full-width"
+                        type="submit"
+                        id="_submit"
+                        name="_submit"
+                        value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}"
+                        ng-disabled="registerForm.$invalid"
+                    >
+                        {{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}
+                    </button>
+                </div>
+                <div class="pure-u-1-5 text-centered">
+                    <a ui-sref="login">Log In</a>
+                </div>
+                <div class="pure-u-1-5 text-centered">
+                    <a ui-sref="reset">Reset Password</a>
+                </div>
+            </div>
+        </form>
     </div>
-</form>
+</div>

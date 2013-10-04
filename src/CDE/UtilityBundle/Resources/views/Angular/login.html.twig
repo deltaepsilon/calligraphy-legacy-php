@@ -2,7 +2,7 @@
     <div id="login" class="pure-u-1">
 
         <form class="qv-form full-width-form centered" name="loginForm" action="{{ path("fos_user_security_check") }}" method="post">
-            <h3 class="clearfix text-green2">Log In</h3>
+            <h3 class="clearfix text-green2">Log In.</h3>
 
             <div class="clearfix form-errors">
                 <span class="form-error">{{ error }}</span>
@@ -20,6 +20,7 @@
                     placeholder="Username..."
                     ng-required="true"
                     ng-model="login.username"
+                    qv-focus
                 />
             </div>
 
