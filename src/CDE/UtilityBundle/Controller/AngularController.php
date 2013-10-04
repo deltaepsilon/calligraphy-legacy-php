@@ -117,15 +117,15 @@ class AngularController extends FOSRestController
             $commentEmail = $this->getParameter($request, 'comment_email', true);
 
             if ( isset($password) && ($password !== $verification) ) {
-                $view = $this->view(array('error' => 'Passwords do not match'), 200)->setFormat('json');
+                $view = $this->view(array('error' => 'Passwords do not match', 'field' => 'verification'), 200)->setFormat('json');
             } else if (isset($password) && strlen($password) < 3) {
-                $view = $this->view(array('error' => 'Password is too short'), 200)->setFormat('json');
+                $view = $this->view(array('error' => 'Password is too short', 'field' => 'password'), 200)->setFormat('json');
 
             } else if (isset($email) && count($this->getUserManager()->validateEmail($email))) {
-                $view = $this->view(array('error' => 'Invalid email'), 200)->setFormat('json');
+                $view = $this->view(array('error' => 'Invalid email', 'field' => 'email'), 200)->setFormat('json');
 
             } else if (!$this->getUserManager()->checkPassword($user, $oldPassword)) {
-                $view = $this->view(array('error' => 'Bad password'), 200)->setFormat('json');
+                $view = $this->view(array('error' => 'Bad password', 'field' => 'oldpassword'), 200)->setFormat('json');
 
             } else {
                 if (isset($email)) {
@@ -161,8 +161,10 @@ class AngularController extends FOSRestController
             $view = $this->view(array('error' => 'Not found'), 401)->setFormat('json');
         } else {
             $params = $request->request->all();
-            if (!isset($params['first']) || !isset($params['last'])) {
-                $view = $this->view(array('error' => 'First and last name are required'), 200)->setFormat('json');
+            if (!isset($params['first'])) {
+                $view = $this->view(array('error' => 'First name is required', 'field' => 'first'), 200)->setFormat('json');
+            } else if (!isset($params['last'])) {
+                $view = $this->view(array('error' => 'Last name is required', 'field' => 'last'), 200)->setFormat('json');
             } else {
                 $params = $this->getParameters($request, array('first', 'last', 'phone', 'line1', 'line2', 'line3', 'city', 'state', 'code', 'country', 'instructions'));
                 $address = $user->getAddress();

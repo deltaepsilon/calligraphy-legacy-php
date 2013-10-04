@@ -135,7 +135,8 @@ class AngularControllerTest extends BaseUserTest
         ));
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
-        $this->assertEquals('First and last name are required', $response->error);
+        $this->assertEquals('Last name is required', $response->error);
+        $this->assertEquals('last', $response->field);
 
     }
 
