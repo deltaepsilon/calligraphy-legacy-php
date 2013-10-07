@@ -169,3 +169,25 @@ CDEUtilityBundle_angular_product:
     methods: [GET]
     options:
       expose: true
+
+#Cart Actions
+CDEUtilityBundle_angular_cart:
+    pattern: /angular/cart
+    defaults: { _controller: CDEUtilityBundle:Angular:cart }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_cart_add:
+    pattern: /angular/cart
+    defaults: { _controller: CDEUtilityBundle:Angular:addToCart }
+    methods: [POST]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_cart_remove:
+    pattern: /angular/cart/update
+    defaults: { _controller: CDEUtilityBundle:Angular:updateCart }
+    methods: [POST]
+    options:
+      expose: true

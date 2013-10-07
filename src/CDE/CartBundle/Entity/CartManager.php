@@ -69,7 +69,6 @@ class CartManager implements CartManagerInterface
     {
         if ($user) {
 			foreach ($cart->getProducts() as $product) {
-				var_dump('removing', $product->getId());
 				$cart->removeProduct($product);
 			}
 			$cart->setDiscount(null);
@@ -161,6 +160,28 @@ class CartManager implements CartManagerInterface
             }
         }
         $this->update($cart, $user);
+    }
+
+    public function setQuantity(Cart $cart, $user, $id, $quantity) {
+        $productsToRemove = $cart->getProducts()->filter(
+            function ($element) use ($id) {
+                if($element->getId() === $id) {
+                    return TRUE;
+                }
+            }
+        );
+        $iterator = $productsToRemove->getIterator();
+        foreach ($iterator as $product) {
+            $this->removeProduct($product, $user, $product->getQuantity());
+            $product->setQuantity(Max(0, $quantity));
+            if ($product->getQuantity() > 0) {
+                $product->setQuantity(0);
+                $this->addProduct($product, $user, $quantity);
+            }
+
+        }
+
+        return $this->find($user);
     }
     
     public function getCartValue(CartInterface $cart)

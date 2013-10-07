@@ -7,10 +7,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use CDE\CartBundle\Model\CartInterface;
 use CDE\CartBundle\Entity\Product;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * CDE\CartBundle\Entity\Cart
  *
+ * @ExclusionPolicy("all")
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CDE\CartBundle\Entity\CartRepository")
  */
@@ -19,6 +22,7 @@ class Cart implements CartInterface
     /**
      * @var integer $id
      *
+     * @Expose
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -27,14 +31,16 @@ class Cart implements CartInterface
 
     /**
      * @var integer $user
-     * 
+     *
+     * @Expose
      * @ORM\OneToOne(targetEntity="CDE\UserBundle\Entity\User", inversedBy="cart")
      */
     private $user;
 
     /**
      * @var integer $discount
-     * 
+     *
+     * @Expose
      * @ORM\ManyToOne(targetEntity="Discount", inversedBy="cart")
      */
     private $discount;
@@ -42,6 +48,7 @@ class Cart implements CartInterface
     /**
      * @var array $products
      *
+     * @Expose
      * @ORM\Column(name="products", type="array")
      */
     private $products;
@@ -49,6 +56,7 @@ class Cart implements CartInterface
     /**
      * @var datetime $created
      *
+     * @Expose
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
@@ -57,6 +65,7 @@ class Cart implements CartInterface
     /**
      * @var datetime $updated
      *
+     * @Expose
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      */

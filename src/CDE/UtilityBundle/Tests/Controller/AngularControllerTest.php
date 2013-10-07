@@ -213,4 +213,106 @@ class AngularControllerTest extends BaseUserTest
 
     }
 
+    public function testGetCart()
+    {
+        $client = $this->getClient();
+        $crawler = $client->request('GET', '/angular/cart');
+        $cart = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertTrue(isset($cart->id));
+        $this->assertTrue(isset($cart->products));
+    }
+
+    public function testAddToCart()
+    {
+
+        $this->getCartManager()->clear($this->getCartManager()->find($this->user), $this->user);
+        $products = $this->getProductManager()->findActive();
+
+        foreach ($products as $prospectiveProduct) {
+            if ($prospectiveProduct->getType() === 'physical') {
+                $product = $prospectiveProduct;
+                break;
+            }
+        }
+
+        $client = $this->getClient();
+        $crawler = $client->request('POST', '/angular/cart', array(
+            'product_id' => 'ridiculous',
+            'quantity' => $product->getAvailable()
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Product not found');
+
+        $crawler = $client->request('POST', '/angular/cart', array(
+            'product_id' => $product->getId(),
+            'quantity' => 'really ridiculous'
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Quantity not positive');
+
+        $crawler = $client->request('POST', '/angular/cart', array(
+            'product_id' => $product->getId(),
+            'quantity' => $product->getAvailable() + 1
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Requested quantity not available');
+
+        $crawler = $client->request('POST', '/angular/cart', array(
+            'product_id' => $product->getId(),
+            'quantity' => $product->getAvailable()
+        ));
+        $cart = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertTrue(isset($cart->id));
+        $this->assertTrue(is_array($cart->products));
+        $this->assertEquals($cart->products[0]->quantity, $product->getAvailable());
+    }
+
+    public function testUpdateCart()
+    {
+        $products = $this->getProductManager()->findActive();
+        foreach ($products as $product) {
+            $this->getCartManager()->addProduct($product, $this->user, 100);
+        }
+
+        $cart = $this->getCartManager()->find($this->user);
+        $product = $products[0];
+
+        $client = $this->getClient();
+        $crawler = $client->request('POST', '/angular/cart/update', array(
+            'product_id' => $product->getId(),
+            'quantity' => 1
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $productsArray = (array) $response->products;
+        foreach ($productsArray as $tempResponseProduct) {
+            if ($tempResponseProduct->id === $product->getId()) {
+                $responseProduct = $tempResponseProduct;
+                break;
+            }
+        }
+
+        $this->assertEquals($responseProduct->quantity, 1);
+
+        $crawler = $client->request('POST', '/angular/cart/update', array(
+            'product_id' => $product->getId(),
+            'quantity' => 0
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals(count($cart->getProducts()) - 1, count((array) $response->products));
+
+        $crawler = $client->request('POST', '/angular/cart/update', array());
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals(0, count($response->products));
+    }
+
+
+
 }

@@ -44,6 +44,11 @@ class AngularController extends FOSRestController
         return $this->get('cde_cart.manager.product');
     }
 
+    public function getCartManager()
+    {
+        return $this->get('cde_cart.manager.cart');
+    }
+
     /**
      * Convenience Methods
      */
@@ -232,6 +237,75 @@ class AngularController extends FOSRestController
 
         $view = $this->view($product, 200)->setFormat('json');
         return $this->handleView($view);
+    }
+
+    public function cartAction() {
+        $view = $this->view($this->getCartManager()->find($this->getUser()), 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function addToCartAction(Request $request) {
+        $quantity = intval($this->getParameter($request, 'quantity'));
+        $productId = intval($this->getParameter($request, 'product_id'));
+
+        if (!isset($productId) || $productId === 0) {
+            $view = $this->view(array('error' => 'Product not found', 'field' => 'product_id'), 200)->setFormat('json');
+        } else if (!isset($quantity) || $quantity < 1) {
+            $view = $this->view(array('error' => 'Quantity not positive'), 200)->setFormat('json');
+        } else {
+            $user = $this->getUser();
+            $product = $this->getProductManager()->findActive($productId);
+
+            if (!isset($product) || !isset($product[0])) {
+                $view = $this->view(array('error' => 'Product not found', 'field' => 'product_id'), 200)->setFormat('json');
+            } else {
+                $product = $product[0];
+                $cart = $this->getCartManager()->find($user);
+                $available = $product->getAvailable();
+
+                if (!isset($cart)) {
+                    $view = $this->view(array('error' => 'Cart not found'), 200)->setFormat('json');
+                } else if (isset($available) && $available < $quantity) {
+                    $view = $this->view(array('error' => 'Requested quantity not available', 'field' => 'quantity'), 200)->setFormat('json');
+                } else {
+                    $this->getCartManager()->addProduct($product, $user, intval($quantity));
+                    $view = $this->view($this->getCartManager()->find($user), 200)->setFormat('json');
+                }
+            }
+        }
+
+
+        return $this->handleView($view);
+
+    }
+
+    public function updateCartAction(Request $request)
+    {
+        $quantity = intval($this->getParameter($request, 'quantity'));
+        $productId = intval($this->getParameter($request, 'product_id'));
+
+        if (!isset($quantity)) {
+            $quantity = 0;
+        }
+        if (!isset($productId)) {
+            $productId = 0;
+        }
+
+        $user = $this->getUser();
+        $cart = $this->getCartManager()->find($user);
+        $product = $this->getProductManager()->find($productId);
+
+        if ($productId === 0 || !isset($product)) {
+            $this->getCartManager()->clear($cart, $user);
+        } else if ($quantity === 0) {
+            $this->getCartManager()->removeProduct($product, $user, $quantity);
+        } else {
+            $this->getCartManager()->setQuantity($cart, $user, $product->getId(), $quantity);
+        }
+
+        $view = $this->view($this->getCartManager()->find($user), 200)->setFormat('json');
+        return $this->handleView($view);
+
     }
 
 }

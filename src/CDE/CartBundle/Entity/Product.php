@@ -191,15 +191,30 @@ class Product implements ProductInterface
      * @ORM\Column(name="updated", type="datetime")
      */
     private $updated;
-    
+
+    /**
+     * @Expose
+     */
     private $quantity;
-    
+
+    /**
+     * @Expose
+     */
     private $discountCodes;
-    
+
+    /**
+     * @Expose
+     */
     private $discountExpiration;
-    
+
+    /**
+     * @Expose
+     */
     private $signedUri;
 
+    /**
+     * @Expose
+     */
 	private $tempAvailable;
 
 	private $PHYSICAL = 'physical';
