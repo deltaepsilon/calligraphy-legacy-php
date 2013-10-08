@@ -48,6 +48,11 @@ class AngularController extends FOSRestController
     {
         return $this->get('cde_cart.manager.cart');
     }
+    protected function getDiscountManager()
+    {
+        return $this->get('cde_cart.manager.discount');
+    }
+
 
     /**
      * Convenience Methods
@@ -304,6 +309,40 @@ class AngularController extends FOSRestController
         }
 
         $view = $this->view($this->getCartManager()->find($user), 200)->setFormat('json');
+        return $this->handleView($view);
+
+    }
+
+    public function discountAction(Request $request) {
+        $user = $this->getUser();
+        $cart = $this->getCartManager()->find($user);
+        $code = $this->getParameter($request, 'code');
+
+        if (!isset($code) || $code === 0) {
+            $cart->setDiscount(null);
+            $this->getCartManager()->update($cart, $user);
+            $view = $this->view($this->getCartManager()->find($user), 200)->setFormat('json');
+        } else {
+            $discount = $this->getDiscountManager()->findByCode($code);
+            if (isset($discount)) {
+                $now = time();
+                $date = $discount->getExpiresDate()->format('U');
+                $expiration = intval($date);
+            }
+
+            if (!isset($discount)) {
+                $view = $this->view(array('error' => 'Discount not found'), 200)->setFormat('json');
+            } else if ($discount->getUses() >= $discount->getMaxUses()) {
+                $view = $this->view(array('error' => 'Discount has exceeded maximum uses'), 200)->setFormat('json');
+            } else if ($now > $expiration) {
+                $view = $this->view(array('error' => 'Discount has expired'), 200)->setFormat('json');
+            } else {
+                $cart->setDiscount($discount);
+                $this->getCartManager()->update($cart, $user);
+                $view = $this->view($this->getCartManager()->find($user), 200)->setFormat('json');
+            }
+        }
+
         return $this->handleView($view);
 
     }

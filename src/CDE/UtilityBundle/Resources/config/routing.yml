@@ -191,3 +191,10 @@ CDEUtilityBundle_angular_cart_remove:
     methods: [POST]
     options:
       expose: true
+
+CDEUtilityBundle_angular_cart_discount:
+    pattern: /angular/discount
+    defaults: { _controller: CDEUtilityBundle:Angular:discount }
+    methods: [POST]
+    options:
+      expose: true

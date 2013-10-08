@@ -28,6 +28,11 @@ class AngularControllerTest extends BaseUserTest
         return $this->container->get('cde_cart.manager.product');
     }
 
+    protected function getDiscountManager()
+    {
+        return $this->container->get('cde_cart.manager.discount');
+    }
+
     /**
      * Test
      */
@@ -313,6 +318,65 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals(0, count($response->products));
     }
 
+    public function testDiscount()
+    {
+        $overused = $this->getDiscountManager()->create();
+        $overused->setMaxUses(0);
+        $overused->setExpires(1);
+        $overused->setDescription('test');
+        $this->getDiscountManager()->add($overused);
+
+        $expired = $this->getDiscountManager()->create();
+        $expired->setMaxUses(1);
+        $expired->setExpires(0);
+        $expired->setDescription('test');
+        $this->getDiscountManager()->add($expired);
+
+        $valid = $this->getDiscountManager()->create();
+        $valid->setMaxUses(1);
+        $valid->setExpires(1);
+        $valid->setDescription('test');
+        $this->getDiscountManager()->add($valid);
+
+        $client = $this->getClient();
+        $crawler = $client->request('POST', '/angular/discount', array(
+            'code' => 'not a code',
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Discount not found');
+
+        $crawler = $client->request('POST', '/angular/discount', array(
+            'code' => $overused->getCode(),
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Discount has exceeded maximum uses');
+
+        $crawler = $client->request('POST', '/angular/discount', array(
+            'code' => $expired->getCode(),
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Discount has expired');
+
+        $crawler = $client->request('POST', '/angular/discount', array(
+            'code' => $valid->getCode(),
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->discount->code, $valid->getCode());
+
+        $crawler = $client->request('POST', '/angular/discount', array());
+        $response = json_decode($client->getResponse()->getContent());
+
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertFalse(isset($response->discount));
+
+        $this->getDiscountManager()->remove($overused);
+        $this->getDiscountManager()->remove($expired);
+        $this->getDiscountManager()->remove($valid);
+    }
 
 
 }
