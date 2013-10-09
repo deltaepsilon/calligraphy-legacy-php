@@ -74,6 +74,9 @@ class User extends BaseUser
     
     public function __toString()
     {
+        if (!isset($this->username)) {
+            return 'User';
+        }
         return $this->username;
     }
 

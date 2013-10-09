@@ -10,6 +10,7 @@
 
 namespace CDE\UserBundle\Controller;
 
+use CDE\UserBundle\Form\Type\RegistrationFormType;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 use FOS\UserBundle\FOSUserEvents;
@@ -17,6 +18,7 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +28,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 
 
-class RegistrationController extends BaseController
+class RegistrationController extends Controller
 {
 	public function getUserManager()
 	{
@@ -48,6 +50,28 @@ class RegistrationController extends BaseController
 
         return $errors;
     }
+
+    private function translateRequestParams(Request $request) {
+        $username =$request->request->get('username');
+        $originalForm = $request->request->get('fos_user_registration_form');
+        $form = array(
+            'username' => $username,
+            'email' => $request->request->get('email'),
+            'plainPassword' => array(
+                'first' => $request->request->get('password'),
+                'second' => $request->request->get('verification')
+            ),
+            '_token' => $originalForm['_token']
+        );
+
+
+
+        if (isset($username)) {
+            $request->request->set('fos_user_registration_form', $form);
+        }
+
+        return $request;
+    }
         
     public function registerAction(Request $request)
     {
@@ -64,8 +88,10 @@ class RegistrationController extends BaseController
       $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
 
       $form = $formFactory->createForm();
+//      $form = $this->createForm(new RegistrationFormType('CDE\UserBundle\Entity\User'));
       $form->setData($user);
 
+       $request = $this->translateRequestParams($request);
       if ('POST' === $request->getMethod()) {
           $form->bind($request);
 
@@ -78,7 +104,16 @@ class RegistrationController extends BaseController
               if (null === $response = $event->getResponse()) {
 //                  $url = $this->container->get('router')->generate('fos_user_registration_confirmed');
                   $url = $this->container->get('router')->generate('CDECartBundle_cart_index');
-                  $response = new RedirectResponse($url);
+
+                  $redirect = $request->request->get('redirect');
+                  if (isset($redirect) && preg_match('/http/', $redirect) === 0) {
+                      $redirect = 'http://'.$_SERVER['HTTP_HOST'].$redirect;
+                      $response = new RedirectResponse($redirect);
+                  } else {
+                      $response = new RedirectResponse($url);
+                  }
+
+
               }
 
               $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
@@ -97,7 +132,7 @@ class RegistrationController extends BaseController
           }
           return new RedirectResponse($final);
       } else {
-          return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
+          return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.twig', array(
               'form' => $form->createView(),
           ));
       }
