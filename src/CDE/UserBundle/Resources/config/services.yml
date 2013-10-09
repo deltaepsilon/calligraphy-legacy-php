@@ -1,4 +1,6 @@
 parameters:
+  security.authentication.success_handler.class: CDE\UserBundle\Handler\LoginSuccessHandler
+  security.authentication.failure_handler.class: CDE\UserBundle\Handler\LoginFailureHandler
 #    cde_user.example.class: CDE\UserBundle\Example
 
 services:
@@ -29,3 +31,11 @@ services:
       em: '@doctrine.orm.entity_manager'
       class: CDE\UserBundle\Entity\Address
       paginator: '@knp_paginator'
+  security.authentication.customized_success_handler:
+          class: %security.authentication.success_handler.class%
+          public: false
+          arguments:  [@router, @security.context]
+  security.authentication.customized_failure_handler:
+            class: %security.authentication.failure_handler.class%
+            public: false
+            arguments:  [@router, @security.context]

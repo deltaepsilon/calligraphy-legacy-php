@@ -9,6 +9,8 @@
             </div>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            <input style="display: none" type="text" name="redirect" ng-model="redirect" />
+            <input style="display: none" type="text" name="origin" ng-model="origin" />
 
             <div class="clearfix pure-g-r">
                 <input

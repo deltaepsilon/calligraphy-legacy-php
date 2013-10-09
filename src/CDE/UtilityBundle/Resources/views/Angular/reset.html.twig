@@ -6,6 +6,8 @@
         <form class="qv-form full-width-form centered" name="resetForm" action="{{ path('fos_user_resetting_send_email') }}" method="POST">
             <h3 class="clearfix text-green2">Reset Password</h3>
 
+            <input style="display: none" type="text" name="redirect" ng-model="redirect" />
+            <input style="display: none" type="text" name="origin" ng-model="origin" />
             <br>
 
             <div class="clearfix pure-g-r">

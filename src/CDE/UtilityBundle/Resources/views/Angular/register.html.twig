@@ -12,6 +12,9 @@
             <h3 class="clearfix text-green2">Register.</h3>
 
             {{ form_widget(form._token) }}
+            <input style="display: none" type="text" name="redirect" ng-model="redirect" />
+            <input style="display: none" type="text" name="origin" ng-model="origin" />
+
             <br>
             <div class="clearfix pure-g-r">
                 <input
@@ -39,7 +42,7 @@
                     ng-model="registration.email"
                     placeholder="Email..."
                 />
-                <div class="form-error pure-u-3-5" ng-show="registerForm.email.$invalid">That email looks invalid</div>
+                <div class="form-error pure-u-3-5" ng-show="registerForm.email.$invalid && registerForm.email.$dirty">That email looks invalid</div>
             </div>
             <div class="clearfix pure-g-r">
                 <input
@@ -84,7 +87,7 @@
                     </button>
                 </div>
                 <div class="pure-u-1-5 text-centered">
-                    <a ui-sref="login">Log In</a>
+                    <a ui-sref="login">Register</a>
                 </div>
                 <div class="pure-u-1-5 text-centered">
                     <a ui-sref="reset">Reset Password</a>
