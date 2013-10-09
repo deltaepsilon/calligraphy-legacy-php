@@ -17,7 +17,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface {
             $redirect = '/';
         }
         if (preg_match('/http/', $redirect) === 0) {
-            $redirect = $_SERVER['HTTP_ORIGIN'].$redirect;
+            $redirect = 'http://'.$_SERVER['HTTP_HOST'].$redirect;
         }
         return new RedirectResponse($redirect);
     }

@@ -18,6 +18,7 @@ use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -31,6 +32,22 @@ class RegistrationController extends BaseController
 	{
 		return $this->container->get('cde_user.manager.user');
 	}
+
+    private function getErrorMessages(Form $form) {
+        $errors = array();
+
+        foreach ($form->getErrors() as $key => $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[$child->getName()] = $this->getErrorMessages($child);
+            }
+        }
+
+        return $errors;
+    }
         
     public function registerAction(Request $request)
     {
@@ -70,8 +87,21 @@ class RegistrationController extends BaseController
           }
       }
 
-      return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
-          'form' => $form->createView(),
-      ));
+      $redirect = $request->request->get('origin');
+      if (isset($redirect)) {
+          $errors = $this->getErrorMessages($form);
+          $error = 'Registration failed. Try another username.';
+          $final = $redirect.'?error='.$error;
+          if (preg_match('/http/', $redirect) === 0) {
+              $final = 'http://'.$_SERVER['HTTP_HOST'].'/'.$redirect.'?error='.$error;
+          }
+          return new RedirectResponse($final);
+      } else {
+          return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
+              'form' => $form->createView(),
+          ));
+      }
+
+
 	}
 }

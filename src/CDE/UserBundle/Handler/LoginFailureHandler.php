@@ -23,7 +23,7 @@ class LoginFailureHandler implements AuthenticationFailureHandlerInterface {
         }
         $final = $redirect;
         if (preg_match('/http/', $redirect) === 0) {
-            $final = $_SERVER['HTTP_ORIGIN'].'/'.$redirect.'?error='.$exception->getMessage();
+            $final = 'http://'.$_SERVER['HTTP_HOST'].'/'.$redirect.'?error='.$exception->getMessage();
         }
 
         return new RedirectResponse($final);
