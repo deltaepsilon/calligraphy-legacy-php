@@ -38,6 +38,11 @@ CDEAffiliateBundle:
     resource: "@CDEAffiliateBundle/Resources/config/routing.yml"
     prefix:   /
 
+CDEAffiliateBundle:
+    resource: "@CDEUtilityBundle/Resources/config/angular-routing.yml"
+    prefix:   /angular
+
+
 # Internal routing configuration to handle ESI
 #_internal:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"

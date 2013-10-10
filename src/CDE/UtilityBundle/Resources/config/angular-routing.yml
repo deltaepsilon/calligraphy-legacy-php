@@ -1,0 +1,106 @@
+#Angular Utility
+CDEUtilityBundle_angular_login:
+    pattern: /login.html
+    defaults: { _controller: CDEUtilityBundle:Angular:login }
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_register:
+    pattern: /register.html
+    defaults: { _controller: CDEUtilityBundle:Angular:register }
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_reset:
+    pattern: /reset.html
+    defaults: { _controller: CDEUtilityBundle:Angular:reset }
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_reset_email:
+    pattern: /reset
+    defaults: { _controller: CDEUserBundle:Resetting:customEmail }
+    methods: [POST]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_image_list:
+    pattern: /images/{prefix}
+    defaults: { _controller: CDEUtilityBundle:Angular:listImages }
+    options:
+      expose: true
+
+#User Actions
+CDEUtilityBundle_angular_user:
+    pattern: /user
+    defaults: { _controller: CDEUtilityBundle:Angular:user }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_user_update:
+    pattern: /user
+    defaults: { _controller: CDEUtilityBundle:Angular:userUpdate }
+    methods: [POST]
+    options:
+      expose: true
+
+#Address Actions
+CDEUtilityBundle_angular_address:
+    pattern: /address
+    defaults: { _controller: CDEUtilityBundle:Angular:address }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_address_update:
+    pattern: /address
+    defaults: { _controller: CDEUtilityBundle:Angular:addressUpdate }
+    methods: [POST]
+    options:
+      expose: true
+
+#Transaction Actions
+CDEUtilityBundle_angular_transaction:
+    pattern: /transaction/{id}
+    defaults: { _controller: CDEUtilityBundle:Angular:transaction, id: null }
+    methods: [GET]
+    options:
+      expose: true
+
+#Product Actions
+CDEUtilityBundle_angular_product:
+    pattern: /product/{id}
+    defaults: { _controller: CDEUtilityBundle:Angular:product, id: null }
+    methods: [GET]
+    options:
+      expose: true
+
+#Cart Actions
+CDEUtilityBundle_angular_cart:
+    pattern: /cart
+    defaults: { _controller: CDEUtilityBundle:Angular:cart }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_cart_add:
+    pattern: /cart
+    defaults: { _controller: CDEUtilityBundle:Angular:addToCart }
+    methods: [POST]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_cart_remove:
+    pattern: /cart/update
+    defaults: { _controller: CDEUtilityBundle:Angular:updateCart }
+    methods: [POST]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_cart_discount:
+    pattern: /discount
+    defaults: { _controller: CDEUtilityBundle:Angular:discount }
+    methods: [POST]
+    options:
+      expose: true
