@@ -1,3 +1,11 @@
+#Angular Params
+CDEUtilityBundle_angular_params:
+    pattern: /params
+    defaults: { _controller: CDEUtilityBundle:Angular:params }
+    methods: [GET]
+    options:
+      expose: true
+
 #Angular Utility
 CDEUtilityBundle_angular_login:
     pattern: /login.html

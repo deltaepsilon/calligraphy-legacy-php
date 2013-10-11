@@ -32,3 +32,5 @@ parameters:
 #    Sandbox
     cde_paypal: { paypal_username: me_1328726106_biz_api1.me.com, paypal_password: 123456789, paypal_signature: ASDFQWWERLKJKLJLKJALSDF, paypal_version: '84.0', paypal_currency_code: USD, paypal_webscr: 'https://www.sandbox.paypal.com/cgi-bin/webscr', paypal_nvp: 'https://api-3t.sandbox.paypal.com/nvp' }
     smart_client: http://client.istilllovecalligraphy.com
+    stripePK: pk_test_yKJ7iI8CjZqH0I7HzkiEPpET
+    stripeSK: sk_test_yg4S10KOQz4fTs3wenXKrxuD

@@ -347,4 +347,13 @@ class AngularController extends FOSRestController
 
     }
 
+    public function paramsAction() {
+        $params = array(
+            'stripePK' => $this->container->getParameter('stripePK'),
+            'stripeSK' => 'THAT IS A SECRET DUMMY'
+        );
+        $view = $this->view($params, 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
 }
