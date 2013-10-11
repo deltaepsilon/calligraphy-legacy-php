@@ -24,6 +24,20 @@ CDEUtilityBundle_angular_reset_email:
     options:
       expose: true
 
+CDEUtilityBundle_angular_resetting_form:
+    pattern: /resetting.html/{token}
+    defaults: { _controller: CDEUserBundle:Resetting:reset, token: null }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_resetting:
+    pattern: /resetting/{token}
+    defaults: { _controller: CDEUserBundle:Resetting:reset }
+    methods: [POST, GET]
+    options:
+      expose: true
+
 CDEUtilityBundle_angular_image_list:
     pattern: /images/{prefix}
     defaults: { _controller: CDEUtilityBundle:Angular:listImages }

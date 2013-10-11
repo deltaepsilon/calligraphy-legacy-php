@@ -1,0 +1,53 @@
+<div class="pure-g-r account-management padded-wrapper">
+
+
+    <!--User Form-->
+
+    <div id="user-form" class="pure-u-1 pure-g-r">
+
+        <form class="qv-form full-width-form centered" name="resetForm" action="/angular/resetting/{{ token }}" method="POST">
+            <h3 class="clearfix text-green2">Password reset.</h3>
+
+            {{ form_widget(form._token) }}
+            <br>
+            <div class="clearfix pure-g-r">
+                <input
+                        id="user-new-password"
+                        class="pure-u-2-5 pull-left"
+                        name="password"
+                        type="password"
+                        placeholder="New password..."
+                        ng-model="user.password"
+                        ng-minlength="3"
+                        />
+                <div class="form-error pure-u-3-5" ng-show="resetForm.password.$error.minlength">Your password is too short</div>
+            </div>
+            <div class="clearfix pure-g-r">
+                <input
+                        id="user-verification"
+                        class="pure-u-2-5 pull-left"
+                        name="verification"
+                        type="password"
+                        placeholder="Verify new password..."
+                        ng-model="user.verification"
+                        ng-minlength='3'
+                        qv-password-verify="user.password"
+                        password-verification="user.verification"
+                        form-verification="resetForm.verification"
+                        />
+                <div class="form-error pure-u-3-5" ng-show="resetForm.verification.$error.required">Please confirm your password</div>
+                <div class="form-error pure-u-3-5" ng-show="resetForm.verification.$error.verify">Verification does not match</div>
+            </div>
+            <div class="clearfix pure-g-r">
+                <div class="pure-u-1-5">
+                    <button class="button-primary full-width" ng-disabled="userForm.$invalid">Submit</button>
+                </div>
+            </div>
+            <br>
+            <br>
+
+        </form>
+    </div>
+
+
+</div>

@@ -9,12 +9,15 @@
 
 namespace CDE\UserBundle\Controller;
 
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Controller\ResettingController as BaseResettingController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResettingController extends BaseResettingController
 {
@@ -100,7 +103,7 @@ class ResettingController extends BaseResettingController
     /**
      * Reset user password
      */
-    public function resetAction(Request $request, $token)
+    public function resetAction(Request $request, $token = null)
     {
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
         $formFactory = $this->container->get('fos_user.resetting.form.factory');
@@ -118,9 +121,25 @@ class ResettingController extends BaseResettingController
         $event = new GetResponseUserEvent($user, $request);
         $dispatcher->dispatch(FOSUserEvents::RESETTING_RESET_INITIALIZE, $event);
 
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
+//        if (null !== $event->getResponse()) {
+//            return $event->getResponse();
+//        }
+
+        //reset form input
+        $formParams = $request->request->get('fos_user_resetting_form');
+        $csrfToken = '';
+        if (isset($formParams)) {
+            $csrfToken = $formParams['_token'];
         }
+        $inputs = array(
+            '_token' => $csrfToken,
+            'plainPassword' => array(
+                'first' => $request->request->get('password'),
+                'second' => $request->request->get('verification'),
+            ),
+        );
+
+        $request->request->set('fos_user_resetting_form', $inputs);
 
         $form = $formFactory->createForm();
         $form->setData($user);
@@ -135,7 +154,8 @@ class ResettingController extends BaseResettingController
                 $userManager->updateUser($user);
 
                 if (null === $response = $event->getResponse()) {
-                    $url = $this->container->get('router')->generate('fos_user_profile_show');
+//                    $url = $this->container->get('router')->generate('fos_user_profile_show');
+                    $url = $this->getRoot().'/#/account';
                     $response = new RedirectResponse($url);
                 }
 
@@ -145,9 +165,10 @@ class ResettingController extends BaseResettingController
             }
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Resetting:reset.html.'.$this->getEngine(), array(
-            'token' => $token,
+        return $this->container->get('templating')->renderResponse('CDEUtilityBundle:Angular:resetting.html.twig', array(
             'form' => $form->createView(),
+            'token' => $token,
         ));
+//        return new RedirectResponse($this->getRoot().'/#/reset/form?error=Password reset failed');
     }
 }
