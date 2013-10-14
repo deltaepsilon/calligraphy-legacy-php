@@ -1,3 +1,7 @@
+cde_stripe:
+    resource: "@CDEStripeBundle/Resources/config/routing.yml"
+    prefix:   /
+
 o_auth:
     resource: "@CDEOAuthBundle/Resources/config/routing.yml"
     prefix:   /

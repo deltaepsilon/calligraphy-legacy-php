@@ -1,0 +1,7 @@
+parameters:
+#    cde_stripe.example.class: CDE\StripeBundle\Example
+
+services:
+#    cde_stripe.example:
+#        class: %cde_stripe.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

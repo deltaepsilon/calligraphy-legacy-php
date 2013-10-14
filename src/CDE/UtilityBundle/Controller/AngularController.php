@@ -356,4 +356,18 @@ class AngularController extends FOSRestController
         return $this->handleView($view);
     }
 
+    public function tokenAction() {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+        } else {
+            $view = $this->view($user->getCard(), 200)->setFormat('json');
+        }
+        return $this->handleView($view);
+    }
+
+    public function tokenCreateAction() {
+
+    }
+
 }

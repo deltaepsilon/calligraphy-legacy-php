@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "fd5305bfc0d3ae53314c725a48596fe8",
+    "hash": "ca07ecc86382a157c621eb60fdc4567b",
     "packages": [
         {
             "name": "amazonwebservices/aws-sdk-for-php",
@@ -2181,6 +2181,54 @@
             "time": "2013-06-23 16:53:41"
         },
         {
+            "name": "stripe/stripe-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "2f8c717cd4217b693d19eabf3b65c21fd6c518b2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/2f8c717cd4217b693d19eabf3b65c21fd6c518b2",
+                "reference": "2f8c717cd4217b693d19eabf3b65c21fd6c518b2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.2"
+            },
+            "require-dev": {
+                "vierbergenlars/simpletest": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/Stripe/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "time": "2013-09-19 22:30:21"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.0.1",
             "source": {
@@ -2717,7 +2765,8 @@
     "stability-flags": {
         "cybernox/amazon-webservices-bundle": 20,
         "friendsofsymfony/user-bundle": 20,
-        "exercise/htmlpurifier-bundle": 20
+        "exercise/htmlpurifier-bundle": 20,
+        "stripe/stripe-php": 20
     },
     "platform": {
         "php": ">=5.3.3"

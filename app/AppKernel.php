@@ -36,6 +36,7 @@ class AppKernel extends Kernel
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new CDE\OAuthBundle\CDEOAuthBundle(),
+            new CDE\StripeBundle\CDEStripeBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

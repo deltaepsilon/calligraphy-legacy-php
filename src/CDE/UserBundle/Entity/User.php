@@ -2,6 +2,7 @@
 namespace CDE\UserBundle\Entity;
 
 use CDE\AffiliateBundle\Entity\Affiliate;
+use CDE\StripeBundle\Entity\Token;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
@@ -65,6 +66,13 @@ class User extends BaseUser
      * @ORM\ManyToOne(targetEntity="CDE\AffiliateBundle\Entity\Affiliate", inversedBy="users")
 	 */
 	private $affiliate;
+
+    /**
+     * @var integer $token
+     *
+     * @ORM\OneToOne(targetEntity="CDE\StripeBundle\Entity\Token", inversedBy="user")
+     */
+    private $token;
 
 
     public function __construct() {
@@ -234,6 +242,15 @@ class User extends BaseUser
 
     public function getAffiliate() {
       return $this->affiliate;
+    }
+
+    public function getToken() {
+        return $this->token;
+    }
+
+    public function setToken(Token $token) {
+        $this->token = $token;
+        return $this;
     }
 
 }
