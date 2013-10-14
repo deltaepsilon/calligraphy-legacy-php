@@ -2,6 +2,8 @@ parameters:
 #    cde_stripe.example.class: CDE\StripeBundle\Example
 
 services:
-#    cde_stripe.example:
-#        class: %cde_stripe.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    cde_stripe.manager.token:
+        class: CDE\StripeBundle\Entity\TokenManager
+        arguments:
+          em: '@doctrine.orm.entity_manager'
+          class: CDE\StripeBundle\Entity\Token

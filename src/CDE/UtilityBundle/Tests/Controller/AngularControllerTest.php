@@ -33,6 +33,11 @@ class AngularControllerTest extends BaseUserTest
         return $this->container->get('cde_cart.manager.discount');
     }
 
+    protected function getTokenManager()
+    {
+        return $this->container->get('cde_stripe.manager.token');
+    }
+
     /**
      * Test
      */
@@ -378,5 +383,72 @@ class AngularControllerTest extends BaseUserTest
         $this->getDiscountManager()->remove($valid);
     }
 
+    public function testToken() {
+        $stripeToken = array(
+            'id' => 'tok_2kllnCppxQPSjW',
+            'livemode' => false,
+            'created' => '1381775840',
+            'used' => false,
+            'type' => 'card',
+            'card' => array('id' => 'card_2kllNB9wcCupCl')
+        );
+
+        $badToken = array(
+            'id' => '1234',
+            'livemode' => false,
+            'created' => '1381775840',
+            'used' => false,
+            'type' => 'card',
+        );
+
+        $client = $this->getClient();
+
+        $crawler = $client->request('POST', '/angular/token', $stripeToken);
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->stripe_id, $stripeToken['id']);
+
+        $crawler = $client->request('POST', '/angular/token', $badToken);
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Token parameter missing');
+
+        $stripeToken['id'] = 'tok_2kq5eOZ0xPLUym';
+        $crawler = $client->request('POST', '/angular/token', $stripeToken);
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->stripe_id, $stripeToken['id']);
+
+        $crawler = $client->request('GET', '/angular/token', $stripeToken);
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->stripe_id, $stripeToken['id']);
+
+    }
+
+    public function testStripeCheckout() {
+        $client = $this->getClient();
+
+        $crawler = $client->request('GET', '/angular/stripe/checkout');
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Cart is empty');
+
+        $cart = $this->getCartManager()->find($this->user);
+        $this->getCartManager()->clear($cart, $this->user);
+        $products = $this->getProductManager()->findActive();
+
+        foreach ($products as $product) {
+            $cart->addProduct($product);
+        }
+        $this->getCartManager()->update($cart, $this->user);
+
+        $crawler = $client->request('GET', '/angular/stripe/checkout');
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Cart is empty');
+
+
+    }
 
 }

@@ -25,9 +25,17 @@ class Token
     /**
      * @var integer $user
      *
-     * @ORM\OneToOne(targetEntity="CDE\UserBundle\Entity\User", inversedBy="token")
+     * @ORM\OneToOne(targetEntity="CDE\UserBundle\Entity\User", inversedBy="token", cascade={"persist"})
      */
     private $user;
+
+
+    /**
+     * @var string $stripe_id
+     *
+     * @ORM\Column(name="stripe_id", type="string")
+     */
+    private $stripeId;
 
     /**
      * @var boolean
@@ -196,6 +204,15 @@ class Token
 
     public function setUser(User $user) {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getStripeId() {
+        return $this->stripeId;
+    }
+
+    public function setStripeId($stripeId) {
+        $this->stripeId = $stripeId;
         return $this;
     }
 }

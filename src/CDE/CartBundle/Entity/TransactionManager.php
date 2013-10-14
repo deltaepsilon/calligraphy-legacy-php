@@ -2,7 +2,9 @@
 
 namespace CDE\CartBundle\Entity;
 
+use CDE\CartBundle\Controller\CartController;
 use CDE\CartBundle\Model\TransactionManagerInterface;
+use CDE\StripeBundle\Entity\Token;
 use Doctrine\ORM\EntityManager;
 use CDE\CartBundle\Entity\Transaction;
 use CDE\CartBundle\Model\TransactionInterface;
@@ -21,8 +23,11 @@ class TransactionManager implements TransactionManagerInterface
     protected $productManager;
     protected $class;
     protected $repo;
-    
-    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, $productManager, $class, $paginator){
+    protected $stripeSK;
+    protected $admin;
+    protected $deliverAll;
+
+    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, $productManager, $class, $paginator, $stripeSK, $admin, $deliverAll){
         $this->em = $em;
         $this->mailer = $mailer;
         $this->subscriptionManager = $subscriptionManager;
@@ -32,6 +37,11 @@ class TransactionManager implements TransactionManagerInterface
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
         $this->paginator = $paginator;
+        $this->stripeSK = $stripeSK;
+        $this->admin = $admin;
+        $this->deliverAll = $deliverAll;
+
+        \Stripe::setApiKey($this->stripeSK);
         
     }
     
@@ -173,6 +183,109 @@ class TransactionManager implements TransactionManagerInterface
             $updatedProducts->add($product);
         }
         return $updatedProducts;
+    }
+
+    public function newStripeTransaction(Cart $cart, Token $token) {
+        $user = $token->getUser();
+
+        //Set up transaction
+        $transaction = $this->create();
+        $transaction->setUser($user);
+
+        //Sum up products
+        $total = 0;
+        $products = $cart->getProducts()->getValues();
+        $transaction->setProducts($products);
+        foreach ($products as $product) {
+            $total += $product->getPrice() * $product->getQuantity();
+        }
+
+        //Apply discounts
+        $discount = $cart->getDiscount();
+        $discountTotal = 0;
+
+        if (isset($discount)) {
+
+
+            $percent = $discount->getPercent();
+            $value = $discount->getValue();
+            if (isset($percent) && $percent > 0) {
+                $discountTotal += max(0, $total * $percent);
+            }
+
+            if (isset($value) && $value > 0) {
+                $discountTotal += max(0, $value);
+            }
+            $total = max(0, $total - $discountTotal);
+
+            $transaction->setDiscount($discount);
+            $transaction->setDiscountApplied($discountTotal);
+
+        } else {
+            $transaction->setDiscountApplied(0);
+        }
+
+        $transaction->setAmount($total);
+        if ($total === 0) {
+            $transaction->setStatus('Free Checkout');
+            $transaction->setPayment($discount->getCode());
+            $this->add($transaction);
+        } else {
+            //Charge via Stripe
+            $stripeResponse = \Stripe_Charge::create(array(
+                'amount' => round($total * 100),
+                'currency' => 'usd',
+                'card' => $token->getStripeId(),
+                'description' => 'Charge for '.$token->getUser()->getEmail(),
+                'capture' => true
+            ));
+            if ($stripeResponse->failure_code) {
+                return array('error' => $stripeResponse->failure_message);
+            }
+            $transaction->setStatus('Completed');
+            $transaction->setPayment($stripeResponse);
+            $this->add($transaction);
+        }
+
+        $updatedProducts = $this->sendProducts($transaction);
+        $transaction->setProducts($updatedProducts);
+        $this->update($transaction);
+
+        $cartController = new CartController();
+        $cartController->sendEmail($transaction, $this->admin);
+
+//        $this->sendEmail($transaction);
+
+
+    }
+
+    protected function sendEmail($transaction)
+    {
+        $admin = $this->admin;
+
+        $bcc = $this->deliverAll;
+        $primaryMessage = \Swift_Message::newInstance()
+            ->setSubject($admin['email_from_name'].': Order #'.$transaction->getId())
+            ->setFrom($admin['admin_email'])
+            ->setTo($transaction->getUser()->getEmail())
+            ->addBcc($bcc)
+            ->setBody($this->renderView('CDECartBundle:Mail:neworder.txt.twig', array(
+                'transaction' => $transaction
+            )));
+        $this->getMailer()->send($primaryMessage);
+
+        foreach ($transaction->getProducts() as $product) {
+            if ($product->getType() === 'gift') {
+                $giftMessage = \Swift_Message::newInstance()
+                    ->setSubject($admin['email_from_name'].': Your gift code')
+                    ->setFrom($admin['admin_email'])
+                    ->setTo($transaction->getUser()->getEmail())
+                    ->setBody($this->renderView('CDECartBundle:Mail:gift.txt.twig', array(
+                        'product' => $product
+                    )));
+                $this->getMailer()->send($giftMessage);
+            }
+        }
     }
 
 }

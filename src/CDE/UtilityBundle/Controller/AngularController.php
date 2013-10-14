@@ -52,6 +52,10 @@ class AngularController extends FOSRestController
     {
         return $this->get('cde_cart.manager.discount');
     }
+    protected function getTokenManager()
+    {
+        return $this->get('cde_stripe.manager.token');
+    }
 
 
     /**
@@ -361,13 +365,73 @@ class AngularController extends FOSRestController
         if (!isset($user)) {
             $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
         } else {
-            $view = $this->view($user->getCard(), 200)->setFormat('json');
+            $view = $this->view($user->getToken(), 200)->setFormat('json');
         }
         return $this->handleView($view);
     }
 
-    public function tokenCreateAction() {
+    public function tokenCreateAction(Request $request) {
+        $stripe_id = $this->getParameter($request, 'id');
+        $livemode = $this->getParameter($request, 'livemode');
+        $created = $this->getParameter($request, 'created');
+        $used = $this->getParameter($request, 'used');
+        $type = $this->getParameter($request, 'type');
+        $card = $this->getParameter($request, 'card');
 
+        $user = $this->getuser();
+
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+        } else if (isset($stripe_id) && isset($livemode) && isset($created) && isset($used) && isset($type) && isset($card)) {
+            $token = $user->getToken();
+            if (!isset($token)) {
+                $token = $this->getTokenManager()->create();
+                $user->setToken($token);
+            }
+
+            $token->setStripeId($stripe_id);
+            $token->setLivemode($livemode);
+            $token->setCreated($created);
+            $token->setUsed($used);
+            $token->setType($type);
+            $token->setCard($card);
+            $token->setUser($user);
+
+            $this->getTokenManager()->add($token);
+
+            $view = $this->view($user->getToken(), 200)->setFormat('json');
+
+        } else {
+            $view = $this->view(array('error' => 'Token parameter missing'), 200)->setFormat('json');
+        }
+
+        return $this->handleView($view);
+    }
+
+    public function stripeCheckoutAction() {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        $cart = $user->getCart();
+        $products = $cart->getProducts();
+        if (!isset($products) || count($products) < 1) {
+            $view = $this->view(array('error' => 'Cart is empty'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        $token = $user->getToken();
+        if (!isset($token)) {
+            $view = $this->view(array('error' => 'Credit card not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        $transaction = $this->getTransactionManager()->newStripeTransaction($cart, $token);
+
+        $view = $this->view($transaction, 200)->setFormat('json');
+        return $this->handleView($view);
     }
 
 }

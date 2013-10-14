@@ -128,7 +128,7 @@ CDEUtilityBundle_angular_cart_discount:
       expose: true
 
 CDEUtilityBundle_angular_token:
-    pattern: /card
+    pattern: /token
     defaults: { _controller: CDEUtilityBundle:Angular:token }
     methods: [GET]
     options:
@@ -138,5 +138,12 @@ CDEUtilityBundle_angular_token_create:
     pattern: /token
     defaults: { _controller: CDEUtilityBundle:Angular:tokenCreate }
     methods: [POST]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_stripe_checkout:
+    pattern: /stripe/checkout
+    defaults: { _controller: CDEUtilityBundle:Angular:stripeCheckout }
+    methods: [GET]
     options:
       expose: true

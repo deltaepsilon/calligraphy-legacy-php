@@ -274,7 +274,7 @@ class CartController extends Controller
         return $this->redirect($this->generateUrl('CDECartBundle_transaction_customer_view', array('id' => $transaction->getId()))."?record=true");
     }
 
-    protected function sendEmail($transaction, $admin)
+    public function sendEmail($transaction, $admin)
     {
         $bcc = $this->container->getParameter('mailer_deliver_all');
         $primaryMessage = \Swift_Message::newInstance()
