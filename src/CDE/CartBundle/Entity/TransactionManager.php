@@ -23,11 +23,13 @@ class TransactionManager implements TransactionManagerInterface
     protected $productManager;
     protected $class;
     protected $repo;
+    protected $paginator;
+    protected $templating;
     protected $stripeSK;
     protected $admin;
     protected $deliverAll;
 
-    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, $productManager, $class, $paginator, $stripeSK, $admin, $deliverAll){
+    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, $productManager, $class, $paginator, $templating, $stripeSK, $admin, $deliverAll){
         $this->em = $em;
         $this->mailer = $mailer;
         $this->subscriptionManager = $subscriptionManager;
@@ -37,6 +39,7 @@ class TransactionManager implements TransactionManagerInterface
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
         $this->paginator = $paginator;
+        $this->templating = $templating;
         $this->stripeSK = $stripeSK;
         $this->admin = $admin;
         $this->deliverAll = $deliverAll;
@@ -175,7 +178,6 @@ class TransactionManager implements TransactionManagerInterface
                 }
             } else if ($product->getType() === 'digital') {
                 $signedUri = $this->awsManager->getSignedUri($product->getUri(), 7);
-                var_dump($signedUri);
                 $product->setSignedUri($signedUri);
             }
             //Return updated products... otherwise the signed URIs will be lost
@@ -239,8 +241,11 @@ class TransactionManager implements TransactionManagerInterface
                 'description' => 'Charge for '.$token->getUser()->getEmail(),
                 'capture' => true
             ));
-            if ($stripeResponse->failure_code) {
-                return array('error' => $stripeResponse->failure_message);
+            if ($stripeResponse['failure_code']) {
+                return array('error' => $stripeResponse['failure_message']);
+            } else {
+                $stripeResponse = $stripeResponse->__toArray();
+                $stripeResponse['card'] = $stripeResponse['card']->__toArray();
             }
             $transaction->setStatus('Completed');
             $transaction->setPayment($stripeResponse);
@@ -251,10 +256,10 @@ class TransactionManager implements TransactionManagerInterface
         $transaction->setProducts($updatedProducts);
         $this->update($transaction);
 
-        $cartController = new CartController();
-        $cartController->sendEmail($transaction, $this->admin);
+//        $cartController = new CartController();
+//        $cartController->sendEmail($transaction, $this->admin);
 
-//        $this->sendEmail($transaction);
+        $this->sendEmail($transaction);
 
 
     }
@@ -269,7 +274,7 @@ class TransactionManager implements TransactionManagerInterface
             ->setFrom($admin['admin_email'])
             ->setTo($transaction->getUser()->getEmail())
             ->addBcc($bcc)
-            ->setBody($this->renderView('CDECartBundle:Mail:neworder.txt.twig', array(
+            ->setBody($this->templating->render('CDECartBundle:Mail:neworder.txt.twig', array(
                 'transaction' => $transaction
             )));
         $this->getMailer()->send($primaryMessage);
@@ -280,7 +285,7 @@ class TransactionManager implements TransactionManagerInterface
                     ->setSubject($admin['email_from_name'].': Your gift code')
                     ->setFrom($admin['admin_email'])
                     ->setTo($transaction->getUser()->getEmail())
-                    ->setBody($this->renderView('CDECartBundle:Mail:gift.txt.twig', array(
+                    ->setBody($this->templating->render('CDECartBundle:Mail:gift.txt.twig', array(
                         'product' => $product
                     )));
                 $this->getMailer()->send($giftMessage);

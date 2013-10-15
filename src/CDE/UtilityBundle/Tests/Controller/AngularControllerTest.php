@@ -38,6 +38,11 @@ class AngularControllerTest extends BaseUserTest
         return $this->container->get('cde_stripe.manager.token');
     }
 
+    protected function setStripeAPIKey() {
+        $stripeSK = $this->container->getParameter('stripeSK');
+        \Stripe::setApiKey($stripeSK);
+    }
+
     /**
      * Test
      */
@@ -413,7 +418,7 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals($response->error, 'Token parameter missing');
 
-        $stripeToken['id'] = 'tok_2kq5eOZ0xPLUym';
+        $stripeToken['id'] = 'tok_2lCLYhVMAcxwrW';
         $crawler = $client->request('POST', '/angular/token', $stripeToken);
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
@@ -427,7 +432,26 @@ class AngularControllerTest extends BaseUserTest
     }
 
     public function testStripeCheckout() {
+        $this->setStripeAPIKey();
+        $token = \Stripe_Token::create(array('card' => array(
+            'number' => '4242424242424242',
+            'exp_month' => '12',
+            'exp_year' => 2020,
+            'cvc' => '123'
+        )));
+        $token = $token->__toArray();
+        $token['card'] = $token['card']->__toArray();
+
         $client = $this->getClient();
+
+        // Add new token to DB
+        $crawler = $client->request('POST', '/angular/token', $token);
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->stripe_id, $token['id']);
+
+
+
 
         $crawler = $client->request('GET', '/angular/stripe/checkout');
         $response = json_decode($client->getResponse()->getContent());
@@ -447,7 +471,6 @@ class AngularControllerTest extends BaseUserTest
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals($response->error, 'Cart is empty');
-
 
     }
 

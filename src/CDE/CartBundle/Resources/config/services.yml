@@ -25,6 +25,7 @@ services:
       productManager: '@cde_cart.manager.product'
       class: 'CDE\CartBundle\Entity\Transaction'
       paginator: '@knp_paginator'
+      templating: '@templating'
       stripeSK: %stripeSK%
       admin: %admin%
       deliverAll: %mailer_deliver_all%
