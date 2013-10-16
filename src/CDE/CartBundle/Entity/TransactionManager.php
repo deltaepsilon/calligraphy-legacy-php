@@ -21,6 +21,7 @@ class TransactionManager implements TransactionManagerInterface
     protected $discountManager;
     protected $awsManager;
     protected $productManager;
+    protected $cartManager;
     protected $class;
     protected $repo;
     protected $paginator;
@@ -29,13 +30,14 @@ class TransactionManager implements TransactionManagerInterface
     protected $admin;
     protected $deliverAll;
 
-    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, $productManager, $class, $paginator, $templating, $stripeSK, $admin, $deliverAll){
+    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, ProductManager $productManager, CartManager $cartManager, $class, $paginator, $templating, $stripeSK, $admin, $deliverAll){
         $this->em = $em;
         $this->mailer = $mailer;
         $this->subscriptionManager = $subscriptionManager;
         $this->discountManager = $discountManager;
         $this->awsManager = $awsManager;
         $this->productManager = $productManager;
+        $this->cartManager = $cartManager;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
         $this->paginator = $paginator;
@@ -230,7 +232,7 @@ class TransactionManager implements TransactionManagerInterface
         $transaction->setAmount($total);
         if ($total === 0) {
             $transaction->setStatus('Free Checkout');
-            $transaction->setPayment($discount->getCode());
+            $transaction->setDetails($discount->getCode());
             $this->add($transaction);
         } else {
             //Charge via Stripe
@@ -248,18 +250,31 @@ class TransactionManager implements TransactionManagerInterface
                 $stripeResponse['card'] = $stripeResponse['card']->__toArray();
             }
             $transaction->setStatus('Completed');
-            $transaction->setPayment($stripeResponse);
+            $transaction->setDetails($stripeResponse);
             $this->add($transaction);
         }
 
         $updatedProducts = $this->sendProducts($transaction);
         $transaction->setProducts($updatedProducts);
-        $this->update($transaction);
 
 //        $cartController = new CartController();
 //        $cartController->sendEmail($transaction, $this->admin);
 
         $this->sendEmail($transaction);
+
+        // Increment discount code uses before clearing cart
+        $discount = $cart->getDiscount();
+        if ($discount) {
+            $dbDiscount = $this->discountManager->findByCode($discount->getCode());
+            $dbDiscount->incrementUses();
+            $this->discountManager->update($dbDiscount);
+        }
+
+        // Decrement products available where possible. Must use the original cart products ($products)
+        $this->cartManager->clear($cart, $user); // cartManager->clear() will re-increment the products as if they're going back on the shelves.
+
+        $this->update($transaction);
+        return $transaction;
 
 
     }
@@ -277,7 +292,7 @@ class TransactionManager implements TransactionManagerInterface
             ->setBody($this->templating->render('CDECartBundle:Mail:neworder.txt.twig', array(
                 'transaction' => $transaction
             )));
-        $this->getMailer()->send($primaryMessage);
+        $this->mailer->send($primaryMessage);
 
         foreach ($transaction->getProducts() as $product) {
             if ($product->getType() === 'gift') {
@@ -288,7 +303,7 @@ class TransactionManager implements TransactionManagerInterface
                     ->setBody($this->templating->render('CDECartBundle:Mail:gift.txt.twig', array(
                         'product' => $product
                     )));
-                $this->getMailer()->send($giftMessage);
+                $this->mailer->send($giftMessage);
             }
         }
     }

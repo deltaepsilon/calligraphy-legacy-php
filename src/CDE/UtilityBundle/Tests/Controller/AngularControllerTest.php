@@ -44,6 +44,57 @@ class AngularControllerTest extends BaseUserTest
     }
 
     /**
+     * Convenience
+     */
+
+    public function clearCart() {
+        $this->getCartManager()->clear($this->user->getCart(), $this->user, true);
+    }
+
+    public function getStripeToken() {
+        $this->setStripeAPIKey();
+        $token = \Stripe_Token::create(array('card' => array(
+            'number' => '4242424242424242',
+            'exp_month' => '12',
+            'exp_year' => 2020,
+            'cvc' => '123'
+        )));
+        $token = $token->__toArray();
+        $token['card'] = $token['card']->__toArray();
+
+        $client = $this->getClient();
+
+        // Add new token to DB
+        $crawler = $client->request('POST', '/angular/token', $token);
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->stripe_id, $token['id']);
+
+        return $token;
+    }
+
+    public function createPhysicalProduct() {
+        $product = $this->getProductManager()->create();
+        $product->setPrice(100);
+        $product->setType('physical');
+        $product->setAvailable(100);
+        $product->setActive(true);
+        $product->setTitle('My test product');
+        $product->setDescription('My test product description');
+        $this->getProductManager()->add($product);
+        return $product;
+    }
+
+    public function createPercentDiscount() {
+        $discount = $this->getDiscountManager()->create();
+        $discount->setPercent(.5);
+        $discount->setMaxUses(2);
+        $discount->setExpires(1);
+        $this->getDiscountManager()->add($discount);
+        return $discount;
+    }
+
+    /**
      * Test
      */
 
@@ -241,15 +292,10 @@ class AngularControllerTest extends BaseUserTest
     public function testAddToCart()
     {
 
-        $this->getCartManager()->clear($this->getCartManager()->find($this->user), $this->user);
-        $products = $this->getProductManager()->findActive();
+        $this->clearCart();
 
-        foreach ($products as $prospectiveProduct) {
-            if ($prospectiveProduct->getType() === 'physical') {
-                $product = $prospectiveProduct;
-                break;
-            }
-        }
+        // Make one product
+        $product = $this->createPhysicalProduct();
 
         $client = $this->getClient();
         $crawler = $client->request('POST', '/angular/cart', array(
@@ -268,6 +314,7 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals($response->error, 'Quantity not positive');
 
+        // Attempt to add too many too cart
         $crawler = $client->request('POST', '/angular/cart', array(
             'product_id' => $product->getId(),
             'quantity' => $product->getAvailable() + 1
@@ -276,6 +323,7 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals($response->error, 'Requested quantity not available');
 
+        // Add products to cart correctly
         $crawler = $client->request('POST', '/angular/cart', array(
             'product_id' => $product->getId(),
             'quantity' => $product->getAvailable()
@@ -284,18 +332,28 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertTrue(isset($cart->id));
         $this->assertTrue(is_array($cart->products));
-        $this->assertEquals($cart->products[0]->quantity, $product->getAvailable());
+
+        $productQuantity = null;
+        foreach ($cart->products as $prosepectiveProduct) {
+            if ($prosepectiveProduct->id) {
+                $productQuantity = $prosepectiveProduct->quantity;
+            }
+        }
+
+        $this->assertEquals($productQuantity, $product->getAvailable());
+
+        // Remove product
+        $this->getProductManager()->remove($product);
+
     }
 
     public function testUpdateCart()
     {
-        $products = $this->getProductManager()->findActive();
-        foreach ($products as $product) {
-            $this->getCartManager()->addProduct($product, $this->user, 100);
-        }
-
+        $product = $this->createPhysicalProduct();
+        $this->clearCart();
+        $this->getCartManager()->addProduct($product, $this->user, 2);
         $cart = $this->getCartManager()->find($this->user);
-        $product = $products[0];
+
 
         $client = $this->getClient();
         $crawler = $client->request('POST', '/angular/cart/update', array(
@@ -304,15 +362,11 @@ class AngularControllerTest extends BaseUserTest
         ));
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
-        $productsArray = (array) $response->products;
-        foreach ($productsArray as $tempResponseProduct) {
-            if ($tempResponseProduct->id === $product->getId()) {
-                $responseProduct = $tempResponseProduct;
-                break;
-            }
+        $cartProducts = (Array) $response->products;
+        $this->assertEquals(count($cartProducts), 1);
+        foreach ($response->products as $testProduct) {
+            $this->assertEquals($testProduct->quantity, 1);
         }
-
-        $this->assertEquals($responseProduct->quantity, 1);
 
         $crawler = $client->request('POST', '/angular/cart/update', array(
             'product_id' => $product->getId(),
@@ -320,12 +374,17 @@ class AngularControllerTest extends BaseUserTest
         ));
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $cart = $this->user->getCart();
         $this->assertEquals(count($cart->getProducts()) - 1, count((array) $response->products));
 
         $crawler = $client->request('POST', '/angular/cart/update', array());
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals(0, count($response->products));
+
+
+        // Remove product
+        $this->getProductManager()->remove($product);
     }
 
     public function testDiscount()
@@ -432,26 +491,13 @@ class AngularControllerTest extends BaseUserTest
     }
 
     public function testStripeCheckout() {
-        $this->setStripeAPIKey();
-        $token = \Stripe_Token::create(array('card' => array(
-            'number' => '4242424242424242',
-            'exp_month' => '12',
-            'exp_year' => 2020,
-            'cvc' => '123'
-        )));
-        $token = $token->__toArray();
-        $token['card'] = $token['card']->__toArray();
+        // Set up new Stripe Token to charge against
+        $token = $this->getStripeToken();
+
+        // Empty the cart
+        $this->clearCart();
 
         $client = $this->getClient();
-
-        // Add new token to DB
-        $crawler = $client->request('POST', '/angular/token', $token);
-        $response = json_decode($client->getResponse()->getContent());
-        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
-        $this->assertEquals($response->stripe_id, $token['id']);
-
-
-
 
         $crawler = $client->request('GET', '/angular/stripe/checkout');
         $response = json_decode($client->getResponse()->getContent());
@@ -459,7 +505,7 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($response->error, 'Cart is empty');
 
         $cart = $this->getCartManager()->find($this->user);
-        $this->getCartManager()->clear($cart, $this->user);
+        $this->clearCart();
         $products = $this->getProductManager()->findActive();
 
         foreach ($products as $product) {
@@ -470,7 +516,114 @@ class AngularControllerTest extends BaseUserTest
         $crawler = $client->request('GET', '/angular/stripe/checkout');
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
-        $this->assertEquals($response->error, 'Cart is empty');
+        $this->assertEquals(count($response->products), count($products));
+
+
+
+
+    }
+
+    public function testCartManager() {
+        // Make one product
+        $product = $this->createPhysicalProduct();
+
+        // Make a percentage discount
+        $discount = $this->createPercentDiscount();
+
+        $discount = $this->getDiscountManager()->findByCode($discount->getCode());
+
+        // Empty the cart
+        $cart = $this->getCartManager()->find($this->user);
+        $this->clearCart();
+
+        $this->getCartManager()->addProduct($product, $this->user, 2);
+        $cart->setDiscount($discount);
+        $this->getCartManager()->update($cart, $this->user);
+
+        // Assertions...
+        // Temporary quantity available should be 98
+        // Discount should be applied
+        // Quantity in cart should be right.
+        $cart = $this->user->getCart();
+        $product = $this->getProductManager()->find($product->getId());
+        $cartProductValues = $cart->getProducts()->getValues();
+
+        $this->assertEquals(count($cart->getProducts()->getValues()), 1);
+        $this->assertEquals($cartProductValues[0]->getId(), $product->getId());
+        $this->assertEquals($cartProductValues[0]->getQuantity(), 2);
+        $this->assertEquals($cart->getDiscount()->getId(), $discount->getId());
+        $this->assertEquals($product->getAvailable(), 98);
+        
+        // Remove one from cart
+        $this->getCartManager()->removeProduct($product, $this->user, 1);
+
+        $cart = $this->user->getCart();
+        $product = $this->getProductManager()->find($product->getId());
+        $cartProductValues = $cart->getProducts()->getValues();
+
+        $this->assertEquals($product->getAvailable(), 99);
+        $this->assertEquals($cartProductValues[0]->getQuantity(), 1);
+
+
+        // Empty the cart
+        $this->clearCart();
+        $cart = $this->user->getCart();
+        $product = $this->getProductManager()->find($product->getId());
+        $this->assertEquals($product->getAvailable(), 100);
+        $this->assertEquals(count($cart->getProducts()->getValues()), 0);
+        
+        // Remove product and discount
+        $this->getProductManager()->remove($product);
+        $this->getDiscountManager()->remove($discount);
+
+    }
+
+    public function testStripeDiscount() {
+        // Set up new Stripe Token to charge against
+        $token = $this->getStripeToken();
+
+        // Make one product
+        $product = $this->createPhysicalProduct();
+
+        // Make a percentage discount
+        $discount = $this->createPercentDiscount();
+
+        // Get DB Discount
+        $discount = $this->getDiscountManager()->findByCode($discount->getCode());
+
+        // Empty the cart
+        $cart = $this->getCartManager()->find($this->user);
+        $this->clearCart();
+
+        $this->getCartManager()->addProduct($product, $this->user, 2);
+        $cart->setDiscount($discount);
+        $this->getCartManager()->update($cart, $this->user);
+
+        // Attempt a stripe checkout
+        $client = $this->getClient();
+
+        $crawler = $client->request('GET', '/angular/stripe/checkout');
+        $transaction = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($transaction->amount, 100);
+
+        // Assert discount uses
+        $this->assertEquals($transaction->discount->uses, 1);
+
+        // Assert product available
+        $product = $this->getProductManager()->find($product->getId());
+        $this->assertEquals($product->getAvailable(), 98);
+
+
+        // Remove transaction
+        $dbTransaction = $this->getTransactionManager()->find($transaction->id);
+        $this->getTransactionManager()->remove($dbTransaction);
+
+        // Remove product and discount
+        $discount = $this->getDiscountManager()->findByCode($discount->getCode());
+        $this->getProductManager()->remove($product);
+        $this->getDiscountManager()->remove($discount);
+
 
     }
 

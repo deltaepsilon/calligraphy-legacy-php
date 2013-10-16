@@ -166,20 +166,22 @@ class Cart implements CartInterface
         return $this;
     }
     
-    public function removeProduct(Product $product)
+    public function removeProduct(Product $product, $count = 0)
     {
-        $id = $product->getId();
-        $productsToRemove = $this->products->filter(
-            function ($element) use ($id) {
-                if($element->getId() === $id) {
-                    return TRUE;
+        $slug = $product->getSlug();
+        foreach ($this->products as $productToRemove) {
+            if ($slug === $productToRemove->getSlug()) {
+                if ($productToRemove) {
+                    $quantity = $productToRemove->getQuantity();
+                    $productToRemove->setQuantity($quantity - $count);
+                }
+
+                if (isset($productToRemove) && $productToRemove->getQuantity() === 0 || $count === 0) {
+                    $this->products->removeElement($productToRemove);
                 }
             }
-        );
-        $iterator = $productsToRemove->getIterator();
-        foreach ($iterator as $productToRemove) {
-            $this->products->removeElement($productToRemove);
         }
+
         return $this;
     }
 

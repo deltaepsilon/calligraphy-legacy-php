@@ -14,12 +14,15 @@ class CartManager implements CartManagerInterface
     protected $class;
     protected $repo;
 	protected $sessionManager;
+    protected $productManager;
     
-    public function __construct(EntityManager $em, $class, $sessionManager){
+    public function __construct(EntityManager $em, $class, $sessionManager, ProductManager $productManager){
         $this->em = $em;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
         $this->sessionManager = $sessionManager;
+        $this->productManager = $productManager;
+
     }
     
     public function create($user = NULL)
@@ -40,7 +43,7 @@ class CartManager implements CartManagerInterface
             $this->sessionManager->set('cart', $cart);
         }
     }
-    
+
     public function update(CartInterface $cart, $user = NULL)
     {
         if ($user) {
@@ -65,11 +68,21 @@ class CartManager implements CartManagerInterface
         }
     }
     
-    public function clear(CartInterface $cart, $user = NULL)
+    public function clear(CartInterface $cart, $user = NULL, $increment = false)
     {
         if ($user) {
 			foreach ($cart->getProducts() as $product) {
-				$cart->removeProduct($product);
+                // Increment the product availability in the DB
+                if ($increment) {
+                    $dbProduct = $this->productManager->find($product->getId());
+                    if (isset($dbProduct)) {
+                        $dbProduct->incrementAvailable($product->getQuantity());
+                        $this->productManager->update($dbProduct);
+                    }
+                }
+
+
+				$cart->removeProduct($product, 0);
 			}
 			$cart->setDiscount(null);
 
@@ -134,6 +147,9 @@ class CartManager implements CartManagerInterface
         for ($i=0; $i < $maxCount; $i++) {
             $cart->addProduct($product);
         }
+        $product->decrementAvailable($maxCount);
+        $this->productManager->update($product);
+
         $this->update($cart, $user);
 		if ($maxCount > 0) {
 			return true;
@@ -143,45 +159,35 @@ class CartManager implements CartManagerInterface
 
     public function removeProduct(ProductInterface $product, $user = NULL, $count = 1)
     {
-        $cart  = $this->find($user);
-        if (!$cart) {
-                throw new http();
-        }
         if ($user) {
             $cart = $user->getCart();
-            if (!$cart) {
-                throw new NotFoundHttpException();
-            }
-            $cart->removeProduct($product);
         } else {
-            
-            for ($i=0; $i < $count; $i++) { 
-                $cart->removeProduct($product);
-            }
+            $cart  = $this->find($user);
         }
+
+        if (!$cart) {
+            throw new NotFoundHttpException();
+        }
+
+        $cart->removeProduct($product, $count);
+        $product->incrementAvailable($count);
+        $this->productManager->update($product);
+
         $this->update($cart, $user);
     }
 
     public function setQuantity(Cart $cart, $user, $id, $quantity) {
-        $productsToRemove = $cart->getProducts()->filter(
-            function ($element) use ($id) {
-                if($element->getId() === $id) {
-                    return TRUE;
+        foreach ($cart->getProducts() as $product) {
+            if ($product->getId() === $id) {
+                $this->removeProduct($product, $user, $product->getQuantity());
+                if ($quantity > 0) {
+                    $this->addProduct($product, $user, $quantity);
                 }
             }
-        );
-        $iterator = $productsToRemove->getIterator();
-        foreach ($iterator as $product) {
-            $this->removeProduct($product, $user, $product->getQuantity());
-            $product->setQuantity(Max(0, $quantity));
-            if ($product->getQuantity() > 0) {
-                $product->setQuantity(0);
-                $this->addProduct($product, $user, $quantity);
-            }
-
         }
 
-        return $this->find($user);
+        $cart = $this->find($user);
+        return $cart;
     }
     
     public function getCartValue(CartInterface $cart)

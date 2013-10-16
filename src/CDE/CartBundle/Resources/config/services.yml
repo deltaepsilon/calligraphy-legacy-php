@@ -13,6 +13,7 @@ services:
       em: '@Doctrine.orm.entity_manager'
       class: 'CDE\CartBundle\Entity\Cart'
       sessionManager: '@session'
+      productManager: '@cde_cart.manager.product'
       
   cde_cart.manager.transaction:
     class: CDE\CartBundle\Entity\TransactionManager
@@ -23,6 +24,7 @@ services:
       discountManager: '@cde_cart.manager.discount'
       awsManager: '@cde_utility.manager.aws'
       productManager: '@cde_cart.manager.product'
+      cartManager: '@cde_cart.manager.cart'
       class: 'CDE\CartBundle\Entity\Transaction'
       paginator: '@knp_paginator'
       templating: '@templating'

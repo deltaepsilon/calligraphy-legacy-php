@@ -305,9 +305,15 @@ class AngularController extends FOSRestController
         $product = $this->getProductManager()->find($productId);
 
         if ($productId === 0 || !isset($product)) {
-            $this->getCartManager()->clear($cart, $user);
+            $this->getCartManager()->clear($cart, $user, true);
         } else if ($quantity === 0) {
-            $this->getCartManager()->removeProduct($product, $user, $quantity);
+            foreach ($cart->getProducts() as $productToRemove) {
+                if ($productToRemove->getSlug() === $product->getSlug()) {
+                    $this->getCartManager()->removeProduct($product, $user, $productToRemove->getQuantity());
+                }
+            }
+
+
         } else {
             $this->getCartManager()->setQuantity($cart, $user, $product->getId(), $quantity);
         }

@@ -67,12 +67,16 @@ class ProductManager implements ProductManagerInterface
     public function cleanImages(ProductInterface $product)
     {
         $cleanImages = array();
-        $images = array_unique($product->getImages());
-        foreach ($images as $image) {
-            if (strlen($image) > 0) {
-                $cleanImages[] = $image;
+        $images = $product->getImages();
+        if (isset($images)) {
+            $images = array_unique($product->getImages());
+            foreach ($images as $image) {
+                if (strlen($image) > 0) {
+                    $cleanImages[] = $image;
+                }
             }
         }
+
         $product->setImages(array());
         $product->setImages($cleanImages);
     }

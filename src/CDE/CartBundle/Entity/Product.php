@@ -804,6 +804,20 @@ class Product implements ProductInterface
 		return $this;
 	}
 
+    /**
+     * Increment available
+     *
+     * @return Product
+     */
+    public function incrementAvailable($quantity = 1)
+    {
+        if($this->type == $this->PHYSICAL) {
+            $available = $this->available;
+            $this->available = max($available + $quantity, 0);
+        }
+        return $this;
+    }
+
 	public function getTempAvailable() {
 		if (is_null($this->tempAvailable)) {
 			return $this->available;

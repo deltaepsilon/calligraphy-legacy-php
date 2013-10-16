@@ -78,6 +78,7 @@ class Transaction implements TransactionInterface
     /**
      * @var float $amount
      *
+     * @Expose
      * @ORM\Column(name="amount", type="float")
      */
     private $amount;
