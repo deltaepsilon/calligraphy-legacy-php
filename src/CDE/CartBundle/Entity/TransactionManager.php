@@ -5,6 +5,8 @@ namespace CDE\CartBundle\Entity;
 use CDE\CartBundle\Controller\CartController;
 use CDE\CartBundle\Model\TransactionManagerInterface;
 use CDE\StripeBundle\Entity\Token;
+use CDE\StripeBundle\Entity\TokenManager;
+use CDE\UserBundle\Entity\UserManager;
 use Doctrine\ORM\EntityManager;
 use CDE\CartBundle\Entity\Transaction;
 use CDE\CartBundle\Model\TransactionInterface;
@@ -22,6 +24,8 @@ class TransactionManager implements TransactionManagerInterface
     protected $awsManager;
     protected $productManager;
     protected $cartManager;
+    protected $tokenManager;
+    protected $userManager;
     protected $class;
     protected $repo;
     protected $paginator;
@@ -30,7 +34,7 @@ class TransactionManager implements TransactionManagerInterface
     protected $admin;
     protected $deliverAll;
 
-    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, ProductManager $productManager, CartManager $cartManager, $class, $paginator, $templating, $stripeSK, $admin, $deliverAll){
+    public function __construct(EntityManager $em, $mailer, SubscriptionManager $subscriptionManager, DiscountManager $discountManager, $awsManager, ProductManager $productManager, CartManager $cartManager, TokenManager $tokenManager, UserManager $userManager, $class, $paginator, $templating, $stripeSK, $admin, $deliverAll){
         $this->em = $em;
         $this->mailer = $mailer;
         $this->subscriptionManager = $subscriptionManager;
@@ -38,6 +42,8 @@ class TransactionManager implements TransactionManagerInterface
         $this->awsManager = $awsManager;
         $this->productManager = $productManager;
         $this->cartManager = $cartManager;
+        $this->tokenManager = $tokenManager;
+        $this->userManager = $userManager;
         $this->repo = $this->em->getRepository($class);
         $this->class = $class;
         $this->paginator = $paginator;
@@ -246,6 +252,8 @@ class TransactionManager implements TransactionManagerInterface
             if ($stripeResponse['failure_code']) {
                 return array('error' => $stripeResponse['failure_message']);
             } else {
+                $user->removeToken();
+                $this->userManager->update($user);
                 $stripeResponse = $stripeResponse->__toArray();
                 $stripeResponse['card'] = $stripeResponse['card']->__toArray();
             }

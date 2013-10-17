@@ -12,7 +12,7 @@ parameters:
     mailer_deliver_all: getallemail@gmail.com
     aws_public: { distribution_id: 123, gallery_folder: calligraphy/galleries/ }
     aws_distribution_id: ASDFR
-    aws_rsa_key: ../pk-ASDFR.pem
+    aws_rsa_key: /Users/christopheresplin/Development/istilllovecalligraphy.com/pk-ASDF.pem
     aws_rsa_key_pair_id: ASDFR
     aws_key: 123ASDFR
     aws_secret: 1231231231dasfadsfdasf1a23

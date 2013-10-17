@@ -518,6 +518,9 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals(count($response->products), count($products));
 
+        $token = $this->user->getToken();
+        $this->assertFalse(isset($token));
+
 
 
 

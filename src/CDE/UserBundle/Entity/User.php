@@ -70,7 +70,7 @@ class User extends BaseUser
     /**
      * @var integer $token
      *
-     * @ORM\OneToOne(targetEntity="CDE\StripeBundle\Entity\Token", inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="CDE\StripeBundle\Entity\Token", inversedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $token;
 
@@ -250,6 +250,11 @@ class User extends BaseUser
 
     public function setToken(Token $token) {
         $this->token = $token;
+        return $this;
+    }
+
+    public function removeToken() {
+        $this->token = null;
         return $this;
     }
 

@@ -25,6 +25,8 @@ services:
       awsManager: '@cde_utility.manager.aws'
       productManager: '@cde_cart.manager.product'
       cartManager: '@cde_cart.manager.cart'
+      tokenManager: '@cde_stripe.manager.token'
+      userManager: '@cde_user.manager.user'
       class: 'CDE\CartBundle\Entity\Transaction'
       paginator: '@knp_paginator'
       templating: '@templating'

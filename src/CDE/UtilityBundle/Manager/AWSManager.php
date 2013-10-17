@@ -40,8 +40,8 @@ class AWSManager
     {
         $fingerprint = $this->container->getParameter('aws_rsa_key_pair_id');
         $fingerprint_response = $this->cloudFront->set_keypair_id($fingerprint);
-        $private_key_filename = $this->container->getParameter('aws_rsa_key');
-        $private_key = file_get_contents(getcwd().'/'.$private_key_filename);
+        $private_key_path = $this->container->getParameter('aws_rsa_key');
+        $private_key = file_get_contents($private_key_path);
         $key_response = $this->cloudFront->set_private_key($private_key);
     }
     
