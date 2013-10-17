@@ -113,4 +113,19 @@ class SubscriptionManager implements SubscriptionManagerInterface
         $subscription = $query->getResult();
         return $subscription;
     }
+
+    public function resetSubscription(Subscription $subscription) {
+        if (!$subscription->getReset()) {
+            $date = new \DateTime();
+            $days = $subscription->getProduct()->getDays();
+            $date->add(new \DateInterval('P'.$days.'D'));
+            $subscription->setExpires($date);
+            $subscription->setReset(true);
+            $this->update($subscription);
+            return $subscription;
+        } else {
+            return false;
+        }
+
+    }
 }

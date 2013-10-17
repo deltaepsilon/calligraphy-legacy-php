@@ -46,6 +46,13 @@ class Subscription implements SubscriptionInterface
     private $expires;
 
     /**
+     * @var datetime $reset
+     *
+     * @ORM\Column(name="reset", type="boolean")
+     */
+    private $reset;
+
+    /**
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")
@@ -207,6 +214,15 @@ class Subscription implements SubscriptionInterface
         $expires->add($interval);
         $this->setExpires($expires);
         return $this;
+    }
+
+    public function setReset(bool $reset) {
+        $this->reset = $reset;
+        return $this;
+    }
+
+    public function getReset() {
+        return $this->reset;
     }
     
 }
