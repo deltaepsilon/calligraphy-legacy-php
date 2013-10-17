@@ -3,6 +3,7 @@
 namespace CDE\CartBundle\Entity;
 
 use CDE\CartBundle\Model\CartManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use CDE\CartBundle\Model\CartInterface;
 use CDE\CartBundle\Model\ProductInterface;
@@ -48,6 +49,15 @@ class CartManager implements CartManagerInterface
     {
         if ($user) {
             $products = $cart->getProducts();
+
+            //Sort products by slug for consistency
+            $products = $products->toArray();
+            usort($products, function($a, $b) {
+                return $a->getSlug() > $b->getSlug();
+            });
+            $products = new ArrayCollection($products);
+
+
             /**
              * Is this little two-step ugly as sin?  Yes.  It is, and I know it
              * Unfortunately, Doctrine doesn't notice changes in array collections
@@ -67,6 +77,7 @@ class CartManager implements CartManagerInterface
             $this->sessionManager->set('cart', $cart);
         }
     }
+
     
     public function clear(CartInterface $cart, $user = NULL, $increment = false)
     {
@@ -170,8 +181,10 @@ class CartManager implements CartManagerInterface
         }
 
         $cart->removeProduct($product, $count);
-        $product->incrementAvailable($count);
-        $this->productManager->update($product);
+
+        $dbProduct = $this->productManager->find($product->getId());
+        $dbProduct->incrementAvailable($count);
+        $this->productManager->update($dbProduct);
 
         $this->update($cart, $user);
     }
