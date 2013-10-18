@@ -38,14 +38,19 @@ class AngularControllerTest extends BaseUserTest
         return $this->container->get('cde_stripe.manager.token');
     }
 
-    protected function setStripeAPIKey() {
-        $stripeSK = $this->container->getParameter('stripeSK');
-        \Stripe::setApiKey($stripeSK);
+    protected function getSubscriptionManager()
+    {
+        return $this->container->get('cde_subscription.manager.subscription');
     }
 
     /**
      * Convenience
      */
+
+    protected function setStripeAPIKey() {
+        $stripeSK = $this->container->getParameter('stripeSK');
+        \Stripe::setApiKey($stripeSK);
+    }
 
     public function clearCart() {
         $this->getCartManager()->clear($this->user->getCart(), $this->user, true);
@@ -627,7 +632,50 @@ class AngularControllerTest extends BaseUserTest
         $this->getProductManager()->remove($product);
         $this->getDiscountManager()->remove($discount);
 
+    }
 
+    public function testSubscription() {
+        $client = $this->getClient();
+
+
+        $crawler = $client->request('GET', '/angular/subscription');
+
+        //Get all user's subscriptions
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertTrue(is_array($response));
+
+        $subscription = $response[0];
+        $subscription = $this->getSubscriptionManager()->find($subscription->id);
+        $subscription->setReset(false);
+        $this->getSubscriptionManager()->update($subscription);
+
+        // Get one subscription
+        $crawler = $client->request('GET', '/angular/subscription/'.$subscription->getId());
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->id, $subscription->getId());
+
+        $date1 = new \DateTime($response->expires);
+
+        // Reset expires date successfully
+        $crawler = $client->request('GET', '/angular/subscription/'.$subscription->getId().'/reset');
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->reset, true);
+
+        $date2 = new \DateTime($response->expires);
+
+        // Confirm expires reset
+        $this->assertTrue($date1->getTimestamp() < $date2->getTimestamp());
+
+        // Attempt and fail to reset again
+        $crawler = $client->request('GET', '/angular/subscription/'.$subscription->getId().'/reset');
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->reset, true);
+        $date3 = new \DateTime($response->expires);
+        $this->assertEquals($date3->getTimestamp(), $date2->getTimestamp());
     }
 
 }

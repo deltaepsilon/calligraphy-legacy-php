@@ -56,7 +56,10 @@ class AngularController extends FOSRestController
     {
         return $this->get('cde_stripe.manager.token');
     }
-
+    protected function getSubscriptionManager()
+    {
+        return $this->get('cde_subscription.manager.subscription');
+    }
 
     /**
      * Convenience Methods
@@ -437,6 +440,48 @@ class AngularController extends FOSRestController
         $transaction = $this->getTransactionManager()->newStripeTransaction($cart, $token);
 
         $view = $this->view($transaction, 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function subscriptionAction($id = null) {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        if (!isset($id)) {
+            $subscriptions = $this->getSubscriptionManager()->findByUser($user);
+            $view = $this->view($subscriptions, 200)->setFormat('json');
+
+        } else {
+            $subscription = $this->getSubscriptionManager()->find($id);
+            if (!isset($subscription) || $user->getId() !== $subscription->getUser()->getId()) {
+                $view = $this->view('Subscription not found', 200)->setFormat('json');
+            } else {
+                $view = $this->view($subscription, 200)->setFormat('json');
+            }
+
+        }
+        return $this->handleView($view);
+
+    }
+
+    public function subscriptionResetAction($id) {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        $subscription = $this->getSubscriptionManager()->find($id);
+        if (!isset($subscription) || $user->getId() !== $subscription->getUser()->getId()) {
+            $view = $this->view('Subscription not found', 200)->setFormat('json');
+        } else {
+            $this->getSubscriptionManager()->resetSubscription($subscription);
+            $view = $this->view($subscription, 200)->setFormat('json');
+        }
+
         return $this->handleView($view);
     }
 

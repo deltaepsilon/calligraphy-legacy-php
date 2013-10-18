@@ -216,8 +216,13 @@ class Subscription implements SubscriptionInterface
         return $this;
     }
 
-    public function setReset(bool $reset) {
-        $this->reset = $reset;
+    public function setReset($reset) {
+        if (is_bool($reset)) {
+            $this->reset = $reset;
+        } else {
+            throw new \Exception('Must be a boolean!');
+        }
+
         return $this;
     }
 

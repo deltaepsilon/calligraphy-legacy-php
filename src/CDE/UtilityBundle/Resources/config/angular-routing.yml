@@ -147,3 +147,18 @@ CDEUtilityBundle_angular_stripe_checkout:
     methods: [GET]
     options:
       expose: true
+
+#Subscription routes
+CDEUtilityBundle_angular_subscription:
+    pattern: /subscription/{id}
+    defaults: { _controller: CDEUtilityBundle:Angular:subscription, id: null }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_subscription_reset:
+    pattern: /subscription/{id}/reset
+    defaults: { _controller: CDEUtilityBundle:Angular:subscriptionReset }
+    methods: [GET]
+    options:
+      expose: true
