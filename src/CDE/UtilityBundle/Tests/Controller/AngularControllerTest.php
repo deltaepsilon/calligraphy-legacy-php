@@ -90,6 +90,19 @@ class AngularControllerTest extends BaseUserTest
         return $product;
     }
 
+    public function createSubscriptionProduct() {
+        $product = $this->getProductManager()->create();
+        $product->setDays(30);
+        $product->setPrice(100);
+        $product->setType('subscription');
+        $product->setAvailable(100);
+        $product->setActive(true);
+        $product->setTitle('My test subscription product');
+        $product->setDescription('My test product description');
+        $this->getProductManager()->add($product);
+        return $product;
+    }
+
     public function createPercentDiscount() {
         $discount = $this->getDiscountManager()->create();
         $discount->setPercent(.5);
@@ -676,6 +689,50 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($response->reset, true);
         $date3 = new \DateTime($response->expires);
         $this->assertEquals($date3->getTimestamp(), $date2->getTimestamp());
+    }
+
+    public function testContent() {
+        $client = $this->getClient();
+
+        //TODO Create subscription product
+        $product = $this->createSubscriptionProduct();
+
+        //TODO Test that user cannot query that product and gets a "Product not found" error
+        $crawler = $client->request('GET', '/angular/content/'.$product->getSlug());
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Product not found');
+
+        //TODO Add subscription to user
+        $subscription = $this->getSubscriptionManager()->create();
+        $subscription->setUser($this->user);
+        $subscription->setProduct($product);
+        $subscription->setReset(false);
+        $this->getSubscriptionManager()->add($subscription);
+
+        //TODO Test that subscription gets reset=true and gets access to product
+        $crawler = $client->request('GET', '/angular/content/'.$product->getSlug());
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertTrue(is_array($response)); //Would be a list of pages...
+
+        $subscription = $this->getSubscriptionManager()->find($subscription->getId());
+        $this->assertTrue($subscription->getReset());
+
+        //TODO Expire the subscription
+        $subscription->setExpires(new \DateTime());
+        $this->getSubscriptionManager()->update($subscription);
+
+        //TODO Test that user gets a "Subscription has expired" error
+        $crawler = $client->request('GET', '/angular/content/'.$product->getSlug());
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Subscription has expired');
+
+        //TODO Remove product and subscription
+        $this->getSubscriptionManager()->remove($subscription);
+        $this->getProductManager()->remove($product);
+
     }
 
 }

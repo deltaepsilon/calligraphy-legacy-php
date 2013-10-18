@@ -60,6 +60,10 @@ class AngularController extends FOSRestController
     {
         return $this->get('cde_subscription.manager.subscription');
     }
+    protected function getPageManager()
+    {
+        return $this->get('cde_content.manager.page');
+    }
 
     /**
      * Convenience Methods
@@ -481,6 +485,44 @@ class AngularController extends FOSRestController
             $this->getSubscriptionManager()->resetSubscription($subscription);
             $view = $this->view($subscription, 200)->setFormat('json');
         }
+
+        return $this->handleView($view);
+    }
+
+    public function contentAction($slug) {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        // Make sure that the user actually has an active subscription to this product.
+        $subscriptions = $this->getSubscriptionManager()->findByUser($user);
+        foreach ($subscriptions as $subscription) {
+            if ($subscription->getProduct()->getSlug() === $slug) {
+                $product = $subscription->getProduct();
+            }
+        }
+
+        if (!isset($product)) {
+            $view = $this->view(array('error' => 'Product not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        if (!$subscription->getReset()) {
+            $this->getSubscriptionManager()->resetSubscription($subscription);
+        } else if ($this->getSubscriptionManager()->isExpired($subscription)) {
+            // Bail if expired
+            $view = $this->view(array('error' => 'Subscription has expired'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        // Get pages
+        $pages = $this->getPageManager()->findBySubscription($subscription);
+        $view = $this->view($pages, 200)->setFormat('json');
+
+
+
 
         return $this->handleView($view);
     }

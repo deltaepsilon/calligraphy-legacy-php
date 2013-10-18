@@ -3,6 +3,7 @@
 namespace CDE\ContentBundle\Entity;
 
 use CDE\ContentBundle\Model\PageManagerInterface;
+use CDE\SubscriptionBundle\Entity\Subscription;
 use Doctrine\ORM\EntityManager;
 use CDE\ContentBundle\Entity\Page;
 use CDE\ContentBundle\Model\PageInterface;
@@ -148,6 +149,27 @@ class PageManager implements PageManagerInterface
             array(),
             array('sort' => 'ASC')
         );
+        return $pages;
+    }
+
+    public function findBySubscription(Subscription $subscription)
+    {
+        $query = $this->em->createQuery('
+                select l, m, n, o
+                from CDEContentBundle:Page l
+                join l.tags m
+                join m.products n
+                join n.subscriptions o
+                where o.user = :userId
+                 and o.expires > :now
+                 and m.id = :productId
+                order by l.sort
+            ')
+            ->setParameter('userId', $subscription->getUser()->getId())
+            ->setParameter('now', new \DateTime())
+            ->setParameter('productId', $subscription->getProduct()->getId())
+        ;
+        $pages = $query->getResult();
         return $pages;
     }
 

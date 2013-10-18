@@ -162,3 +162,11 @@ CDEUtilityBundle_angular_subscription_reset:
     methods: [GET]
     options:
       expose: true
+
+#Content routes
+CDEUtilityBundle_angular_content:
+    pattern: /content/{slug}
+    defaults: { _controller: CDEUtilityBundle:Angular:content }
+    methods: [GET]
+    options:
+      expose: true

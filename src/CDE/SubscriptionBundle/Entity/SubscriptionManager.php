@@ -128,4 +128,10 @@ class SubscriptionManager implements SubscriptionManagerInterface
         }
 
     }
+
+    public function isExpired(Subscription $subscription) {
+        $now = new \DateTime();
+        $expiration = $subscription->getExpires();
+        return $now->getTimestamp() > $expiration->getTimestamp();
+    }
 }
