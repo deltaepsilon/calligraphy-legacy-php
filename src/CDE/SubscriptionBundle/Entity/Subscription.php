@@ -46,7 +46,7 @@ class Subscription implements SubscriptionInterface
     private $expires;
 
     /**
-     * @var datetime $reset
+     * @var boolean $reset
      *
      * @ORM\Column(name="reset", type="boolean")
      */

@@ -509,7 +509,7 @@ class AngularController extends FOSRestController
             return $this->handleView($view);
         }
 
-        if (!$subscription->getReset()) {
+        if (!$subscription->getReset()) { // Force a reset on this subscription if it hasn't had one already.
             $this->getSubscriptionManager()->resetSubscription($subscription);
         } else if ($this->getSubscriptionManager()->isExpired($subscription)) {
             // Bail if expired
