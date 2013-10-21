@@ -20,7 +20,7 @@ class AngularController extends FOSRestController
     /**
      * Managers
      */
-    protected function getAWSService() {
+    protected function getAwsManager() {
         return $this->get('cde_utility.manager.aws');
     }
 
@@ -121,7 +121,7 @@ class AngularController extends FOSRestController
 
     public function listImagesAction($prefix)
     {
-        $response = $this->getAWSService()->listImages($prefix);
+        $response = $this->getAwsManager()->listImages($prefix);
         $view = $this->view($response, 200)
             ->setHeader('Expires', gmdate('D, d M Y H:i:s', strtotime('+1 days')) . ' GMT')
             ->setHeader('Cache-Control', 'max-age=86400, public')
@@ -524,6 +524,30 @@ class AngularController extends FOSRestController
 
 
 
+        return $this->handleView($view);
+    }
+
+    public function pageAction($slug) {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        $pages = $this->getPageManager()->findByUser($user);
+        foreach ($pages as $prospect) {
+            if ($prospect->getSlug() === $slug) {
+                $page = $prospect;
+            }
+        }
+
+        if (!isset($page)) {
+            $view = $this->view(array('error' => 'Page not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        $page = $this->getAwsManager()->signPageUrls($page);
+        $view = $this->view($page, 200)->setFormat('json');
         return $this->handleView($view);
     }
 

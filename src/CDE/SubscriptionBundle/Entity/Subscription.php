@@ -68,6 +68,10 @@ class Subscription implements SubscriptionInterface
      */
     private $updated;
 
+    public function __construct() {
+        $this->reset = false;
+    }
+
     public function __toString()
     {
         $id = $this->id;

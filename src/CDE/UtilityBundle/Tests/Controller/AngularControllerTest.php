@@ -43,6 +43,11 @@ class AngularControllerTest extends BaseUserTest
         return $this->container->get('cde_subscription.manager.subscription');
     }
 
+    protected function getPageManager()
+    {
+        return $this->container->get('cde_content.manager.page');
+    }
+
     /**
      * Convenience
      */
@@ -713,7 +718,6 @@ class AngularControllerTest extends BaseUserTest
         $subscription = $this->getSubscriptionManager()->create();
         $subscription->setUser($this->user);
         $subscription->setProduct($product);
-        $subscription->setReset(false);
         $this->getSubscriptionManager()->add($subscription);
 
         // Test that subscription gets reset=true and gets access to product
@@ -740,6 +744,41 @@ class AngularControllerTest extends BaseUserTest
         $this->getSubscriptionManager()->remove($subscription);
         $this->getProductManager()->remove($product);
 
+    }
+
+    public function testPage() {
+        $client = $this->getClient();
+
+        $pages = $this->getPageManager()->find();
+        $page = $pages[0];
+
+
+        // Test that user cannot query that page and gets a "Page not found" error
+        $crawler = $client->request('GET', '/angular/page/'.$page->getSlug());
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Page not found');
+
+        // Add subscription to user
+        // Create subscription product
+        $product = $this->createSubscriptionProduct();
+        $product->addTag($this->getPageManager()->findParentTag($page));
+        $this->getProductManager()->update($product);
+
+        $subscription = $this->getSubscriptionManager()->create();
+        $subscription->setUser($this->user);
+        $subscription->setProduct($product);
+        $this->getSubscriptionManager()->add($subscription);
+
+        // Test that user can query page
+        $crawler = $client->request('GET', '/angular/page/'.$page->getSlug());
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->id, $page->getId());
+
+        // Remove new subscription and new product
+        $this->getSubscriptionManager()->remove($subscription);
+        $this->getProductManager()->remove($product);
     }
 
 }

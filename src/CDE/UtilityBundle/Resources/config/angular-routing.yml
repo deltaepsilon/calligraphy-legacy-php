@@ -170,3 +170,10 @@ CDEUtilityBundle_angular_content:
     methods: [GET]
     options:
       expose: true
+
+CDEUtilityBundle_angular_page:
+    pattern: /page/{slug}
+    defaults: { _controller: CDEUtilityBundle:Angular:page }
+    methods: [GET]
+    options:
+      expose: true

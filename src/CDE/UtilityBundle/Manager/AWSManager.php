@@ -175,7 +175,7 @@ class AWSManager
 				$html = preg_replace('/{+?\s+?'.$old.'\s+?}+/', $new, $html);
 			}
         }
-        $page->setSignedHtml($html);
+        return $page->setSignedHtml($html);
     }
     
     public function copyGalleryFile($filename)
