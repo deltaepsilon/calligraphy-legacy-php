@@ -781,4 +781,35 @@ class AngularControllerTest extends BaseUserTest
         $this->getProductManager()->remove($product);
     }
 
+    public function testGallery() {
+        $client = $this->getClient();
+
+        //TODO Query galleries... none should be found
+        $crawler = $client->request('GET', '/angular/gallery');
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals(count($response), 0);
+
+        //TODO Create new gallery
+//        $crawler = $client->request('GET', '/angular/gallery');
+//        $response = json_decode($client->getResponse()->getContent());
+//        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+//        $this->assertEquals(count($response), 0);
+
+        //TODO Add comment to gallery
+        //TODO Query galleries
+//        $crawler = $client->request('GET', '/angular/comment');
+//        $response = json_decode($client->getResponse()->getContent());
+//        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+//        $this->assertEquals(count($response), 0);
+        //TODO Query specific gallery and assert that image and comments match
+
+        //TODO Query comments
+        $crawler = $client->request('GET', '/angular/comment');
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals(count($response), 0);
+
+    }
+
 }

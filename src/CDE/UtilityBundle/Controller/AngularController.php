@@ -64,6 +64,14 @@ class AngularController extends FOSRestController
     {
         return $this->get('cde_content.manager.page');
     }
+    protected function getGalleryManager()
+    {
+        return $this->get('cde_content.manager.gallery');
+    }
+    protected function getCommentManager()
+    {
+        return $this->get('cde_content.manager.comment');
+    }
 
     /**
      * Convenience Methods
@@ -550,5 +558,62 @@ class AngularController extends FOSRestController
         $view = $this->view($page, 200)->setFormat('json');
         return $this->handleView($view);
     }
+
+    public function galleryAction($id = null) {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        if (isset($id)) {
+            $gallery = $this->getGalleryManager()->find($id);
+            if (!isset($gallery) || $gallery->getUser()->getId() !== $user->getId()) {
+                $view = $this->view(array('error' => 'Gallery not found'), 200)->setFormat('json');
+            } else {
+                $view = $this->view($gallery, 200)->setFormat('json');
+            }
+
+        } else {
+            $galleries = $this->getGalleryManager()->findByUser($user);
+            $view = $this->view($galleries, 200)->setFormat('json');
+
+        }
+
+        return $this->handleView($view);
+    }
+
+    public function galleryCreateAction() {
+
+    }
+
+    public function commentAction($id = null) {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+
+        if (isset($id)) {
+            $comment = $this->getCommentManager()->findAbsolute($id);
+            if (!isset($comment) || $comment->getGalleryuser()->getId() !== $user->getId()) {
+                $view = $this->view(array('error' => 'Comment not found'), 200)->setFormat('json');
+            } else {
+                $view = $this->view($comment, 200)->setFormat('json');
+            }
+
+        } else {
+            $comments = $this->getCommentManager()->findByGalleryUser($user);
+            $view = $this->view($comments, 200)->setFormat('json');
+        }
+
+        return $this->handleView($view);
+    }
+
+    public function commentCreateAction() {
+
+    }
+
 
 }

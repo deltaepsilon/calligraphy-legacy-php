@@ -171,9 +171,40 @@ CDEUtilityBundle_angular_content:
     options:
       expose: true
 
+#Page routes
 CDEUtilityBundle_angular_page:
     pattern: /page/{slug}
     defaults: { _controller: CDEUtilityBundle:Angular:page }
     methods: [GET]
+    options:
+      expose: true
+
+#Gallery routes
+CDEUtilityBundle_angular_gallery:
+    pattern: /gallery/{id}
+    defaults: { _controller: CDEUtilityBundle:Angular:gallery, id: null }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_gallery_create:
+    pattern: /gallery
+    defaults: { _controller: CDEUtilityBundle:Angular:galleryCreate, id: null }
+    methods: [POST]
+    options:
+      expose: true
+
+#Comment routes
+CDEUtilityBundle_angular_comment:
+    pattern: /comment/{id}
+    defaults: { _controller: CDEUtilityBundle:Angular:comment, id: null }
+    methods: [GET]
+    options:
+      expose: true
+
+CDEUtilityBundle_angular_comment_create:
+    pattern: /comment
+    defaults: { _controller: CDEUtilityBundle:Angular:commentCreate, id: null }
+    methods: [POST]
     options:
       expose: true
