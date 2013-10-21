@@ -162,12 +162,10 @@ class PageManager implements PageManagerInterface
                 join n.subscriptions o
                 where o.user = :userId
                  and o.expires > :now
-                 and m.id = :productId
                 order by l.sort
             ')
             ->setParameter('userId', $subscription->getUser()->getId())
             ->setParameter('now', new \DateTime())
-            ->setParameter('productId', $subscription->getProduct()->getId())
         ;
         $pages = $query->getResult();
         return $pages;
