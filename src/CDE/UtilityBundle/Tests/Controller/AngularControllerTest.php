@@ -3,6 +3,7 @@
 namespace CDE\UtilityBundle\Tests\Controller;
 
 use CDE\TestBundle\Base\BaseUserTest;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 class AngularControllerTest extends BaseUserTest
@@ -46,6 +47,11 @@ class AngularControllerTest extends BaseUserTest
     protected function getPageManager()
     {
         return $this->container->get('cde_content.manager.page');
+    }
+
+    protected function getGalleryManager()
+    {
+        return $this->container->get('cde_content.manager.gallery');
     }
 
     /**
@@ -784,31 +790,77 @@ class AngularControllerTest extends BaseUserTest
     public function testGallery() {
         $client = $this->getClient();
 
-        //TODO Query galleries... none should be found
+        // Query galleries... none should be found
         $crawler = $client->request('GET', '/angular/gallery');
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals(count($response), 0);
 
-        //TODO Create new gallery
-//        $crawler = $client->request('GET', '/angular/gallery');
-//        $response = json_decode($client->getResponse()->getContent());
-//        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
-//        $this->assertEquals(count($response), 0);
-
-        //TODO Add comment to gallery
-        //TODO Query galleries
-//        $crawler = $client->request('GET', '/angular/comment');
-//        $response = json_decode($client->getResponse()->getContent());
-//        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
-//        $this->assertEquals(count($response), 0);
-        //TODO Query specific gallery and assert that image and comments match
-
-        //TODO Query comments
-        $crawler = $client->request('GET', '/angular/comment');
+        // Create new gallery
+        copy('../../../../../islc-angular/test/mocks/lake-babe-original.jpg', '../../../../../islc-angular/test/mocks/lake-babe.jpg');
+        $file = new UploadedFile(
+            '../../../../../islc-angular/test/mocks/lake-babe.jpg',
+            'lake-babe.jpg',
+            'image/jpeg',
+            123
+        );
+        $crawler = $client->request('POST', '/angular/gallery', array(
+            'title' => 'Lake Babe',
+            'description' => 'Lake Babe description',
+        ), array(
+            'file' => $file
+        ));
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
-        $this->assertEquals(count($response), 0);
+        $this->assertEquals($response->title, 'Lake Babe');
+
+        // Add bad comment to gallery
+        $galleryId = $response->id;
+        $crawler = $client->request('POST', "/angular/gallery/$galleryId/comment");
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->error, 'Comment empty');
+
+        // Add good comment to gallery
+        $crawler = $client->request('POST', "/angular/gallery/$galleryId/comment", array(
+            'comment' => 'test comment'
+        ));
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->comment, 'test comment');
+
+        // Query galleries
+        $crawler = $client->request('GET', '/angular/gallery');
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertTrue(count($response) > 0);
+
+        // Query specific gallery and assert that image and comments match
+        $galleryId = $response[0]->id;
+        $gallery = $this->getGalleryManager()->findAbsolute($galleryId);
+        $crawler = $client->request('GET', "/angular/gallery/$galleryId");
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals($response->id, $gallery->getId());
+
+        // Query comments
+        $crawler = $client->request('GET', "/angular/comment");
+        $response = json_decode($client->getResponse()->getContent());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        $this->assertEquals(count($response), 1);
+
+        // Delete all galleries
+        $galleries = $this->getGalleryManager()->findByUser($this->user);
+        foreach ($galleries as $gallery) {
+            $crawler = $client->request('DELETE', '/angular/gallery/'.$gallery->getId());
+            $response = json_decode($client->getResponse()->getContent());
+            $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+            $this->assertEquals($response->id, $gallery->getId());
+        }
+
+        $galleries = $this->getGalleryManager()->findByUser($this->user);
+        $this->assertEquals(count($galleries), 0);
+
 
     }
 

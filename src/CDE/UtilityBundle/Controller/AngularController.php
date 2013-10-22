@@ -567,7 +567,7 @@ class AngularController extends FOSRestController
         }
 
         if (isset($id)) {
-            $gallery = $this->getGalleryManager()->find($id);
+            $gallery = $this->getGalleryManager()->findAbsolute($id);
             if (!isset($gallery) || $gallery->getUser()->getId() !== $user->getId()) {
                 $signedUri = $this->getAwsManager()->getSignedUriByFilename($gallery->getFilename());
                 $gallery->setSignedUri($signedUri);
@@ -578,11 +578,7 @@ class AngularController extends FOSRestController
 
         } else {
             $galleries = $this->getGalleryManager()->findByUser($user);
-            foreach ($galleries as $gallery) {
-                $signedUri = $this->getAwsManager()->getSignedUriByFilename($gallery->getFilename());
-                $gallery->setSignedUri($signedUri);
-            }
-
+            //DO NOT SET SIGNED URLS. Only go through that by request
             $view = $this->view($galleries, 200)->setFormat('json');
 
         }
@@ -591,9 +587,48 @@ class AngularController extends FOSRestController
     }
 
     public function galleryCreateAction(Request $request) {
-        $params = $request->request->all();
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
 
-        $view = $this->view($params, 200)->setFormat('json');
+        $file = $request->files->get('file');
+        $title = $this->getParameter($request, 'title');
+        $description = $this->getParameter($request, 'description');
+
+        $gallery = $this->getGalleryManager()->create();
+        $gallery->setTitle($title);
+        $gallery->setDescription($description);
+        $gallery->setUser($user);
+
+        $filename = $user->getUsername().'-'.uniqid().'.'.$file->guessExtension();
+        $aws_folder = $this->container->getParameter('aws_gallery_folder');
+        $file->move('../app/gallery', $filename);
+        $destination = $aws_folder.'/'.$filename;
+        $this->getAwsManager()->copyGalleryFile($destination, '../app/');
+        $gallery->setFilename($destination);
+        $this->getGalleryManager()->add($gallery);
+
+        $view = $this->view($gallery, 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function galleryDeleteAction($id) {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
+
+        $gallery = $this->getGalleryManager()->findAbsolute($id);
+        if (!isset($gallery) || $gallery->getUser()->getId() !== $user->getId()) {
+            $view = $this->view(array('error' => 'Gallery not found'), 200)->setFormat('json');
+        } else {
+            $this->getGalleryManager()->remove($gallery);
+            $view = $this->view(array('message' => 'Gallery deleted', 'id' => $id), 200)->setFormat('json');
+        }
+
         return $this->handleView($view);
     }
 
@@ -621,8 +656,35 @@ class AngularController extends FOSRestController
         return $this->handleView($view);
     }
 
-    public function commentCreateAction(Request $request) {
+    public function commentCreateAction($id, Request $request) {
+        $user = $this->getUser();
+        if (!isset($user)) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+            return $this->handleView($view);
+        }
 
+        $gallery = $this->getGalleryManager()->findAbsolute($id);
+        if (!isset($gallery) || $gallery->getUser()->getId() !== $user->getId()) {
+            $view = $this->view(array('error' => 'Gallery not found'), 200)->setFormat('json');
+        } else {
+            $commentText = $request->request->get('comment');
+
+            if (!isset($commentText)) {
+                $view = $this->view(array('error' => 'Comment empty'), 200)->setFormat('json');
+            } else {
+                $comment = $this->getCommentManager()->create();
+                $comment->setGallery($gallery);
+                $comment->setComment($commentText);
+                $comment->setGalleryuser($user);
+                $this->getCommentManager()->add($comment);
+
+                $view = $this->view($comment, 200)->setFormat('json');
+            }
+
+
+        }
+
+        return $this->handleView($view);
     }
 
 

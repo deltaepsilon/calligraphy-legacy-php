@@ -178,9 +178,12 @@ class AWSManager
         return $page->setSignedHtml($html);
     }
     
-    public function copyGalleryFile($filename)
+    public function copyGalleryFile($filename, $folder)
     {
-        $folder = __DIR__.'/../../../../web/';
+        if (!isset($folder)) {
+            $folder = __DIR__.'/../../../../web/';
+        }
+
         $source = $folder.$filename;
         $bucketname = $this->getBucketName();
         $file = fopen($source, 'r');

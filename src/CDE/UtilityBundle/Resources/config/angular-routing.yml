@@ -194,6 +194,13 @@ CDEUtilityBundle_angular_gallery_create:
     options:
       expose: true
 
+CDEUtilityBundle_angular_gallery_delete:
+    pattern: /gallery/{id}
+    defaults: { _controller: CDEUtilityBundle:Angular:galleryDelete}
+    methods: [DELETE]
+    options:
+      expose: true
+
 #Comment routes
 CDEUtilityBundle_angular_comment:
     pattern: /comment/{id}
@@ -203,8 +210,8 @@ CDEUtilityBundle_angular_comment:
       expose: true
 
 CDEUtilityBundle_angular_comment_create:
-    pattern: /comment
-    defaults: { _controller: CDEUtilityBundle:Angular:commentCreate, id: null }
+    pattern: /gallery/{id}/comment
+    defaults: { _controller: CDEUtilityBundle:Angular:commentCreate }
     methods: [POST]
     options:
       expose: true
