@@ -569,10 +569,10 @@ class AngularController extends FOSRestController
         if (isset($id)) {
             $gallery = $this->getGalleryManager()->findAbsolute($id);
             if (!isset($gallery) || $gallery->getUser()->getId() !== $user->getId()) {
-                $signedUri = $this->getAwsManager()->getSignedUriByFilename($gallery->getFilename());
-                $gallery->setSignedUri($signedUri);
                 $view = $this->view(array('error' => 'Gallery not found'), 200)->setFormat('json');
             } else {
+                $signedUri = $this->getAwsManager()->getSignedUriByFilename($gallery->getFilename());
+                $gallery->setSignedUri($signedUri);
                 $view = $this->view($gallery, 200)->setFormat('json');
             }
 
