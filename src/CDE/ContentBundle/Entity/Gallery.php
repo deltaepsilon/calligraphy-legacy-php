@@ -91,7 +91,10 @@ class Gallery implements GalleryInterface
      * @ORM\Column(name="updated", type="datetime")
      */
     private $updated;
-    
+
+    /**
+     * @Expose
+     */
     private $signedUri;
 
     public function __toString()

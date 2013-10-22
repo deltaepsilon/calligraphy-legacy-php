@@ -569,6 +569,8 @@ class AngularController extends FOSRestController
         if (isset($id)) {
             $gallery = $this->getGalleryManager()->find($id);
             if (!isset($gallery) || $gallery->getUser()->getId() !== $user->getId()) {
+                $signedUri = $this->getAwsManager()->getSignedUriByFilename($gallery->getFilename());
+                $gallery->setSignedUri($signedUri);
                 $view = $this->view(array('error' => 'Gallery not found'), 200)->setFormat('json');
             } else {
                 $view = $this->view($gallery, 200)->setFormat('json');
@@ -576,6 +578,11 @@ class AngularController extends FOSRestController
 
         } else {
             $galleries = $this->getGalleryManager()->findByUser($user);
+            foreach ($galleries as $gallery) {
+                $signedUri = $this->getAwsManager()->getSignedUriByFilename($gallery->getFilename());
+                $gallery->setSignedUri($signedUri);
+            }
+
             $view = $this->view($galleries, 200)->setFormat('json');
 
         }
@@ -583,8 +590,11 @@ class AngularController extends FOSRestController
         return $this->handleView($view);
     }
 
-    public function galleryCreateAction() {
+    public function galleryCreateAction(Request $request) {
+        $params = $request->request->all();
 
+        $view = $this->view($params, 200)->setFormat('json');
+        return $this->handleView($view);
     }
 
     public function commentAction($id = null) {
@@ -611,7 +621,7 @@ class AngularController extends FOSRestController
         return $this->handleView($view);
     }
 
-    public function commentCreateAction() {
+    public function commentCreateAction(Request $request) {
 
     }
 
