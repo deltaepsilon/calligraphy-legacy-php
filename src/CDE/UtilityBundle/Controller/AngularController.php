@@ -190,7 +190,12 @@ class AngularController extends FOSRestController
     public function addressAction()
     {
         $user = $this->getUser();
-        $view = $this->view($user->getAddress(), 200)->setFormat('json');
+        if (!$user) {
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
+        } else {
+            $view = $this->view($user->getAddress(), 200)->setFormat('json');
+        }
+
         return $this->handleView($view);
     }
 
@@ -236,7 +241,7 @@ class AngularController extends FOSRestController
     {
         $user = $this->getUser();
         if (!isset($user)) {
-            $view = $this->view(401)->setFormat('json');
+            $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
         } else {
             if (isset($id)) {
                 $transaction = $this->getTransactionManager()->findByUser($this->getUser(), $id);
