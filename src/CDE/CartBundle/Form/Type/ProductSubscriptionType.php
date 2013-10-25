@@ -27,6 +27,14 @@ class ProductSubscriptionType extends AbstractType
             ->add('days', 'integer', array('required' => TRUE))
             ->add('recurring', 'checkbox', array('required' => FALSE))
             ->add('active', 'checkbox', array('required' => FALSE))
+            ->add('category', 'choice', array(
+                'choices' => array(
+                    'workshop' => 'Workshop',
+                    'download' => 'Download',
+                    'gift' => 'Gift Certificate',
+                    'physical' => 'Physical Good'
+                )
+            ))
             ->add('keyImage')
             ->add('images', 'collection', array(
                 'type' => 'text',

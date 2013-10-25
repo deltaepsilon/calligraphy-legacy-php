@@ -57,9 +57,16 @@ class ProductController extends Controller
     
     public function createAction(Request $request, $type)
     {
+        $categoryMap = array(
+            'subscription' => 'workshop',
+            'digital' => 'download',
+            'gift' => 'gift',
+            'physical' => 'physical'
+        );
         $product = $this->getProductManager()->create();
         $class = 'CDE\CartBundle\Form\Type\Product'.ucwords($type).'Type';
         $product->setType($type);
+        $product->setCategory($categoryMap[$type]);
         $product->setActive(TRUE);
         $form = $this->createForm(new $class(), $product);
         // Process form

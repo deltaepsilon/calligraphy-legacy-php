@@ -21,6 +21,14 @@ class ProductGiftType extends AbstractType
             ->add('discountPercent', 'percent', array('label' => 'Discount Percent (use whole numbers)'))
             ->add('expiration', 'integer', array('label' => 'Expiration in Days'))
             ->add('active', 'checkbox', array('required' => FALSE))
+            ->add('category', 'choice', array(
+                'choices' => array(
+                    'workshop' => 'Workshop',
+                    'download' => 'Download',
+                    'gift' => 'Gift Certificate',
+                    'physical' => 'Physical Good'
+                )
+            ))
             ->add('keyImage')
             ->add('images', 'collection', array(
                 'type' => 'text',
