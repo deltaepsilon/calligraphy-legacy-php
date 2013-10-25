@@ -42,7 +42,7 @@ CDEAffiliateBundle:
     resource: "@CDEAffiliateBundle/Resources/config/routing.yml"
     prefix:   /
 
-CDEAffiliateBundle:
+CDEAngular:
     resource: "@CDEUtilityBundle/Resources/config/angular-routing.yml"
     prefix:   /angular
 

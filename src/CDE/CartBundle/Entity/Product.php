@@ -70,6 +70,14 @@ class Product implements ProductInterface
     private $type;
 
     /**
+     * @var string $category
+     *
+     * @Expose
+     * @ORM\Column(name="category", type="string", length=255, nullable=true)
+     */
+    private $category;
+
+    /**
      * @var string $slug
      *
      * @Expose
@@ -348,6 +356,28 @@ class Product implements ProductInterface
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set category
+     *
+     * @param string $category
+     * @return Product
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 
     /**
