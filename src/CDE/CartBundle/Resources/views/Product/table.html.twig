@@ -4,6 +4,7 @@
             <th class="asc sortable alpha">title</th>
             <th class="sortable alpha">description</th>
             <th class="sortable alpha">price</th>
+            <th class="sortable alpha">category</th>
             <th class="sortable alpha">active</th>
             <th class="sortable alpha">image</th>
             <th class="sortable alpha">uri</th>
@@ -30,6 +31,9 @@
                 </td>
                 <td>
                     ${{ product.price }}
+                </td>
+                <td>
+                    {{ product.category }}
                 </td>
                 <td>
                     {% if product.active == 1 %}
