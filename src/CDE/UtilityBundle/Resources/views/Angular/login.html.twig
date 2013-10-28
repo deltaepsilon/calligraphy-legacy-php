@@ -1,8 +1,12 @@
+<div class="background-gray1">
+    <ul class="link-list">
+        <li class="link-list-item">log in</li>
+    </ul>
+</div>
 <div class="pure-g-r account-login padded-wrapper">
     <div id="login" class="pure-u-1">
 
         <form class="qv-form full-width-form centered" name="loginForm" action="{{ path("fos_user_security_check") }}" method="post">
-            <h3 class="clearfix text-green2">Log In.</h3>
 
             <div class="clearfix form-errors">
                 <span class="form-error">{{ error }}</span>
@@ -15,7 +19,7 @@
             <div class="clearfix pure-g-r">
                 <input
                     id="username"
-                    class="pure-u-3-5 pull-left"
+                    class="pure-u-1"
                     type="text"
                     name="_username"
                     value="{{ last_username }}"
@@ -29,7 +33,7 @@
             <div class="clearfix pure-g-r">
                 <input
                     id="password"
-                    class="pure-u-3-5 pull-left"
+                    class="pure-u-1"
                     type="password"
                     name="_password"
                     placeholder="Password..."
@@ -63,10 +67,10 @@
                     </button>
                 </div>
                 <div class="pure-u-1-5 text-centered">
-                    <a ui-sref="register">Register</a>
+                    <a class="form-link" ui-sref="register">Register</a>
                 </div>
                 <div class="pure-u-1-5 text-centered">
-                    <a ui-sref="reset">Reset Password</a>
+                    <a class="form-link" ui-sref="reset">Reset Password</a>
                 </div>
             </div>
 
