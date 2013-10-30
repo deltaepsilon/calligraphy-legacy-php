@@ -6,6 +6,7 @@ use CDE\CartBundle\Controller\CartController;
 use CDE\CartBundle\Model\TransactionManagerInterface;
 use CDE\StripeBundle\Entity\Token;
 use CDE\StripeBundle\Entity\TokenManager;
+use CDE\UserBundle\Entity\User;
 use CDE\UserBundle\Entity\UserManager;
 use Doctrine\ORM\EntityManager;
 use CDE\CartBundle\Entity\Transaction;
@@ -195,9 +196,7 @@ class TransactionManager implements TransactionManagerInterface
         return $updatedProducts;
     }
 
-    public function newStripeTransaction(Cart $cart, Token $token) {
-        $user = $token->getUser();
-
+    public function newStripeTransaction(User $user, Cart $cart, Token $token) {
         //Set up transaction
         $transaction = $this->create();
         $transaction->setUser($user);

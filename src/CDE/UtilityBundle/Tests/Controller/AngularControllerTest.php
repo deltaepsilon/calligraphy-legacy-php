@@ -521,6 +521,10 @@ class AngularControllerTest extends BaseUserTest
 
     public function testStripeCheckout() {
         // Set up new Stripe Token to charge against
+        $token = $this->user->getToken();
+        if (isset($token)) {
+            $this->getTokenManager()->remove($token);
+        }
         $token = $this->getStripeToken();
 
         // Empty the cart

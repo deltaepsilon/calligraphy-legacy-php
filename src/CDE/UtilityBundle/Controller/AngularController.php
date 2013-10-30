@@ -456,13 +456,12 @@ class AngularController extends FOSRestController
                 return $this->handleView($view);
             } else {
                 $token = $this->getTokenManager()->create();
-                $token->setUser($user);
             }
 
         }
 
 
-        $transaction = $this->getTransactionManager()->newStripeTransaction($cart, $token);
+        $transaction = $this->getTransactionManager()->newStripeTransaction($user, $cart, $token);
 
         $view = $this->view($transaction, 200)->setFormat('json');
         return $this->handleView($view);
