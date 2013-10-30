@@ -238,7 +238,7 @@ class TransactionManager implements TransactionManagerInterface
         $transaction->setAmount($total);
         if ($total === 0) {
             $transaction->setStatus('Free Checkout');
-            $transaction->setDetails($discount->getCode());
+            $transaction->setDetails(array('code' => $discount->getCode()));
             $this->add($transaction);
         } else {
             //Charge via Stripe
