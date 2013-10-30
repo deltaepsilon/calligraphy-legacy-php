@@ -5,10 +5,13 @@ namespace CDE\CartBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use CDE\CartBundle\Model\DiscountInterface;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * CDE\CartBundle\Entity\Discount
  *
+ * @ExclusionPolicy("all")
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CDE\CartBundle\Entity\DiscountRepository")
  */
@@ -17,6 +20,7 @@ class Discount implements DiscountInterface
     /**
      * @var integer $id
      *
+     * @Expose
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -47,6 +51,7 @@ class Discount implements DiscountInterface
     /**
      * @var string $code
      *
+     * @Expose
      * @ORM\Column(name="code", type="string", length=255)
      */
     private $code;
@@ -54,6 +59,7 @@ class Discount implements DiscountInterface
     /**
      * @var text $description
      *
+     * @Expose
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
@@ -61,6 +67,7 @@ class Discount implements DiscountInterface
     /**
      * @var integer $expires
      *
+     * @Expose
      * @ORM\Column(name="expires", type="integer")
      */
     private $expires;
@@ -68,6 +75,7 @@ class Discount implements DiscountInterface
     /**
      * @var integer $uses
      *
+     * @Expose
      * @ORM\Column(name="uses", type="integer")
      */
     private $uses;
@@ -75,6 +83,7 @@ class Discount implements DiscountInterface
     /**
      * @var integer $maxUses
      *
+     * @Expose
      * @ORM\Column(name="maxUses", type="integer")
      */
     private $maxUses;
@@ -82,6 +91,7 @@ class Discount implements DiscountInterface
     /**
      * @var float $value
      *
+     * @Expose
      * @ORM\Column(name="value", type="float", nullable=true)
      */
     private $value;
@@ -89,6 +99,7 @@ class Discount implements DiscountInterface
     /**
      * @var float $percent
      *
+     * @Expose
      * @ORM\Column(name="percent", type="float", nullable=true)
      */
     private $percent;
@@ -96,6 +107,7 @@ class Discount implements DiscountInterface
     /**
      * @var datetime $created
      *
+     * @Expose
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
@@ -104,6 +116,7 @@ class Discount implements DiscountInterface
     /**
      * @var datetime $updated
      *
+     * @Expose
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      */
