@@ -238,7 +238,7 @@ class TransactionManager implements TransactionManagerInterface
         $transaction->setAmount($total);
         if ($total === 0) {
             $transaction->setStatus('Free Checkout');
-            $transaction->setDetails(array('code' => $discount->getCode()));
+            $transaction->setDetails(array('code' => $transaction->getDiscount()->getCode()));
             $this->add($transaction);
         } else {
             //Charge via Stripe
@@ -284,6 +284,34 @@ class TransactionManager implements TransactionManagerInterface
         $this->update($transaction);
         return $transaction;
 
+
+    }
+
+    public function getCartTotal(Cart $cart) {
+        $total = 0;
+        $products = $cart->getProducts()->getValues();
+        foreach ($products as $product) {
+            $total += $product->getPrice() * $product->getQuantity();
+        }
+
+        $discount = $cart->getDiscount();
+        $discountTotal = 0;
+
+        if (isset($discount)) {
+            $percent = $discount->getPercent();
+            $value = $discount->getValue();
+            if (isset($percent) && $percent > 0) {
+                $discountTotal += max(0, $total * $percent);
+            }
+
+            if (isset($value) && $value > 0) {
+                $discountTotal += max(0, $value);
+            }
+            $total = max(0, $total - $discountTotal);
+
+        }
+
+        return $total;
 
     }
 

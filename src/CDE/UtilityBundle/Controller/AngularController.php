@@ -450,9 +450,17 @@ class AngularController extends FOSRestController
 
         $token = $user->getToken();
         if (!isset($token)) {
-            $view = $this->view(array('error' => 'Credit card not found'), 200)->setFormat('json');
-            return $this->handleView($view);
+            $total = $this->getTransactionManager()->getCartTotal($cart);
+            if ($total > 0) {
+                $view = $this->view(array('error' => 'Credit card not found'), 200)->setFormat('json');
+                return $this->handleView($view);
+            } else {
+                $token = $this->getTokenManager()->create();
+                $token->setUser($user);
+            }
+
         }
+
 
         $transaction = $this->getTransactionManager()->newStripeTransaction($cart, $token);
 
