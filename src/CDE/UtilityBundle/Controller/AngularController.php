@@ -687,7 +687,8 @@ class AngularController extends FOSRestController
                 $comment = $this->getCommentManager()->create();
                 $comment->setGallery($gallery);
                 $comment->setComment($commentText);
-                $comment->setGalleryuser($user);
+                $comment->setGalleryuser($gallery->getUser());
+                $comment->setUser($user);
                 $this->getCommentManager()->add($comment);
 
                 $view = $this->view($comment, 200)->setFormat('json');
