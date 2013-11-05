@@ -63,6 +63,7 @@ class User extends BaseUser
 	/**
 	 * @var string $affiliate
 	 *
+     * @expose
      * @ORM\ManyToOne(targetEntity="CDE\AffiliateBundle\Entity\Affiliate", inversedBy="users")
 	 */
 	private $affiliate;
