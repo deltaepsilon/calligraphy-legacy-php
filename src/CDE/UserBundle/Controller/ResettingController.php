@@ -32,7 +32,7 @@ class ResettingController extends BaseResettingController
     public function sendResettingEmailMessage(UserInterface $user)
     {
         $template = 'FOSUserBundle:Resetting:email.txt.twig';
-        $url = $this->getRoot().'/#/reset/form/'.$user->getConfirmationToken();
+        $url = $this->getRoot().'/#!/reset/form/'.$user->getConfirmationToken();
 //        $url = $this->router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), true);
         $rendered = $this->container->get('templating')->render($template, array(
             'user' => $user,
@@ -74,11 +74,11 @@ class ResettingController extends BaseResettingController
         $user = $this->container->get('fos_user.user_manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
-            return new RedirectResponse($this->getRoot().'/#/reset?error=Username or email not found.');
+            return new RedirectResponse($this->getRoot().'/#!/reset?error=Username or email not found.');
         }
 
 //        if ($user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
-//            return new RedirectResponse($this->getRoot().'/#/reset?error=The password for this user has already been requested in the last 24 hours.');
+//            return new RedirectResponse($this->getRoot().'/#!/reset?error=The password for this user has already been requested in the last 24 hours.');
 //        }
 
         if (null === $user->getConfirmationToken()) {
@@ -97,7 +97,7 @@ class ResettingController extends BaseResettingController
         $emailParts = explode('@', $email);
         $email = '**********'.substr($emailParts[0], 0, -2).'@'.$emailParts[1];
 
-        return new RedirectResponse($this->getRoot()."/#/?notification=Check your email address ($email) for the reset password");
+        return new RedirectResponse($this->getRoot()."/#!/?notification=Check your email address ($email) for the reset password");
     }
 
     /**
@@ -155,7 +155,7 @@ class ResettingController extends BaseResettingController
 
                 if (null === $response = $event->getResponse()) {
 //                    $url = $this->container->get('router')->generate('fos_user_profile_show');
-                    $url = $this->getRoot().'/#/account';
+                    $url = $this->getRoot().'/#!/account';
                     $response = new RedirectResponse($url);
                 }
 
@@ -169,6 +169,6 @@ class ResettingController extends BaseResettingController
             'form' => $form->createView(),
             'token' => $token,
         ));
-//        return new RedirectResponse($this->getRoot().'/#/reset/form?error=Password reset failed');
+//        return new RedirectResponse($this->getRoot().'/#!/reset/form?error=Password reset failed');
     }
 }
