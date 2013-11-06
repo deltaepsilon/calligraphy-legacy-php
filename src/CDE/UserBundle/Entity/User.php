@@ -34,7 +34,8 @@ class User extends BaseUser
 
     /**
      * @var integer $address
-     * 
+     *
+     * @expose
      * @ORM\OneToOne(targetEntity="Address", mappedBy="user", cascade={"persist", "remove"})
      */
     private $address;

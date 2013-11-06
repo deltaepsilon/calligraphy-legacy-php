@@ -56,15 +56,12 @@
             <div class="clearfix pure-g-r">
                 <div class="pure-u-1-5">
                     <button
-                            class="button-primary full-width"
-                            type="submit"
-                            id="_submit"
-                            name="_submit"
-                            value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}"
-                            ng-disabled="loginForm.$invalid"
-                            >
-                        {{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}
-                    </button>
+                        class="button-primary full-width"
+                        type="submit"
+                        id="_submit"
+                        name="_submit"
+                        value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}"
+                    >{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}</button>
                 </div>
                 <div class="pure-u-1-5 text-centered">
                     <a class="form-link" ui-sref="register">Register</a>
