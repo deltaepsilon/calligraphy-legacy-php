@@ -23,7 +23,7 @@ class FrontController extends Controller
         if (getenv('ISLC_ANGULAR') === 'true') {
             $fragment = $request->get('_escaped_fragment_');
             if (isset($fragment)) {
-                $index = file_get_contents('http://127.0.0.1:8888?_escaped_fragment_='.$fragment);
+                $index = file_get_contents('http://127.0.0.1:8888/?_escaped_fragment_='.$fragment);
             } else {
                 $index = file_get_contents(getenv('ISLC_ANGULAR_ROOT').'/index.html');
 
