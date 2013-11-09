@@ -54,6 +54,12 @@ class FrontController extends Controller
         $user = $this->getUser();
         $product = $this->getProductManager()->findActiveBySlug($slug);
         $this->getCartManager()->addProduct($product, $user);
-        return $this->redirect($this->generateUrl('CDECartBundle_cart_index'));
+
+        if (getenv('ISLC_ANGULAR') === 'true') {
+            return $this->redirect('/#!/cart');
+        } else {
+            return $this->redirect($this->generateUrl('CDECartBundle_cart_index'));
+        }
+
     }
 }
