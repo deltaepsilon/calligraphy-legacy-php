@@ -301,7 +301,7 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertTrue(is_array($products));
 
-        $crawler = $client->request('GET', '/angular/product/'.$products[0]->id);
+        $crawler = $client->request('GET', '/angular/product/'.$products[0]->slug);
         $product = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals($product->id, $products[0]->id);

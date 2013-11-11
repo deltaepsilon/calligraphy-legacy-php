@@ -92,8 +92,8 @@ CDEUtilityBundle_angular_transaction:
 
 #Product Actions
 CDEUtilityBundle_angular_product:
-    pattern: /product/{id}
-    defaults: { _controller: CDEUtilityBundle:Angular:product, id: null }
+    pattern: /product/{slug}
+    defaults: { _controller: CDEUtilityBundle:Angular:product, slug: null }
     methods: [GET]
     options:
       expose: true

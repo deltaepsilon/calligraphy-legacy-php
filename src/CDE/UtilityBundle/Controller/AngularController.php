@@ -256,10 +256,10 @@ class AngularController extends FOSRestController
         return $this->handleView($view);
     }
 
-    public function productAction($id = null)
+    public function productAction($slug = null)
     {
-        if (isset($id)) {
-            $product = $this->getProductManager()->find($id);
+        if (isset($slug)) {
+            $product = $this->getProductManager()->findBySlug($slug);
         } else {
             $product = $this->getProductManager()->findActive();
         }
