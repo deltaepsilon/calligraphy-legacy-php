@@ -36,6 +36,10 @@ class AWSManager
         return $response;
     }
 
+    protected function getRedis() {
+        return $this->container->get('snc_redis.default');
+    }
+
     public function setRsa()
     {
         $fingerprint = $this->container->getParameter('aws_rsa_key_pair_id');
@@ -45,37 +49,41 @@ class AWSManager
         $key_response = $this->cloudFront->set_private_key($private_key);
     }
     
-    public function getSignedUri($uri, $days = 1) {
+    public function getSignedUri($uri, $days = 1, $filename = null) {
         if (!is_int($days) || $days <= 0) {
             $days = 1;
         }
         $expires = new \DateTime('+'.$days.' day');
-        preg_match('/[^\/]+?$/', $uri, $filenameMatches);
-        $filename = $filenameMatches[0];
-        $distroInfo = $this->getDistroInfo();
-        $distribution_hostname = $distroInfo->body->DomainName;
-        $this->setRsa();
-        $privateUri = $this->cloudFront->get_private_object_url($distribution_hostname, $filename, $expires->getTimestamp());
-        if (!$privateUri) {
-            return $uri;
+
+        if (!isset($filename)) {
+            preg_match('/[^\/]+?$/', $uri, $filenameMatches);
+            $filename = $filenameMatches[0];
         }
+
+        $redis = $this->getRedis();
+        $privateUri = $redis->get($filename);
+        if (!isset($privateUri)) {
+            $distroInfo = $this->getDistroInfo();
+            $distribution_hostname = $distroInfo->body->DomainName;
+            $this->setRsa();
+            $privateUri = $this->cloudFront->get_private_object_url($distribution_hostname, $filename, $expires->getTimestamp());
+
+            $this->getRedis()->set($filename, $privateUri);
+            $this->getRedis()->expire($filename, $days * 86400);
+
+            if (!$privateUri) {
+                $privateUri = $uri;
+            }
+
+        }
+
         return $privateUri;
+
     }
     
     public function getSignedUriByFilename($uri, $days = 1) {
-        if (!is_int($days) || $days <= 0) {
-            $days = 1;
-        }
-        $expires = new \DateTime('+'.$days.' day');
-        $filename = $uri;
-        $distroInfo = $this->getDistroInfo();
-        $distribution_hostname = $distroInfo->body->DomainName;
-        $this->setRsa();
-        $privateUri = $this->cloudFront->get_private_object_url($distribution_hostname, $filename, $expires->getTimestamp());
-        if (!$privateUri) {
-            return $uri;
-        }
-        return $privateUri;
+        return $this->getSignedUri($uri, $days, $uri);
+
     }    
     
     public function secureDistribution()

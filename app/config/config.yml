@@ -146,3 +146,11 @@ fos_oauth_server:
     options:
       access_token_lifetime: 1209600
       refresh_token_lifetime: 7776000
+
+#SNCRedisBundle
+snc_redis:
+  clients:
+    default:
+      type: predis
+      alias: default
+      dsn: redis://localhost
