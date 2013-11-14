@@ -72,6 +72,10 @@ class AngularController extends FOSRestController
     {
         return $this->get('cde_content.manager.comment');
     }
+    protected function getRedis() {
+        return $this->get('snc_redis.default');
+    }
+
 
     /**
      * Convenience Methods
@@ -129,7 +133,17 @@ class AngularController extends FOSRestController
 
     public function listImagesAction($prefix)
     {
-        $response = $this->getAwsManager()->listImages($prefix);
+        $redis = $this->getRedis();
+        $response = $redis->get($prefix);
+        if (!isset($response)) {
+            $response = $this->getAwsManager()->listImages($prefix);
+            $redis->set($prefix, json_encode($response));
+            $redis->expire($prefix, 36000);
+        } else {
+            $response = json_decode($response);
+        }
+
+
         $view = $this->view($response, 200)
             ->setHeader('Expires', gmdate('D, d M Y H:i:s', strtotime('+1 days')) . ' GMT')
             ->setHeader('Cache-Control', 'max-age=86400, public')
