@@ -17,13 +17,25 @@ class FrontController extends Controller
     {
         return $this->get('cde_cart.manager.cart');
     }
+
+    protected function getRedis() {
+        return $this->get('snc_redis.default');
+    }
     
     public function indexAction(Request $request)
     {
         if (getenv('ISLC_ANGULAR') === 'true') {
             $fragment = $request->get('_escaped_fragment_');
             if (isset($fragment)) {
-                $index = file_get_contents('http://127.0.0.1:8888/?_escaped_fragment_='.$fragment);
+                $phantomParams = $this->container->getParameter('phantomjs');
+                $redis = $this->getRedis();
+                $index = $redis->get($fragment);
+                if (!isset($index)) {
+                    $index = file_get_contents('http://127.0.0.1:8888/?_escaped_fragment_='.$fragment);
+                    $redis->set($fragment, $index);
+                    $redis->expire($fragment, $phantomParams['ttl']);
+                }
+
             } else {
                 $index = file_get_contents(getenv('ISLC_ANGULAR_ROOT').'/index.html');
 

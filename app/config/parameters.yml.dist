@@ -34,3 +34,4 @@ parameters:
     smart_client: http://client.istilllovecalligraphy.com
     stripePK: pk_test_yKJ7iI8CjZqH0I7HzkiEPpET
     stripeSK: sk_test_yg4S10KOQz4fTs3wenXKrxuD
+    phantomjs: { cache: 604800 }
