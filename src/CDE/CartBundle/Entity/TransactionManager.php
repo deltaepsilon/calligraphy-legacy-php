@@ -324,7 +324,7 @@ class TransactionManager implements TransactionManagerInterface
             ->setFrom($admin['admin_email'])
             ->setTo($transaction->getUser()->getEmail())
             ->addBcc($bcc)
-            ->setBody($this->templating->render('CDECartBundle:Mail:neworder.txt.twig', array(
+            ->setBody($this->templating->render('CDECartBundle:Mail:angular.neworder.txt.twig', array(
                 'transaction' => $transaction
             )));
         $this->mailer->send($primaryMessage);
@@ -335,7 +335,7 @@ class TransactionManager implements TransactionManagerInterface
                     ->setSubject($admin['email_from_name'].': Your gift code')
                     ->setFrom($admin['admin_email'])
                     ->setTo($transaction->getUser()->getEmail())
-                    ->setBody($this->templating->render('CDECartBundle:Mail:gift.txt.twig', array(
+                    ->setBody($this->templating->render('CDECartBundle:Mail:angular.gift.txt.twig', array(
                         'product' => $product
                     )));
                 $this->mailer->send($giftMessage);

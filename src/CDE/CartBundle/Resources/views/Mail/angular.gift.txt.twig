@@ -1,0 +1,26 @@
+{% extends 'CDECartBundle:Mail:base.txt.twig' %}
+
+{% block title %}
+    You have received a gift certificate!
+{% endblock %}
+
+{% block main %}
+Claim your gift certificate at
+
+{{ url('CDEUtilityBundle_index') }}#!/products/
+
+Be sure to enter your code at checkout.
+
+{{ product|raw|upper }}
+{% if product.discountValue %}    
+    Value: ${{ product.discountValue }}
+{% endif %}
+{% if product.discountPercent %}    
+    Percent: ${{ product.discountPercent }}%
+{% endif %}
+    Purchase Date: {{ product.created|date('m/d/y') }}
+    Expiration: {{ product.discountExpiration|date('m/d/y') }}
+{% for code in product.discountCodes %}
+    Gift Code: {{ code|raw }}
+{% endfor %}
+{% endblock %}
