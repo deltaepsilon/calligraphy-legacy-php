@@ -102,7 +102,10 @@ class Page implements PageInterface
      * @ORM\Column(name="updated", type="datetime")
      */
     private $updated;
-    
+
+    /**
+     * @Expose
+     */
     private $signedHtml;
 
     public function __toString()
