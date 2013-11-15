@@ -155,7 +155,7 @@ class PageManager implements PageManagerInterface
     public function findBySubscription(Subscription $subscription)
     {
         $query = $this->em->createQuery('
-                select l, m, n, o
+                select l
                 from CDEContentBundle:Page l
                 join l.tags m
                 join m.products n

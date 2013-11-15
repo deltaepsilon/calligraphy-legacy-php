@@ -6,10 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use CDE\ContentBundle\Model\PageInterface;
 use CDE\ContentBundle\Model\TagInterface;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * CDE\ContentBundle\Entity\Page
  *
+ * @ExclusionPolicy("all")
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CDE\ContentBundle\Entity\PageRepository")
  */
@@ -18,6 +21,7 @@ class Page implements PageInterface
     /**
      * @var integer $id
      *
+     * @Expose
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -34,7 +38,8 @@ class Page implements PageInterface
     
     /**
      * @var integer $sort
-     * 
+     *
+     * @Expose
      * @ORM\Column(name="sort", type="integer", nullable=true)
      */
     private $sort;
@@ -42,6 +47,7 @@ class Page implements PageInterface
     /**
      * @var string $title
      *
+     * @Expose
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
@@ -49,6 +55,7 @@ class Page implements PageInterface
     /**
      * @var string $slug
      *
+     * @Expose
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      */
@@ -56,7 +63,8 @@ class Page implements PageInterface
 
     /**
      * @var boolean $active
-     * 
+     *
+     * @Expose
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
@@ -64,6 +72,7 @@ class Page implements PageInterface
     /**
      * @var text $html
      *
+     * @Expose
      * @ORM\Column(name="html", type="text")
      */
     private $html;
@@ -71,12 +80,15 @@ class Page implements PageInterface
     /**
      * @var text $css
      *
+     * @Expose
      * @ORM\Column(name="css", type="text", nullable=true)
      */
     private $css;
 
     /**
      * @var datetime $created
+     *
+     * @Expose
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
@@ -85,6 +97,7 @@ class Page implements PageInterface
     /**
      * @var datetime $updated
      *
+     * @Expose
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      */
