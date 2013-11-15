@@ -535,6 +535,7 @@ class AngularController extends FOSRestController
         foreach ($subscriptions as $subscription) {
             if ($subscription->getProduct()->getSlug() === $slug) {
                 $product = $subscription->getProduct();
+                break;
             }
         }
 
