@@ -100,7 +100,7 @@ class AngularController extends FOSRestController
         $params = $request->request->all();
         foreach ($names as $name) {
             if (!isset($params[$name])) {
-                $result[$name] = null;
+                $params[$name] = null;
             }
         }
         return $params;
