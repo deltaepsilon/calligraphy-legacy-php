@@ -20,6 +20,7 @@ class ProductDigitalType extends AbstractType
             ->add('price')
             ->add('uri', 'url', array('required' => TRUE))
             ->add('active', 'checkbox', array('required' => FALSE))
+            ->add('shipped', 'checkbox', array('required' => FALSE))
             ->add('category', 'choice', array(
                 'choices' => array(
                     'workshop' => 'Workshop',

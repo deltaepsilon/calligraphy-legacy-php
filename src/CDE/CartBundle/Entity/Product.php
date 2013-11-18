@@ -183,6 +183,14 @@ class Product implements ProductInterface
     private $expiration;
 
     /**
+     * @var boolean $shipped
+     *
+     * @Expose
+     * @ORM\Column(name="shipped", type="boolean", nullable=TRUE)
+     */
+    private $shipped;
+
+    /**
      * @var datetime $created
      *
      * @Expose
@@ -469,6 +477,26 @@ class Product implements ProductInterface
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Set shipped
+     *
+     * @param boolean $shipped
+     * @return Product
+     */
+    public function setShipped($shipped) {
+        $this->shipped = $shipped;
+        return $this;
+    }
+
+    /**
+     * Get shipped
+     *
+     * @return boolean
+     */
+    public function getShipped() {
+        return $this->shipped;
     }
 
     /**

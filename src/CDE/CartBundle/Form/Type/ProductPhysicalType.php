@@ -19,6 +19,7 @@ class ProductPhysicalType extends AbstractType
             ->add('price')
 			->add('available')
             ->add('active', 'checkbox', array('required' => FALSE))
+            ->add('shipped', 'checkbox', array('required' => FALSE))
             ->add('category', 'choice', array(
                 'choices' => array(
                     'workshop' => 'Workshop',
