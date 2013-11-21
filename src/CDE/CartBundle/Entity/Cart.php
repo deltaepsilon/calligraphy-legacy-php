@@ -155,7 +155,8 @@ class Cart implements CartInterface
                 $quantity = $productToAdd->getQuantity();
                 $productToAdd->setQuantity($quantity + 1);
                 $this->removeProduct($productToAdd);
-                $this->products[] =$productToAdd;
+                $index = $this->products->indexOf($product);
+                $this->products->set($index, $productToAdd);
                 $flag = true;
             }
         }
