@@ -147,18 +147,20 @@ class Cart implements CartInterface
     public function addProduct(Product $product)
     {
         $id = $product->getId();
-        $exisitingProducts = $this->products->filter(
-            function ($element) use ($id) {
-                if($element->getId() === $id) {
-                    return TRUE;
-                }
+        $flag = false;
+
+
+        foreach ($this->products as $productToAdd) {
+            if ($productToAdd->getId() === $id) {
+                $quantity = $productToAdd->getQuantity();
+                $productToAdd->setQuantity($quantity + 1);
+                $this->removeProduct($productToAdd);
+                $this->products[] =$productToAdd;
+                $flag = true;
             }
-        );
-        $existingProduct = $exisitingProducts->first();
-        if ($existingProduct) {
-            $quantity = $existingProduct->getQuantity();
-            $existingProduct->setQuantity($quantity + 1);
-        } else {
+        }
+
+        if (!$flag) {
             $quantity = $product->getQuantity();
             $product->setQuantity($quantity + 1);
             $this->products[] = $product;
