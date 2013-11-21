@@ -153,7 +153,7 @@ class Product implements ProductInterface
     /**
      * @var integer $tag
      *
-     * @ORM\ManyToMany(targetEntity="CDE\ContentBundle\Entity\Tag", inversedBy="products")
+     * @ORM\ManyToMany(targetEntity="CDE\ContentBundle\Entity\Tag", inversedBy="products", cascade={"persist", "remove"})
      * 
      */
     private $tags;

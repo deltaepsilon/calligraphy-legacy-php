@@ -31,7 +31,7 @@ class FrontController extends Controller
                 $redis = $this->getRedis();
                 $index = $redis->get($fragment);
                 if (!isset($index)) {
-                    $index = file_get_contents('http://127.0.0.1:8888/?_escaped_fragment_='.$fragment);
+                    $index = file_get_contents('http://127.0.0.1:8888/?phantomjs=true&_escaped_fragment_='.$fragment);
                     $redis->set($fragment, $index);
                     $redis->expire($fragment, $phantomParams['cache']);
                 }

@@ -25,7 +25,7 @@ class Token
     /**
      * @var integer $user
      *
-     * @ORM\OneToOne(targetEntity="CDE\UserBundle\Entity\User", inversedBy="token", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="CDE\UserBundle\Entity\User", mappedBy="token", cascade={"persist"})
      */
     private $user;
 
