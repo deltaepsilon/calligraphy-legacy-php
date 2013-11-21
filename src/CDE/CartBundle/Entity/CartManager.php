@@ -158,8 +158,10 @@ class CartManager implements CartManagerInterface
         for ($i=0; $i < $maxCount; $i++) {
             $cart->addProduct($product);
         }
-        $product->decrementAvailable($maxCount);
-        $this->productManager->update($product);
+
+        $dbProduct = $this->productManager->find($product->getId());
+        $dbProduct->decrementAvailable($maxCount);
+        $this->productManager->update($dbProduct);
 
         $this->update($cart, $user);
 		if ($maxCount > 0) {
