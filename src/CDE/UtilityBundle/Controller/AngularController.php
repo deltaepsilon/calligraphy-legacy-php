@@ -631,9 +631,9 @@ class AngularController extends FOSRestController
 
         $filename = $user->getUsername().'-'.uniqid().'.'.$file->guessExtension();
         $aws_folder = $this->container->getParameter('aws_gallery_folder');
-        $file->move('../app/gallery', $filename);
+        $file->move('../dist/gallery', $filename);
         $destination = $aws_folder.'/'.$filename;
-        $this->getAwsManager()->copyGalleryFile($destination, '../app/');
+        $this->getAwsManager()->copyGalleryFile($destination, '../dist/');
         $gallery->setFilename($destination);
         $this->getGalleryManager()->add($gallery);
 
