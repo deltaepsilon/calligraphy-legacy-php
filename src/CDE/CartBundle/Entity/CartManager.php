@@ -84,13 +84,14 @@ class CartManager implements CartManagerInterface
         if ($user) {
 			foreach ($cart->getProducts() as $product) {
                 // Increment the product availability in the DB
-                if ($increment) {
-                    $dbProduct = $this->productManager->find($product->getId());
-                    if (isset($dbProduct)) {
-                        $dbProduct->incrementAvailable($product->getQuantity());
-                        $this->productManager->update($dbProduct);
-                    }
-                }
+                //Cart should no longer decrement and increment quantities
+//                if ($increment) {
+//                    $dbProduct = $this->productManager->find($product->getId());
+//                    if (isset($dbProduct)) {
+//                        $dbProduct->incrementAvailable($product->getQuantity());
+//                        $this->productManager->update($dbProduct);
+//                    }
+//                }
 
 
 				$cart->removeProduct($product, 0);
@@ -159,9 +160,9 @@ class CartManager implements CartManagerInterface
             $cart->addProduct($product);
         }
 
-        $dbProduct = $this->productManager->find($product->getId());
-        $dbProduct->decrementAvailable($maxCount);
-        $this->productManager->update($dbProduct);
+//        $dbProduct = $this->productManager->find($product->getId());
+//        $dbProduct->decrementAvailable($maxCount);
+//        $this->productManager->update($dbProduct);
 
         $this->update($cart, $user);
 		if ($maxCount > 0) {
@@ -184,9 +185,9 @@ class CartManager implements CartManagerInterface
 
         $cart->removeProduct($product, $count);
 
-        $dbProduct = $this->productManager->find($product->getId());
-        $dbProduct->incrementAvailable($count);
-        $this->productManager->update($dbProduct);
+//        $dbProduct = $this->productManager->find($product->getId());
+//        $dbProduct->incrementAvailable($count);
+//        $this->productManager->update($dbProduct);
 
         $this->update($cart, $user);
     }

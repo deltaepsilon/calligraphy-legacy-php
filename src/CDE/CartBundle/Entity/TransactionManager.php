@@ -149,6 +149,11 @@ class TransactionManager implements TransactionManagerInterface
         foreach ($transaction->getProducts() as $tempProduct) {
             // Find the original product to avoid persisting new products
             $product = $this->productManager->find($tempProduct->getId());
+            $available = $product->getAvailable();
+            if (isset($available) && $available > 0) { // Decrement available if applicable
+                $product->setAvailable($available - 1);
+                $this->productManager->update($product);
+            }
             if ($product->getType() === 'subscription') {
                 for ($i=0; $i < $tempProduct->getQuantity(); $i++) {
                     $subscription = $this->subscriptionManager->create();

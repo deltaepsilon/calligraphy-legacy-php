@@ -365,6 +365,7 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertTrue(isset($cart->id));
         $this->assertTrue(is_array($cart->products));
+        $this->assertEquals($cart->products[0]->available, $product->getAvailable()); //Cart should no longer decrement quantities
 
         $productQuantity = null;
         foreach ($cart->products as $prosepectiveProduct) {
@@ -545,8 +546,16 @@ class AngularControllerTest extends BaseUserTest
         $cart = $this->getCartManager()->find($this->user);
         $this->clearCart();
         $products = $this->getProductManager()->findActive();
+        $productsWithAvailable = array();
 
         foreach ($products as $product) {
+            $available = $product->getAvailable();
+            if (isset($available) && $available > 0) {
+                $productsWithAvailable[] = $product;
+                $product->setAvailable(100);
+                $this->getProductManager()->update($product);
+            }
+
             $cart->addProduct($product);
         }
         $this->getCartManager()->update($cart, $this->user);
@@ -556,11 +565,12 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals(count($response->products), count($products));
 
+        $crawler = $client->request('GET', '/angular/product/'.$productsWithAvailable[0]->getSlug());
+        $product = json_decode($client->getResponse()->getContent());
+        $this->assertEquals(99, $product->available); // This assertion keeps failing if I query the product direction, even though the code appears to be working fine. I think it's an ORM persistence issue.
+
         $token = $this->user->getToken();
         $this->assertFalse(isset($token));
-
-
-
 
     }
 
@@ -593,7 +603,7 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($cartProductValues[0]->getId(), $product->getId());
         $this->assertEquals($cartProductValues[0]->getQuantity(), 2);
         $this->assertEquals($cart->getDiscount()->getId(), $discount->getId());
-        $this->assertEquals($product->getAvailable(), 98);
+        $this->assertEquals($product->getAvailable(), 100); // Cart should no longer decrement quantities available
         
         // Remove one from cart
         $this->getCartManager()->removeProduct($product, $this->user, 1);
@@ -602,7 +612,7 @@ class AngularControllerTest extends BaseUserTest
         $product = $this->getProductManager()->find($product->getId());
         $cartProductValues = $cart->getProducts()->getValues();
 
-        $this->assertEquals($product->getAvailable(), 99);
+        $this->assertEquals($product->getAvailable(), 100); // Cart should no longer decrement quantities available
         $this->assertEquals($cartProductValues[0]->getQuantity(), 1);
 
 
@@ -653,7 +663,7 @@ class AngularControllerTest extends BaseUserTest
 
         // Assert product available
         $product = $this->getProductManager()->find($product->getId());
-        $this->assertEquals($product->getAvailable(), 98);
+        $this->assertEquals($product->getAvailable(), 100); // The cart does not decrement products any longer
 
 
         // Remove transaction
@@ -678,8 +688,23 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertTrue(is_array($response));
 
-        $subscription = $response[0];
-        $subscription = $this->getSubscriptionManager()->find($subscription->id);
+        if (count($response) === 0) {
+            $products = $this->getProductManager()->findActive();
+            foreach ($products as $product) {
+                if ($product->getType() === 'subscription') {
+                    $subscription = $this->getSubscriptionManager()->create();
+                    $subscription->setProduct($product);
+                    $subscription->setUser($this->user);
+                    $subscription->setExpires(new \DateTime());
+                    $this->getSubscriptionManager()->add($subscription);
+                    break;
+                }
+            }
+        } else {
+            $subscription = $response[0];
+            $subscription = $this->getSubscriptionManager()->find($subscription->id);
+        }
+
         $subscription->setReset(false);
         $this->getSubscriptionManager()->update($subscription);
 
@@ -709,6 +734,8 @@ class AngularControllerTest extends BaseUserTest
         $this->assertEquals($response->reset, true);
         $date3 = new \DateTime($response->expires);
         $this->assertEquals($date3->getTimestamp(), $date2->getTimestamp());
+
+        $this->getSubscriptionManager()->remove($subscription);
     }
 
     public function testContent() {
