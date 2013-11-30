@@ -30,16 +30,13 @@ Order: {% set total = 0 %}
 {% for code in product.discountCodes %}
         Gift Code: {{ code|raw }}
 {% endfor %}
-{% if product.discountValue %}
-        Value: ${{ product.discountValue }}
-{% endif %}{% if product.discountPercent %}
-        Percentage: {{ product.discountPercent * 100 }}%
-{% endif %}
-        Expiration: {{ product.discountExpiration|date('m/d/y') }}
 {% endif %}
 {% set total = total + product.price * product.quantity %}
 
 {% endfor %}
-
+{% if transaction.discountApplied %}
+{% set total = total - transaction.discountApplied %}
+Discount: -${{ transaction.discountApplied }}
+{% endif %}
 Order Total: ${{ total }}
 {% endblock %}

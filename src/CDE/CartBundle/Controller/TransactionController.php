@@ -124,7 +124,7 @@ class TransactionController extends Controller
                     )));
             $this->getMailer()->send($primaryMessage);
         }
-        return $this->render('CDECartBundle:Mail:neworder.txt.twig', array(
+        return $this->render('CDECartBundle:Mail:angular.neworder.txt.twig', array(
             'transaction' => $transaction,
         ));
     }
