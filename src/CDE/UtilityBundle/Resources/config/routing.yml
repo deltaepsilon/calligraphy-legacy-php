@@ -11,6 +11,10 @@ CDEUtilityBundle_index_purchase:
     pattern:  /purchase/{slug}
     defaults: { _controller: CDEUtilityBundle:Front:purchase }
 
+CDEUtilityBundle_sitemap:
+  pattern: /sitemap.xml
+  defaults: { _controller: CDEUtilityBundle:Front:sitemap}
+
 # Classes
 CDEUtilityBundle_class_index:
     pattern:  /class/

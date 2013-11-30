@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <url>
+        <loc>http://istilllovecalligraphy.com/#!/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>.9</priority>
+    </url>
+
+    <url>
+        <loc>http://istilllovecalligraphy.com/#!/supplies</loc>
+        <changefreq>monthly</changefreq>
+        <priority>.3</priority>
+    </url>
+
+    <url>
+        <loc>http://istilllovecalligraphy.com/#!/faq</loc>
+        <changefreq>monthly</changefreq>
+        <priority>.3</priority>
+    </url>
+
+    <url>
+        <loc>http://istilllovecalligraphy.com/#!/products/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>.5</priority>
+    </url>
+
+    {% for product in products %}
+    <url>
+        <loc>http://istilllovecalligraphy.com/#!/product/{{ product.slug }}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>.7</priority>
+    </url>
+    {% endfor %}
+
+</urlset>

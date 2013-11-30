@@ -74,4 +74,14 @@ class FrontController extends Controller
         }
 
     }
+
+    public function sitemapAction() {
+        $products = $this->getProductManager()->findActive();
+        $date = new \DateTime();
+
+        return $this->render('CDEUtilityBundle:Front:sitemap.xml.twig', array(
+            'products' => $products,
+            'date' => $date,
+        ));
+    }
 }
