@@ -159,7 +159,7 @@ class TransactionController extends Controller
                         ->setSubject($admin['email_from_name'].': Your gift code')
                         ->setFrom($admin['admin_email'])
                         ->setTo($transaction->getUser()->getEmail())
-                        ->setBody($this->renderView('CDECartBundle:Mail:gift.txt.twig', array(
+                        ->setBody($this->renderView('CDECartBundle:Mail:angular.gift.txt.twig', array(
                             'product' => $product
                             )));
             $this->getMailer()->send($giftMessage);
