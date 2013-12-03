@@ -1,0 +1,10 @@
+discounts:
+    pattern: /discount/{id}
+    defaults: { _controller: CDECartBundle:Rest:discount, id: null }
+
+discounts_update:
+    pattern: /discount/{id}
+    defaults: { _controller: CDECartBundle:Rest:discountUpdate}
+    methods: [PUT, POST]
+    requirements:
+          id: \d+

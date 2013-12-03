@@ -14,6 +14,10 @@ CDECartBundle:
     resource: "@CDECartBundle/Resources/config/routing.yml"
     prefix:   /
 
+CDECartBundleAPI:
+    resource: "@CDECartBundle/Resources/config/routingAPI.yml"
+    prefix:   /api
+
 CDEContentBundle:
     resource: "@CDEContentBundle/Resources/config/routing.yml"
     prefix:   /admin/content
