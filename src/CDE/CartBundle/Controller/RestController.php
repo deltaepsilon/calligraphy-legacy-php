@@ -26,6 +26,11 @@ class RestController extends FOSRestController
         return $this->get('cde_cart.manager.discount');
     }
 
+    protected function getTransactionManager()
+    {
+        return $this->get('cde_cart.manager.transaction');
+    }
+
     public function discountAction($id = null)
     {
         $discounts = $this->getDiscountManager()->find($id);
@@ -73,6 +78,43 @@ class RestController extends FOSRestController
         $discount = $this->getDiscountManager()->find($id);
 
         $view = $this->view($discount, 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function transactionAction($id)
+    {
+        $transaction = $this->getTransactionManager()->find($id);
+        $view = $this->view($transaction, 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function transactionsAction($page = 1, $limit = 10)
+    {
+        $transactions = $this->getTransactionManager()->findByPage($page, $limit);
+        $view = $this->view($transactions, 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function transactionUpdateAction($id, Request $request)
+    {
+
+        $processed = $this->getEitherParam($request, 'processed');
+
+        if (isset($processed)) {
+            if (strtolower($processed) === 'true') {
+                $processed = true;
+            } else if (strtolower($processed) === 'false') {
+                $processed = false;
+            }
+
+            $transaction = $this->getTransactionManager()->find($id);
+            $transaction->setProcessed($processed);
+            $this->getTransactionManager()->update($transaction);
+        }
+
+        $transaction = $this->getTransactionManager()->find($id);
+
+        $view = $this->view($transaction, 200)->setFormat('json');
         return $this->handleView($view);
     }
 

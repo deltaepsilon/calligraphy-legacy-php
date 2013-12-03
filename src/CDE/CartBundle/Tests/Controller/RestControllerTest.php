@@ -18,6 +18,10 @@ class RestControllerTest extends BaseUserTest
         return $this->container->get('cde_cart.manager.discount');
     }
 
+    public function getTransactionManager() {
+        return $this->container->get('cde_cart.manager.transaction');
+    }
+
     private function getJSONResponse($client) {
         try {
             $content = $client->getResponse()->getContent();
@@ -42,7 +46,7 @@ class RestControllerTest extends BaseUserTest
         $discounts = $this->getDiscountManager()->find();
         $client = $this->getClient();
 
-        $crawler = $client->request('GET', 'api/discount', array(
+        $crawler = $client->request('GET', '/api/discount', array(
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
         ));
@@ -51,7 +55,7 @@ class RestControllerTest extends BaseUserTest
 
         $first = $response[0];
 
-        $crawler = $client->request('GET', 'discount/'.$first->id, array(
+        $crawler = $client->request('GET', '/api/discount/'.$first->id, array(
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
         ));
@@ -67,7 +71,7 @@ class RestControllerTest extends BaseUserTest
 
         $client = $this->getClient();
 
-        $crawler = $client->request('POST', 'api/discount/'.$discount->getId(), array(
+        $crawler = $client->request('POST', '/api/discount/'.$discount->getId(), array(
             'code' => 'code',
             'description' => 'description',
             'expires' => 101,
@@ -86,6 +90,44 @@ class RestControllerTest extends BaseUserTest
         $this->assertEquals(1001, $response->max_uses);
         $this->assertEquals(3, $response->value);
         $this->assertEquals(1, $response->percent);
+
+    }
+
+    public function testTransactions()
+    {
+        $client = $this->getClient();
+
+        $crawler = $client->request('GET', '/api/transactions', array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $response = $this->getJSONResponse($client);
+        $this->assertEquals(10, count($response->items));
+
+        $first = $response->items[0];
+
+        $crawler = $client->request('GET', '/api/transaction/'.$first->id, array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $response = $this->getJSONResponse($client);
+        $this->assertEquals($first->id, $response->id);
+
+        $crawler = $client->request('POST', '/api/transaction/'.$first->id, array(
+            'processed' => true,
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $response = $this->getJSONResponse($client);
+        $this->assertTrue($response->processed);
+
+        $crawler = $client->request('POST', '/api/transaction/'.$first->id, array(
+            'processed' => false,
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $response = $this->getJSONResponse($client);
+        $this->assertFalse($response->processed);
 
     }
 

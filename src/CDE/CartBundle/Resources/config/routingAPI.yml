@@ -9,3 +9,22 @@ discounts_update:
     methods: [PUT, POST]
     requirements:
           id: \d+
+
+transactions:
+    pattern: /transactions/{page}/{limit}
+    defaults: { _controller: CDECartBundle:Rest:transactions, page: 1, limit: 10 }
+    methods: [GET]
+
+transaction:
+    pattern: /transaction/{id}
+    defaults: { _controller: CDECartBundle:Rest:transaction }
+    methods: [GET]
+    requirements:
+      id: \d+
+
+transactions_update:
+    pattern: /transaction/{id}
+    defaults: { _controller: CDECartBundle:Rest:transactionUpdate}
+    methods: [PUT, POST]
+    requirements:
+          id: \d+
