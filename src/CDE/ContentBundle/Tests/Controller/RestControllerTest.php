@@ -81,7 +81,7 @@ class RestControllerTest extends BaseUserTest
 
         $client = $this->getClient();
         
-        $crawler = $client->request('POST', 'api/createComment/'.$gallery->getId(), array(
+        $crawler = $client->request('POST', 'api/gallery/'.$gallery->getId().'/comment', array(
             'comment' => 'testing testing 123',
             'marked' => 'false',
             'token_type' => 'bearer',
@@ -97,7 +97,7 @@ class RestControllerTest extends BaseUserTest
     public function getComment()
     {
         $client = $this->getClient();
-        $client->request('GET', 'api/getComment/'.$this->comment->id, array(
+        $client->request('GET', 'api/comment/'.$this->comment->id, array(
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
         ));
@@ -112,7 +112,7 @@ class RestControllerTest extends BaseUserTest
     public function updateComment()
     {
         $client = $this->getClient();
-        $client->request('POST', 'api/updateComment/'.$this->comment->id, array(
+        $client->request('POST', 'api/comment/'.$this->comment->id, array(
             'comment' => 'testing 456',
             'marked' => 'true',
             'token_type' => 'bearer',
@@ -128,7 +128,7 @@ class RestControllerTest extends BaseUserTest
     public function getComments()
     {
         $client = $this->getClient();
-        $client->request('GET', 'api/getComments', array(
+        $client->request('GET', 'api/page/1/limit/10/comment', array(
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
         ));
@@ -143,7 +143,7 @@ class RestControllerTest extends BaseUserTest
     public function getGalleries()
     {
         $client = $this->getClient();
-        $client->request('GET', 'api/getGalleries', array(
+        $client->request('GET', 'api/page/1/limit/10/gallery', array(
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
         ));
@@ -158,7 +158,7 @@ class RestControllerTest extends BaseUserTest
     public function getFilteredComments() {
         $user = $this->getUser();
         $client = $this->getClient();
-        $client->request('GET', 'api/getComments', array(
+        $client->request('GET', 'api/page/1/limit/10/comment', array(
             'filter:m.username' => $user->getUsername(),
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
@@ -175,7 +175,7 @@ class RestControllerTest extends BaseUserTest
     public function deleteComment()
     {
         $client = $this->getClient();
-        $client->request('GET', 'api/deleteComment/'.$this->comment->id, array(
+        $client->request('GET', 'api/comment/'.$this->comment->id.'/delete', array(
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
         ));
@@ -187,7 +187,7 @@ class RestControllerTest extends BaseUserTest
     public function updateGallery()
     {
         $client = $this->getClient();
-        $client->request('POST', 'api/updateGallery/'.$this->gallery->getId(), array(
+        $client->request('POST', 'api/gallery/'.$this->gallery->getId(), array(
             'marked' => 'true',
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
@@ -201,7 +201,7 @@ class RestControllerTest extends BaseUserTest
     public function getGallery()
     {
         $client = $this->getClient();
-        $client->request('POST', 'api/getGallery/'.$this->gallery->getId(), array(
+        $client->request('GET', 'api/gallery/'.$this->gallery->getId(), array(
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
         ));
@@ -214,7 +214,7 @@ class RestControllerTest extends BaseUserTest
     public function getFilteredGalleries() {
         $user = $this->getUser();
         $client = $this->getClient();
-        $client->request('GET', 'api/getGalleries', array(
+        $client->request('GET', 'api/page/1/limit/10/gallery', array(
             'filter:m.username' => $user->getUsername(),
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),

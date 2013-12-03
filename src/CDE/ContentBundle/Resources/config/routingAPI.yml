@@ -1,46 +1,55 @@
 # Comments
 CDEContentBundle_api_create_comment:
-    pattern: createComment/{id}
+    pattern: gallery/{id}/comment
     defaults: { _controller: CDEContentBundle:Rest:createComment }
     methods: [POST]
     requirements:
       id: \d+
 
 CDEContentBundle_api_get_comment:
-    pattern: getComment/{id}
+    pattern: comment/{id}
     defaults: { _controller: CDEContentBundle:Rest:getComment }
+    methods: [GET]
     requirements:
       id: \d+
 
 CDEContentBundle_api_update_comment:
-    pattern: updateComment/{id}
+    pattern: comment/{id}
     defaults: { _controller: CDEContentBundle:Rest:updateComment }
     methods: [PUT, POST]
     requirements:
       id: \d+
 
 CDEContentBundle_api_delete_comment:
-    pattern: deleteComment/{id}
+    pattern: comment/{id}
     defaults: { _controller: CDEContentBundle:Rest:deleteComment }
-    methods: [GET, DELETE]
+    methods: [DELETE]
+    requirements:
+      id: \d+
+
+CDEContentBundle_api_delete_comment_GET:
+    pattern: comment/{id}/delete
+    defaults: { _controller: CDEContentBundle:Rest:deleteComment }
+    methods: [GET]
     requirements:
       id: \d+
 
 CDEContentBundle_api_get_comments:
-    pattern: getComments/{page}/{limit}
+    pattern: page/{page}/limit/{limit}/comment
     defaults: { _controller: CDEContentBundle:Rest:getComments, page: 1, limit: 10 }
 
 # Galleries
-CDEContentBundle_api_get_gallieries:
-    pattern: getGalleries/{page}/{limit}
+CDEContentBundle_api_get_galleries:
+    pattern: page/{page}/limit/{limit}/gallery
     defaults: { _controller: CDEContentBundle:Rest:getGalleries, page: 1, limit: 10 }
 
-CDEContentBundle_api_get_galliery:
-    pattern: getGallery/{id}
+CDEContentBundle_api_get_gallery:
+    pattern: gallery/{id}
     defaults: { _controller: CDEContentBundle:Rest:getGallery }
+    methods: [GET]
 
 CDEContentBundle_api_update_gallery:
-    pattern: updateGallery/{id}
+    pattern: gallery/{id}
     defaults: { _controller: CDEContentBundle:Rest:updateGallery }
     methods: [PUT, POST]
     requirements:

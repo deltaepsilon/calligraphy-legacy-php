@@ -186,7 +186,7 @@ class AWSManager
         return $page->setSignedHtml($html);
     }
     
-    public function copyGalleryFile($filename, $folder)
+    public function copyGalleryFile($filename, $folder = null)
     {
         if (!isset($folder)) {
             $folder = __DIR__.'/../../../../web/';
