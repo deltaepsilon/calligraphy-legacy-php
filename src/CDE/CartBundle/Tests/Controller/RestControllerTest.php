@@ -64,6 +64,63 @@ class RestControllerTest extends BaseUserTest
 
     }
 
+    public function testDiscountCreate()
+    {
+        $client = $this->getClient();
+        $crawler = $client->request('POST', '/api/discount', array(
+            'code' => 'code',
+            'description' => 'description',
+            'expires' => 101,
+            'uses' => 101,
+            'max_uses' => 1001,
+            'value' => 3,
+            'percent' => 1,
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $response = $this->getJSONResponse($client);
+        var_dump($client->getResponse()->getContent());
+        $this->assertEquals(1, count($response));
+        $this->assertEquals('code', $response[0]->code);
+
+        $crawler = $client->request('POST', '/api/discount', array(
+            'multiple' => '2',
+            'code' => 'code',
+            'description' => 'description',
+            'expires' => 101,
+            'uses' => 101,
+            'max_uses' => 1001,
+            'value' => 3,
+            'percent' => 1,
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $response = $this->getJSONResponse($client);
+        var_dump($client->getResponse()->getContent());
+        $this->assertEquals(2, count($response));
+        $this->assertEquals('code', $response[0]->code);
+        $this->assertEquals('code', $response[1]->code);
+
+        //Test Delete
+        $discounts = $this->getDiscountManager()->find();
+        $count = 0;
+
+        for($i = 0; $i < count($discounts); $i++) {
+            if ($discounts[$i]->getCode() === 'code') {
+                $crawler = $client->request('GET', '/api/discount/'.$discounts[$i]->getId().'/delete', array(
+                    'token_type' => 'bearer',
+                    'access_token' => $this->getAccessToken(),
+                ));
+                $response = $this->getJSONResponse($client);
+                var_dump($client->getResponse()->getContent());
+                $this->assertTrue($response->deleted);
+                $count++;
+            }
+        }
+
+        $this->assertTrue($count > 0);
+    }
+
     public function testDiscountUpdate()
     {
         $discounts = $this->getDiscountManager()->find();
@@ -83,6 +140,7 @@ class RestControllerTest extends BaseUserTest
             'access_token' => $this->getAccessToken(),
         ));
         $response = $this->getJSONResponse($client);
+        var_dump($client->getResponse()->getContent());
         $this->assertEquals('code', $response->code);
         $this->assertEquals('description', $response->description);
         $this->assertEquals(101, $response->expires);

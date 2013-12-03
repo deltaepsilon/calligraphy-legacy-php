@@ -3,12 +3,31 @@ discounts:
     defaults: { _controller: CDECartBundle:Rest:discount, id: null }
     methods: [GET]
 
+discounts_create:
+    pattern: /discount
+    defaults: { _controller: CDECartBundle:Rest:discountCreate}
+    methods: [POST]
+
 discounts_update:
     pattern: /discount/{id}
     defaults: { _controller: CDECartBundle:Rest:discountUpdate}
     methods: [PUT, POST]
     requirements:
           id: \d+
+
+discounts_delete:
+    pattern: /discount/{id}
+    defaults: { _controller: CDECartBundle:Rest:discountCreate}
+    methods: [DELETE]
+    requirements:
+      id: \d+
+
+discounts_delete_test:
+    pattern: /discount/{id}/delete
+    defaults: { _controller: CDECartBundle:Rest:discountDelete}
+    methods: [GET]
+    requirements:
+      id: \d+
 
 transactions:
     pattern: /transactions/{page}/{limit}

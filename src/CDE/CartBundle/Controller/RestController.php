@@ -18,29 +18,7 @@ class RestController extends FOSRestController
         return $result;
     }
 
-    /**
-     * Managers
-     */
-    protected function getDiscountManager()
-    {
-        return $this->get('cde_cart.manager.discount');
-    }
-
-    protected function getTransactionManager()
-    {
-        return $this->get('cde_cart.manager.transaction');
-    }
-
-    public function discountAction($id = null)
-    {
-        $discounts = $this->getDiscountManager()->find($id);
-        $view = $this->view($discounts, 200)->setFormat('json');
-        return $this->handleView($view);
-    }
-
-    public function discountUpdateAction($id, Request $request)
-    {
-
+    protected function decorateDiscount($request, $discount) {
         $code = $this->getEitherParam($request, 'code');
         $description = $this->getEitherParam($request, 'description');
         $expires = $this->getEitherParam($request, 'expires');
@@ -48,8 +26,6 @@ class RestController extends FOSRestController
         $maxUses = $this->getEitherParam($request, 'max_uses');
         $value = $this->getEitherParam($request, 'value');
         $percent = $this->getEitherParam($request, 'percent');
-
-        $discount = $this->getDiscountManager()->find($id);
 
         if (isset($code)) {
             $discount->setCode($code);
@@ -73,11 +49,74 @@ class RestController extends FOSRestController
             $discount->setPercent($percent);
         }
 
+        return $discount;
+    }
+
+    /**
+     * Managers
+     */
+    protected function getDiscountManager()
+    {
+        return $this->get('cde_cart.manager.discount');
+    }
+
+    protected function getTransactionManager()
+    {
+        return $this->get('cde_cart.manager.transaction');
+    }
+
+    public function discountAction($id = null)
+    {
+        $discounts = $this->getDiscountManager()->find($id);
+        $view = $this->view($discounts, 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function discountCreateAction(Request $request) {
+        $multiple = $this->getEitherParam($request, 'multiple');
+        $discounts = array();
+
+        if (!isset($multiple)) {
+            $multiple = 1;
+        }
+
+        if (is_string($multiple)) {
+            $multiple = intval($multiple);
+        }
+
+        for ($i = 0; $i < $multiple; $i++) {
+            $discount = $this->getDiscountManager()->create();
+            $this->decorateDiscount($request, $discount);
+            $this->getDiscountManager()->add($discount);
+            $discounts[] = $discount;
+        }
+
+        $view = $this->view($discounts, 200)->setFormat('json');
+        return $this->handleView($view);
+
+    }
+
+    public function discountUpdateAction($id, Request $request)
+    {
+        $discount = $this->getDiscountManager()->find($id);
+        $this->decorateDiscount($request, $discount);
         $this->getDiscountManager()->update($discount);
 
         $discount = $this->getDiscountManager()->find($id);
 
         $view = $this->view($discount, 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function discountDeleteAction($id) {
+        $discount = $this->getDiscountManager()->find($id);
+        if (isset($discount)) {
+            $this->getDiscountManager()->remove($discount);
+            $view = $this->view(array('deleted' => true), 200)->setFormat('json');
+        } else {
+            $view = $this->view(array('deleted' => false), 200)->setFormat('json');
+        }
+
         return $this->handleView($view);
     }
 
