@@ -8,6 +8,17 @@ use Symfony\Component\HttpFoundation\Request;
 class RestController extends FOSRestController
 {
     /**
+     * Convenience
+     */
+    protected function getEitherParam($request, $param) {
+        $result = $request->query->get($param);
+        if (!isset($result)) {
+            $result = $request->request->get($param);
+        }
+        return $result;
+    }
+
+    /**
      * Managers
      */
     protected function getDiscountManager()
@@ -24,13 +35,14 @@ class RestController extends FOSRestController
 
     public function discountUpdateAction($id, Request $request)
     {
-        $code = $request->query->get('code');
-        $description = $request->query->get('description');
-        $expires = $request->query->get('expires');
-        $uses = $request->query->get('uses');
-        $maxUses = $request->query->get('max_uses');
-        $value = $request->query->get('value');
-        $percent = $request->query->get('percent');
+
+        $code = $this->getEitherParam($request, 'code');
+        $description = $this->getEitherParam($request, 'description');
+        $expires = $this->getEitherParam($request, 'expires');
+        $uses = $this->getEitherParam($request, 'uses');
+        $maxUses = $this->getEitherParam($request, 'max_uses');
+        $value = $this->getEitherParam($request, 'value');
+        $percent = $this->getEitherParam($request, 'percent');
 
         $discount = $this->getDiscountManager()->find($id);
 

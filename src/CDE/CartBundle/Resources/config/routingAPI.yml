@@ -1,6 +1,7 @@
 discounts:
     pattern: /discount/{id}
     defaults: { _controller: CDECartBundle:Rest:discount, id: null }
+    methods: [GET]
 
 discounts_update:
     pattern: /discount/{id}

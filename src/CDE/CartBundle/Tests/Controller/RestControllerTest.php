@@ -67,28 +67,25 @@ class RestControllerTest extends BaseUserTest
 
         $client = $this->getClient();
 
-        $crawler = $client->request('GET', 'api/discount/'.$discount->getId(), array(
+        $crawler = $client->request('POST', 'api/discount/'.$discount->getId(), array(
             'code' => 'code',
             'description' => 'description',
-            'expires' => '101',
+            'expires' => 101,
             'uses' => 101,
             'max_uses' => 1001,
             'value' => 3,
-            'percent' => 0.5,
+            'percent' => 1,
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
         ));
         $response = $this->getJSONResponse($client);
-        $this->assertEquals($discount->getCode(), $response->code);
-        $this->assertEquals($discount->getDescription(), $response->description);
-        $this->assertEquals($discount->getExpires(), $response->expires);
-        $this->assertEquals($discount->getUses(), $response->uses);
-        $this->assertEquals($discount->getMaxUses(), $response->max_uses);
-        $this->assertEquals($discount->getValue(), $response->value);
-        $this->assertEquals($discount->getPercent(), $response->percent);
-
-
-        $this->getDiscountManager()->update($discount);
+        $this->assertEquals('code', $response->code);
+        $this->assertEquals('description', $response->description);
+        $this->assertEquals(101, $response->expires);
+        $this->assertEquals(101, $response->uses);
+        $this->assertEquals(1001, $response->max_uses);
+        $this->assertEquals(3, $response->value);
+        $this->assertEquals(1, $response->percent);
 
     }
 
