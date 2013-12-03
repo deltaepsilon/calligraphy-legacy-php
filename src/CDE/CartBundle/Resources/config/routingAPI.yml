@@ -17,7 +17,7 @@ discounts_update:
 
 discounts_delete:
     pattern: /discount/{id}
-    defaults: { _controller: CDECartBundle:Rest:discountCreate}
+    defaults: { _controller: CDECartBundle:Rest:discountDelete}
     methods: [DELETE]
     requirements:
       id: \d+

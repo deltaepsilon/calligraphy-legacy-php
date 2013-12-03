@@ -79,7 +79,6 @@ class RestControllerTest extends BaseUserTest
             'access_token' => $this->getAccessToken(),
         ));
         $response = $this->getJSONResponse($client);
-        var_dump($client->getResponse()->getContent());
         $this->assertEquals(1, count($response));
         $this->assertEquals('code', $response[0]->code);
 
@@ -96,7 +95,6 @@ class RestControllerTest extends BaseUserTest
             'access_token' => $this->getAccessToken(),
         ));
         $response = $this->getJSONResponse($client);
-        var_dump($client->getResponse()->getContent());
         $this->assertEquals(2, count($response));
         $this->assertEquals('code', $response[0]->code);
         $this->assertEquals('code', $response[1]->code);
