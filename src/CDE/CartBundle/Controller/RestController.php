@@ -52,6 +52,18 @@ class RestController extends FOSRestController
         return $discount;
     }
 
+    private function getQueryFilter(Request $request) {
+        $params = $request->query->all();
+        $queryFilter = array();
+        foreach ($params as $k => $v) {
+            $filter = explode(':', $k);
+            if (count($filter) === 2) {
+                $queryFilter[$filter[1]] = $v;
+            }
+        }
+        return $queryFilter;
+    }
+
     /**
      * Managers
      */
@@ -127,9 +139,9 @@ class RestController extends FOSRestController
         return $this->handleView($view);
     }
 
-    public function transactionsAction($page = 1, $limit = 10)
+    public function transactionsAction($page = 1, $limit = 10, Request $request)
     {
-        $transactions = $this->getTransactionManager()->findByPage($page, $limit);
+        $transactions = $this->getTransactionManager()->findByPage($page, $limit, $this->getQueryFilter($request));
         $view = $this->view($transactions, 200)->setFormat('json');
         return $this->handleView($view);
     }
