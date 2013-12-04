@@ -30,7 +30,7 @@ discounts_delete_test:
       id: \d+
 
 transactions:
-    pattern: /transactions/{page}/{limit}
+    pattern: page/{page}/limit/{limit}/transaction
     defaults: { _controller: CDECartBundle:Rest:transactions, page: 1, limit: 10 }
     methods: [GET]
 
