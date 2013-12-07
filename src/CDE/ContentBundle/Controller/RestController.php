@@ -137,7 +137,7 @@ class RestController extends FOSRestController
         return $this->handleView($view);
     }
 
-    public function deleteCommentAction($galleryId, $id)
+    public function deleteCommentAction($id)
     {
         $comment = $this->getCommentManager()->find($id);
         if (isset($comment)) {

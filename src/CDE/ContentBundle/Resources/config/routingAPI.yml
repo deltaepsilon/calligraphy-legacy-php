@@ -21,14 +21,14 @@ CDEContentBundle_api_update_comment:
       id: \d+
 
 CDEContentBundle_api_delete_comment:
-    pattern: gallery/{galleryId}/comment/{id}
+    pattern: comment/{id}
     defaults: { _controller: CDEContentBundle:Rest:deleteComment }
     methods: [DELETE]
     requirements:
       id: \d+
 
 CDEContentBundle_api_delete_comment_GET:
-    pattern: gallery/{galleryId}/comment/{id}/delete
+    pattern: comment/{id}/delete
     defaults: { _controller: CDEContentBundle:Rest:deleteComment }
     methods: [GET]
     requirements:
