@@ -154,9 +154,9 @@ class Cart implements CartInterface
             if ($productToAdd->getId() === $id) {
                 $quantity = $productToAdd->getQuantity();
                 $productToAdd->setQuantity($quantity + 1);
-                $this->removeProduct($productToAdd);
-                $index = $this->products->indexOf($product);
-                $this->products->set($index, $productToAdd);
+//                $this->removeProduct($productToAdd);
+//                $index = $this->products->indexOf($product);
+//                $this->products->set($index, $productToAdd);
                 $flag = true;
             }
         }
@@ -166,6 +166,9 @@ class Cart implements CartInterface
             $product->setQuantity($quantity + 1);
             $this->products[] = $product;
         }
+
+        $this->products = $this->zeroIndex($this->products);
+
         return $this;
     }
     
@@ -185,7 +188,19 @@ class Cart implements CartInterface
             }
         }
 
+        $this->products = $this->zeroIndex($this->products);
+
         return $this;
+    }
+
+    public function zeroIndex(ArrayCollection $collection) {
+        $result = new ArrayCollection();
+        $array = array_values($collection->toArray());
+
+        foreach($array as $element) {
+            $result->add($element);
+        }
+        return $result;
     }
 
     /**

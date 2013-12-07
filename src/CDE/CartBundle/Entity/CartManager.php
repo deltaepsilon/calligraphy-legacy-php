@@ -195,9 +195,18 @@ class CartManager implements CartManagerInterface
     public function setQuantity(Cart $cart, $user, $id, $quantity) {
         foreach ($cart->getProducts() as $product) {
             if ($product->getId() === $id) {
-                $this->removeProduct($product, $user, $product->getQuantity());
+
                 if ($quantity > 0) {
-                    $this->addProduct($product, $user, $quantity);
+                    $currentQuantity = $product->getQuantity();
+                    $difference = $quantity - $currentQuantity;
+                    if ($difference > 0) {
+                        $this->addProduct($product, $user, $difference);
+                    } else if ($difference < 0) {
+                        $this->removeProduct($product, $user, -1 * $difference);
+                    }
+
+                } else {
+                    $this->removeProduct($product, $user, $product->getQuantity());
                 }
             }
         }
