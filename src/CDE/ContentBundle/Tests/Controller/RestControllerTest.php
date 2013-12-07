@@ -175,7 +175,7 @@ class RestControllerTest extends BaseUserTest
     public function deleteComment()
     {
         $client = $this->getClient();
-        $client->request('GET', 'api/comment/'.$this->comment->id.'/delete', array(
+        $client->request('GET', 'api/gallery/'.$this->gallery->getId().'/comment/'.$this->comment->id.'/delete', array(
             'token_type' => 'bearer',
             'access_token' => $this->getAccessToken(),
         ));
