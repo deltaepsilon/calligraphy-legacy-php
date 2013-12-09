@@ -179,7 +179,7 @@ class Comment implements CommentInterface
      */
     public function setComment($comment)
     {
-        $this->comment = $comment;
+        $this->comment = html_entity_decode($comment);
         return $this;
     }
 
