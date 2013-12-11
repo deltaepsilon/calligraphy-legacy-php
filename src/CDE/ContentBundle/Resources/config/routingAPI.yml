@@ -54,3 +54,13 @@ CDEContentBundle_api_update_gallery:
     methods: [PUT, POST]
     requirements:
       id: \d+
+
+CDEContentBundle_api_get_files:
+  pattern: file
+  defaults: { _controller: CDEContentBundle:Rest:getFiles }
+  methods: [GET]
+
+CDEContentBundle_api_secure_files:
+  pattern: file/{prefix}
+  defaults: { _controller: CDEContentBundle:Rest:secureFiles, prefix: null }
+  methods: [POST]

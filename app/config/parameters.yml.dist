@@ -19,6 +19,7 @@ parameters:
     aws_gallery_folder: 'gallery'
     aws_images_bucket: images.melissaesplin.com
     aws_images_path: https://s3.amazonaws.com/images.melissaesplin.com
+    aws_private_bucket: private.melissaesplin.com
     locale: en
     secret: 123456789
     email_name: 'I Still Love Calligraphy'

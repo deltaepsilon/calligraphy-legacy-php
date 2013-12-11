@@ -80,6 +80,11 @@ class RestController extends FOSRestController
         return $this->get('cde_content.manager.gallery');
     }
 
+    protected function getAWSManager()
+    {
+        return $this->get('cde_utility.manager.aws');
+    }
+
     /**
      * Comments
      */
@@ -186,6 +191,31 @@ class RestController extends FOSRestController
         $this->setGalleryParameters($request, $gallery);
         $view = $this->view($gallery, 200)->setFormat('json');
         return $this->handleView($view);
+    }
+
+    public function getFilesAction()
+    {
+        $files = $this->getAWSManager()->listPrivateFiles();
+        $view = $this->view($files, 200)->setFormat('json');
+        return $this->handleView($view);
+    }
+
+    public function secureFilesAction($prefix = null)
+    {
+        if (isset($prefix)) {
+            $result = $this->getAWSManager()->setCFPermissions($prefix);
+        } else {
+            $result = array();
+            $files = $this->getAWSManager()->listPrivateFiles();
+            foreach ($files as $file) {
+                $result[] = $this->getAWSManager()->setCFPermissions($file);
+            }
+
+        }
+
+        $view = $this->view($result, 200)->setFormat('json');
+        return $this->handleView($view);
+
     }
 
 }

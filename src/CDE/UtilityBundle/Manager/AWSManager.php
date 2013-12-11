@@ -260,4 +260,26 @@ class AWSManager
         }
         return $result;
     }
+
+    public function listPrivateFiles() {
+        $bucket = $this->container->getParameter('aws_private_bucket');
+        $response = $this->s3->list_objects($bucket, array('delimiter' => '/'));
+        $result = array();
+        foreach($response->body->Contents as $object) {
+            $key = (String) $object->Key;
+            $result[] = $key;
+        }
+        return $result;
+    }
+
+    public function setCFPermissions($prefix) {
+        $bucket = $this->container->getParameter('aws_private_bucket');
+        $owner = $this->getOwnerId($bucket);
+        $s3 = $this->getS3CanonicalId($this->getOai());
+        $result = $this->s3->set_object_acl($bucket, $prefix, array(
+            array('id' => $owner, 'permission' => 'FULL_CONTROL' ),
+            array('id' => $s3, 'permission' => 'READ' ),
+        ));
+        return $result;
+    }
 }

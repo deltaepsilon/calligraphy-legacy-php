@@ -252,4 +252,41 @@ class RestControllerTest extends BaseUserTest
         $this->oAuthControllerTest->delete();
     }
 
+    public function testFiles() {
+        $user = $this->getUser();
+        $client = $this->getClient();
+        $client->request('GET', 'api/file', array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $files = $this->getJSONResponse($client);
+        $this->assertTrue(count($files) > 0);
+
+    }
+
+    public function testFilePermissions() {
+        $user = $this->getUser();
+        $client = $this->getClient();
+        $files = $this->getAWSManager()->listPrivateFiles();
+        $client->request('POST', 'api/file/'.$files[0], array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $response = $this->getJSONResponse($client);
+        $this->assertEquals(200, $response->status);
+
+    }
+
+    public function testAllFilePermissions() {
+        $user = $this->getUser();
+        $client = $this->getClient();
+        $client->request('POST', 'api/file', array(
+            'token_type' => 'bearer',
+            'access_token' => $this->getAccessToken(),
+        ));
+        $response = $this->getJSONResponse($client);
+        $this->assertTrue(count($response) > 0);
+
+    }
+
 }
