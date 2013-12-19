@@ -11,7 +11,7 @@ You have a new comment on the gallery titled "{{ comment.gallery.title }}".
 </p>
 
 <p>
-    View all comments at {{ url('CDEContentBundle_gallery_account_index', { 'id': comment.gallery.id }) }}
+    View all comments at {{ url('CDEUtilityBundle_index') }}/#!/gallery/{{ comment.gallery.id }}
 </p>
 
 {% endblock %}
