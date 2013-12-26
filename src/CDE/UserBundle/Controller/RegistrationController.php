@@ -116,6 +116,8 @@ class RegistrationController extends Controller
 
               }
 
+              $this->getUserManager()->sendWelcomeEmail($user);
+
               $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
               return $response;

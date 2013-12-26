@@ -22,8 +22,11 @@ class UserManager extends ContainerAware implements UserManagerInterface
     protected $paginator;
     protected $encoderFactory;
     protected $validator;
+    protected $admin;
+    protected $templating;
+    protected $mailer;
 
-    public function __construct(EntityManager $em, $class, \FOS\UserBundle\Model\UserManagerInterface $userManager, UserProviderInterface $userProvider, $subscriptionManager, $affiliateManager, $paginator, $encoderFactory, $validator)
+    public function __construct(EntityManager $em, $class, \FOS\UserBundle\Model\UserManagerInterface $userManager, UserProviderInterface $userProvider, $subscriptionManager, $affiliateManager, $paginator, $encoderFactory, $validator, $admin, $templating, $mailer)
     {
         $this->em = $em;
         $this->repo = $this->em->getRepository($class);
@@ -35,6 +38,9 @@ class UserManager extends ContainerAware implements UserManagerInterface
         $this->paginator = $paginator;
         $this->encoderFactory = $encoderFactory;
         $this->validator = $validator;
+        $this->admin = $admin;
+        $this->templating = $templating;
+        $this->mailer = $mailer;
     }
     public function create()
     {
@@ -152,6 +158,18 @@ class UserManager extends ContainerAware implements UserManagerInterface
     public function validateEmail($email) {
         $constraint = new Email();
         return $this->validator->validateValue($email, $constraint);
+    }
+
+    public function sendWelcomeEmail(User $user) {
+        $admin = $this->admin;
+        $welcome = \Swift_Message::newInstance()
+            ->setSubject('Welcome to I Still Love Calligraphy!')
+            ->setFrom($admin['admin_email'])
+            ->setTo($user->getEmail())
+            ->setBody($this->templating->render('CDEUserBundle:Mail:welcome.txt.twig', array(
+                'user' => $user
+            )));
+        $this->mailer->send($welcome);
     }
 
 }

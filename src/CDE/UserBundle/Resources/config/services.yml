@@ -25,6 +25,9 @@ services:
       paginator: '@knp_paginator'
       encoderFactory: '@security.encoder_factory'
       validator: '@validator'
+      admin: %admin%
+      templating: '@templating'
+      mailer: '@mailer'
   cde_user.manager.address:
     class: CDE\UserBundle\Entity\AddressManager
     arguments:
