@@ -532,6 +532,10 @@ class AngularController extends FOSRestController
 
         // Make sure that the user actually has an active subscription to this product.
         $subscriptions = $this->getSubscriptionManager()->findByUser($user);
+        usort($subscriptions, function($a, $b) {
+            return $a->getExpires()->getTimestamp() > $a->getExpires()->getTimestamp();
+        });
+
         foreach ($subscriptions as $subscription) {
             if ($subscription->getProduct()->getSlug() === $slug) {
                 $product = $subscription->getProduct();
