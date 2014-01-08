@@ -101,7 +101,12 @@ class ProductManager implements ProductManagerInterface
 		$product = $this->repo->findBy(
 			array('slug' => $slug)
 		);
-		return $product[0];
+        if (count($product) > 0) {
+            return $product[0];
+        } else {
+            return array();
+        }
+
 	}
     
     public function findActiveBySlug($slug)

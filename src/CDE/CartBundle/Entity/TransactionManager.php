@@ -144,7 +144,12 @@ class TransactionManager implements TransactionManagerInterface
             $transaction = $this->repo->findBy(
                 array('id' => $id, 'user' => $user->getId())
             );
-            $transaction = $transaction[0];
+            if (count($transaction) > 0) {
+                $transaction = $transaction[0];
+            } else {
+                $transaction = array();
+            }
+
         } else {
             $transaction = $this->repo->findBy(
                 array('user' => $user->getId()),
