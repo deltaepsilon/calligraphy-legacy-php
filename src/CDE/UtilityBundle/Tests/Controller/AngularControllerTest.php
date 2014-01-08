@@ -560,10 +560,12 @@ class AngularControllerTest extends BaseUserTest
         }
         $this->getCartManager()->update($cart, $this->user);
 
-        $crawler = $client->request('GET', '/angular/stripe/checkout');
+        $attribution = 'I found it between my buns!!!';
+        $crawler = $client->request('GET', '/angular/stripe/checkout', array('attribution' => $attribution));
         $response = json_decode($client->getResponse()->getContent());
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
         $this->assertEquals(count($response->products), count($products));
+        $this->assertEquals($attribution, $response->survey->attribution);
 
         $crawler = $client->request('GET', '/angular/product/'.$productsWithAvailable[0]->getSlug());
         $product = json_decode($client->getResponse()->getContent());

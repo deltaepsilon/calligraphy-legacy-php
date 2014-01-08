@@ -448,8 +448,12 @@ class AngularController extends FOSRestController
         return $this->handleView($view);
     }
 
-    public function stripeCheckoutAction() {
+    public function stripeCheckoutAction(Request $request) {
         $user = $this->getUser();
+        $survey = array(
+            'attribution' => $request->query->get('attribution')
+        );
+
         if (!isset($user)) {
             $view = $this->view(array('error' => 'User not found'), 200)->setFormat('json');
             return $this->handleView($view);
@@ -475,7 +479,7 @@ class AngularController extends FOSRestController
         }
 
 
-        $transaction = $this->getTransactionManager()->newStripeTransaction($user, $cart, $token);
+        $transaction = $this->getTransactionManager()->newStripeTransaction($user, $cart, $token, $survey);
 
         $view = $this->view($transaction, 200)->setFormat('json');
         return $this->handleView($view);

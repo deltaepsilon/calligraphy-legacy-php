@@ -100,6 +100,14 @@ class Transaction implements TransactionInterface
     private $processed;
 
     /**
+     * @var string $survey
+     *
+     * @Expose
+     * @ORM\Column(name="survey", type="json_array", nullable=true)
+     */
+    private $survey;
+
+    /**
      * @var datetime $created
      *
      * @Expose
@@ -336,6 +344,28 @@ class Transaction implements TransactionInterface
     public function getProcessed()
     {
         return $this->processed;
+    }
+
+    /**
+     * Set survey
+     *
+     * @param text $survey
+     * #return Transaction
+     */
+    public function setSurvey($survey)
+    {
+        $this->survey = $survey;
+        return $this;
+    }
+
+    /**
+     * Get Survey
+     *
+     * $return text
+     */
+    public function getSurvey()
+    {
+        return $this->survey;
     }
 
     /**

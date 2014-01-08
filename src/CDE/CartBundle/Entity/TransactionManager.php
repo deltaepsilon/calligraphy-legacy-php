@@ -227,10 +227,11 @@ class TransactionManager implements TransactionManagerInterface
         return $updatedProducts;
     }
 
-    public function newStripeTransaction(User $user, Cart $cart, Token $token) {
+    public function newStripeTransaction(User $user, Cart $cart, Token $token, $survey = array()) {
         //Set up transaction
         $transaction = $this->create();
         $transaction->setUser($user);
+        $transaction->setSurvey($survey);
 
         //Sum up products
         $total = 0;
