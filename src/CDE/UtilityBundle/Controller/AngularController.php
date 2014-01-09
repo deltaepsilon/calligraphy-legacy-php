@@ -637,15 +637,21 @@ class AngularController extends FOSRestController
         $gallery->setDescription($description);
         $gallery->setUser($user);
 
-        $filename = $user->getUsername().'-'.uniqid().'.'.$file->guessExtension();
-        $aws_folder = $this->container->getParameter('aws_gallery_folder');
-        $file->move('../dist/gallery', $filename);
-        $destination = $aws_folder.'/'.$filename;
-        $this->getAwsManager()->copyGalleryFile($destination, '../dist/');
-        $gallery->setFilename($destination);
-        $this->getGalleryManager()->add($gallery);
+        if ($file->getError() > 0) {
+            $view = $this->view(array('error' => "Image upload failed. It's likely too large."), 200)->setFormat('json');
+        } else {
+            $filename = $user->getUsername().'-'.uniqid().'.'.$file->guessExtension();
+            $aws_folder = $this->container->getParameter('aws_gallery_folder');
+            $file->move('../dist/gallery', $filename);
+            $destination = $aws_folder.'/'.$filename;
+            $this->getAwsManager()->copyGalleryFile($destination, '../dist/');
+            $gallery->setFilename($destination);
+            $this->getGalleryManager()->add($gallery);
 
-        $view = $this->view($gallery, 200)->setFormat('json');
+            $view = $this->view($gallery, 200)->setFormat('json');
+        }
+
+
         return $this->handleView($view);
     }
 
