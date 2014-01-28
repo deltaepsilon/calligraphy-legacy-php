@@ -66,7 +66,7 @@ class AWSManager
             $distroInfo = $this->getDistroInfo();
             $distribution_hostname = $distroInfo->body->DomainName;
             $this->setRsa();
-            $privateUri = $this->cloudFront->get_private_object_url($distribution_hostname, $filename, $expires->getTimestamp());
+            $privateUri = $this->cloudFront->get_private_object_url($distribution_hostname, $filename, $expires->getTimestamp(), array('Secure' => true));
 
             $this->getRedis()->set($filename, $privateUri);
             $this->getRedis()->expire($filename, $days * 86400);
