@@ -152,4 +152,20 @@ class GalleryManager implements GalleryManagerInterface
         return $gallery;
     }
 
+    public function scrubAWSPaths(Gallery $gallery) {
+        $comments = $gallery->getComments();
+        $keys = $comments->getKeys();
+
+        foreach($keys as $key) {
+            $comment = $comments->get($key);
+            $commentText = $comment->getComment();
+            $cleanCommentText = preg_replace("/http:\/\/(.+).s3.amazonaws.com/", "https://s3.amazonaws.com/$1", $commentText);
+            if (isset($cleanCommentText)) {
+                $comment->setComment($cleanCommentText);
+                $comments->set($key, $comment);
+            }
+
+        }
+    }
+
 }

@@ -121,5 +121,13 @@ class CommentManager implements CommentManagerInterface
         return $comment;
     }
 
+    public function scrubAWSPaths(Comment $comment) {
+        $commentText = $comment->getComment();
+        $cleanCommentText = preg_replace("/http:\/\/(.+).s3.amazonaws.com/", "https://s3.amazonaws.com/$1", $commentText);
+        if (isset($cleanCommentText)) {
+            $comment->setComment($cleanCommentText);
+        }
+    }
+
 
 }

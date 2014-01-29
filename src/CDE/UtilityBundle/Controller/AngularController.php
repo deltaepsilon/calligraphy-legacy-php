@@ -608,11 +608,15 @@ class AngularController extends FOSRestController
             } else {
                 $signedUri = $this->getAwsManager()->getSignedUriByFilename($gallery->getFilename());
                 $gallery->setSignedUri($signedUri);
+                $this->getGalleryManager()->scrubAWSPaths($gallery);
                 $view = $this->view($gallery, 200)->setFormat('json');
             }
 
         } else {
             $galleries = $this->getGalleryManager()->findByUser($user);
+            foreach ($galleries as $gallery) {
+                $this->getGalleryManager()->scrubAWSPaths($gallery);
+            }
             //DO NOT SET SIGNED URLS. Only go through that by request
             $view = $this->view($galleries, 200)->setFormat('json');
 
@@ -686,11 +690,16 @@ class AngularController extends FOSRestController
             if (!isset($comment) || $comment->getGalleryuser()->getId() !== $user->getId()) {
                 $view = $this->view(array('error' => 'Comment not found'), 200)->setFormat('json');
             } else {
+                $this->getCommentManager()->scrubAWSPaths($comment);
                 $view = $this->view($comment, 200)->setFormat('json');
             }
 
         } else {
             $comments = $this->getCommentManager()->findByGalleryUser($user);
+            foreach ($comments as $comment) {
+                $this->getCommentManager()->scrubAWSPaths($comment);
+            }
+
             $view = $this->view($comments, 200)->setFormat('json');
         }
 
