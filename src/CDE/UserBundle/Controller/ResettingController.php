@@ -26,7 +26,7 @@ class ResettingController extends BaseResettingController
      * Convenience methods
      */
     private function getRoot() {
-        return 'http://'.$_SERVER['HTTP_HOST'];
+        return 'https://'.$_SERVER['HTTP_HOST'];
     }
 
     public function sendResettingEmailMessage(UserInterface $user)
