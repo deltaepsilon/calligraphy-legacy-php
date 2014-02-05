@@ -276,6 +276,28 @@ class AWSManager
         $bucket = $this->container->getParameter('aws_private_bucket');
         $owner = $this->getOwnerId($bucket);
         $s3 = $this->getS3CanonicalId($this->getOai());
+
+//        $object = $this->s3->get_object($bucket, $prefix);
+//        $now = new \DateTime();
+//        $now->add(new \DateInterval('P1000D'));
+//        $newHeaders = array(
+//            'Content-Type' => $object->header['content-type'],
+//            'Expires' => $now->format('D, d M Y H:i:s \G\M\T')
+//        );
+//        $source = array(
+//            'bucket' => $bucket,
+//            'filename' => $prefix
+//        );
+//        $result = $this->s3->copy_object($source, $source, array(
+//            'headers' => $newHeaders,
+//            'acl' => array(
+//                array('id' => $owner, 'permission' => 'FULL_CONTROL' ),
+//                array('id' => $s3, 'permission' => 'READ' ),
+//            )
+//        ));
+//        $redundancyResult = $this->s3->change_storage_redundancy($bucket, $prefix, 'REDUCED_REDUNDANCY');
+
+
         $result = $this->s3->set_object_acl($bucket, $prefix, array(
             array('id' => $owner, 'permission' => 'FULL_CONTROL' ),
             array('id' => $s3, 'permission' => 'READ' ),

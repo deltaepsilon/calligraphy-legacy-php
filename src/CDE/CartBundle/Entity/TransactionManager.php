@@ -273,13 +273,20 @@ class TransactionManager implements TransactionManagerInterface
             $this->add($transaction);
         } else {
             //Charge via Stripe
-            $stripeResponse = \Stripe_Charge::create(array(
-                'amount' => round($total * 100),
-                'currency' => 'usd',
-                'card' => $token->getStripeId(),
-                'description' => 'Charge for '.$token->getUser()->getEmail(),
-                'capture' => true
-            ));
+            try {
+                $stripeResponse = \Stripe_Charge::create(array(
+                    'amount' => round($total * 100),
+                    'currency' => 'usd',
+                    'card' => $token->getStripeId(),
+                    'description' => 'Charge for '.$token->getUser()->getEmail(),
+                    'capture' => true
+                ));
+            } catch (\Stripe_CardError $e) {
+                return array('error' => $e->getMessage());
+            } catch (\Stripe_InvalidRequestError $e) {
+                return array('error' => $e->getMessage());
+            }
+
             if ($stripeResponse['failure_code']) {
                 return array('error' => $stripeResponse['failure_message']);
             } else {
