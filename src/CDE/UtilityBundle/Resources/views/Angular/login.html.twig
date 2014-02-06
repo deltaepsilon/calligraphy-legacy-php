@@ -16,6 +16,10 @@
             <input style="display: none" type="text" name="redirect" ng-model="redirect" />
             <input style="display: none" type="text" name="origin" ng-model="origin" />
 
+            <p>
+                Log in with your <strong>username</strong>. Your email address won't work here.
+            </p>
+
             <div class="clearfix pure-g-r">
                 <input
                     id="username"
@@ -23,7 +27,7 @@
                     type="text"
                     name="_username"
                     value="{{ last_username }}"
-                    placeholder="Username..."
+                    placeholder="Username... (not your email address)"
                     ng-required="true"
                     ng-model="login.username"
                     qv-focus
