@@ -111,6 +111,7 @@ class RestController extends FOSRestController
                     ->setFrom($admin['no_reply_email'])
                     ->setTo($comment->getGalleryuser()->getEmail())
                     ->setBody($this->renderView('CDEContentBundle:Mail:newcomment.txt.twig', array(
+                        'galleryUser' => $gallery->getUser(),
                         'comment' => $comment
                     )))
                     ->setContentType("text/html");

@@ -1,7 +1,12 @@
 {% extends 'CDECartBundle:Mail:base.txt.twig' %}
 
 {% block title %}
-You have a new comment on the gallery titled "{{ comment.gallery.title }}".
+{{ galleryUser.username }},
+
+<p>
+    You have a new comment on the gallery titled "{{ comment.gallery.title }}".
+</p>
+
 {% endblock %}
 
 {% block main %}
