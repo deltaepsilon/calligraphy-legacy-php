@@ -440,9 +440,9 @@ class Product implements ProductInterface
 	 */
 	public function setAvailable($available)
 	{
-		if ($this->type != $this->PHYSICAL) {
-			$available = null;
-		}
+//		if ($this->type != $this->PHYSICAL) {
+//			$available = null;
+//		}
 		$this->available = $available;
 		return $this;
 	}
