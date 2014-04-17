@@ -1,22 +1,24 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<div class="background-gray1">
+<div class="column background-gray1">
     <ul class="link-list">
         <li class="link-list-item">register</li>
     </ul>
 </div>
-<div class="pure-g-r account-register padded-wrapper">
-    <div id="register" class="pure-u-1">
+<div class="account-register padded-wrapper">
+    <div id="register" class="column small-12">
+        <br>
+
         <form class="qv-form full-width-form centered" name="registerForm" action="{{ path('fos_user_registration_register') }}" method="POST" class="fos_user_registration_register">
             {{ form_widget(form._token) }}
             <input style="display: none" type="text" name="redirect" ng-model="redirect" />
             <input style="display: none" type="text" name="origin" ng-model="origin" />
 
             <br>
-            <div class="clearfix pure-g-r">
+            <div class="column small-12">
                 <input
                     id="fos_user_registration_form_username"
-                    class="pure-u-2-5 pull-left"
+                    class="column small-12 medium-6"
                     type="text"
                     name="username"
                     required="required"
@@ -26,25 +28,25 @@
                     qv-focus
                     placeholder="Username..."
                 />
-                <div class="form-error pure-u-3-5" ng-show="registerForm.username.$error.minlength">Your username is too short</div>
-                <div class="form-error pure-u-3-5" ng-show="registerForm.username.$error.maxlength">Your username is too long</div>
+                <div class="form-error column small-12 medium-6" ng-show="registerForm.username.$error.minlength">Your username is too short</div>
+                <div class="form-error column small-12 medium-6" ng-show="registerForm.username.$error.maxlength">Your username is too long</div>
             </div>
-            <div class="clearfix pure-g-r">
+            <div class="column small-12">
                 <input
                     id="fos_user_registration_form_email"
-                    class="pure-u-2-5 pull-left"
+                    class="column small-12 medium-6"
                     type="email"
                     name="email"
                     ng-required="true"
                     ng-model="registration.email"
                     placeholder="Email..."
                 />
-                <div class="form-error pure-u-3-5" ng-show="registerForm.email.$invalid && registerForm.email.$dirty">That email looks invalid</div>
+                <div class="form-error column small-12 medium-6" ng-show="registerForm.email.$invalid && registerForm.email.$dirty">That email looks invalid</div>
             </div>
-            <div class="clearfix pure-g-r">
+            <div class="column small-12">
                 <input
                     id="fos_user_registration_form_plainPassword_first"
-                    class="pure-u-2-5 pull-left"
+                    class="column small-12 medium-6"
                     type="password"
                     name="password"
                     ng-required="true"
@@ -52,12 +54,12 @@
                     ng-minlength="3"
                     placeholder="Password..."
                 />
-                <div class="form-error pure-u-3-5" ng-show="registerForm.password.$error.minlength">Your password is too short</div>
+                <div class="form-error column small-12 medium-6" ng-show="registerForm.password.$error.minlength">Your password is too short</div>
             </div>
-            <div class="clearfix pure-g-r">
+            <div class="column small-12">
                 <input
                     id="fos_user_registration_form_plainPassword_second"
-                    class="pure-u-2-5 pull-left"
+                    class="column small-12 medium-6"
                     type="password"
                     name="verification"
                     ng-required="true"
@@ -67,28 +69,26 @@
                     form-verification="registerForm.verification"
                     placeholder="Verify password..."
                 />
-                <div class="form-error pure-u-3-5" ng-show="registerForm.verification.$error.verify">Verification does not match</div>
+                <div class="form-error column small-12 medium-6" ng-show="registerForm.verification.$error.verify">Verification does not match</div>
             </div>
 
-            <div class="clearfix pure-g-r">
-                <div class="pure-u-1-5">
-                    <button
-                        class="button-primary full-width"
-                        type="submit"
-                        id="_submit"
-                        name="_submit"
-                        value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}"
-                        ng-disabled="registerForm.$invalid"
-                    >
-                        Register
-                    </button>
-                </div>
-                <div class="pure-u-1-5 text-centered">
-                    <a class="form-link" ui-sref="login">Login</a>
-                </div>
-                <div class="pure-u-1-5 text-centered">
-                    <a class="form-link" ui-sref="reset">Reset Password</a>
-                </div>
+            <div class="column small-12 medium-4">
+                <button
+                    class="button-primary full-width"
+                    type="submit"
+                    id="_submit"
+                    name="_submit"
+                    value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}"
+                    ng-disabled="registerForm.$invalid"
+                >
+                    Register
+                </button>
+            </div>
+            <div class="column small-6 medium-3 text-center">
+                <a class="form-link" ui-sref="login">Login</a>
+            </div>
+            <div class="column small-6 medium-3 end text-center">
+                <a class="form-link" ui-sref="reset">Reset Password</a>
             </div>
         </form>
     </div>

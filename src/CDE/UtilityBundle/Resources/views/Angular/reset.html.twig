@@ -1,11 +1,12 @@
 {% trans_default_domain 'FOSUserBundle' %}
-<div class="background-gray1">
+<div class="column background-gray1">
     <ul class="link-list">
         <li class="link-list-item">reset password</li>
     </ul>
 </div>
-<div class="pure-g-r account-login padded-wrapper">
-    <div id="login" class="pure-u-1">
+<div class="account-login padded-wrapper">
+    <div id="login" class="column small-12">
+        <br>
 
         <form class="qv-form full-width-form centered" name="resetForm" action="{{ path('CDEUtilityBundle_angular_reset_email') }}" method="POST">
 
@@ -13,10 +14,10 @@
             <input style="display: none" type="text" name="origin" ng-model="origin" />
             <br>
 
-            <div class="clearfix pure-g-r">
+            <div class="column small-12">
                 <input
                     id="username"
-                    class="pure-u-1 pull-left"
+                    class="column small-12"
                     type="text"
                     name="username"
                     placeholder="Username or email address..."
@@ -26,22 +27,20 @@
                 />
             </div>
 
-            <div class="clearfix pure-g-r">
-                <div class="pure-u-1-5">
-                    <button
-                            class="button-primary full-width"
-                            type="submit"
-                            ng-disabled="resetForm.$invalid"
-                            >
-                        reset
-                    </button>
-                </div>
-                <div class="pure-u-1-5 text-centered">
-                    <a class="form-link" ui-sref="login">Login</a>
-                </div>
-                <div class="pure-u-1-5 text-centered">
-                    <a class="form-link" ui-sref="register">Register</a>
-                </div>
+            <div class="column small-12 medium-4">
+                <button
+                        class="button-primary full-width"
+                        type="submit"
+                        ng-disabled="resetForm.$invalid"
+                        >
+                    reset
+                </button>
+            </div>
+            <div class="column small-6 medium-3 text-center">
+                <a class="form-link" ui-sref="login">Login</a>
+            </div>
+            <div class="column small-6 medium-3 text-center">
+                <a class="form-link" ui-sref="register">Register</a>
             </div>
 
         </form>

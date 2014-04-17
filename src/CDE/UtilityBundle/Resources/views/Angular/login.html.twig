@@ -1,10 +1,10 @@
-<div class="background-gray1">
+<div class="column background-gray1">
     <ul class="link-list">
         <li class="link-list-item">log in</li>
     </ul>
 </div>
 <div class="pure-g-r account-login padded-wrapper">
-    <div id="login" class="pure-u-1">
+    <div id="login" class="column small-12">
 
         <form class="qv-form full-width-form centered" name="loginForm" action="{{ path("fos_user_security_check") }}" method="post">
 
@@ -16,14 +16,15 @@
             <input style="display: none" type="text" name="redirect" ng-model="redirect" />
             <input style="display: none" type="text" name="origin" ng-model="origin" />
 
-            <p>
+            <p class="column small-12">
+                <br>
                 Log in with your <strong>username</strong>. Your email address won't work here.
             </p>
 
-            <div class="clearfix pure-g-r">
+            <div class="column small-12">
                 <input
                     id="username"
-                    class="pure-u-1"
+                    class="column small-12"
                     type="text"
                     name="_username"
                     value="{{ last_username }}"
@@ -34,10 +35,10 @@
                 />
             </div>
 
-            <div class="clearfix pure-g-r">
+            <div class="column small-12">
                 <input
                     id="password"
-                    class="pure-u-1"
+                    class="column small-12"
                     type="password"
                     name="_password"
                     placeholder="Password..."
@@ -46,33 +47,32 @@
                 />
             </div>
 
-            <div class="clearfix">
+            <div class="column small-12">
                 <label class="inline-label pull-left" for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
                 <input
                     id="remember_me"
                     class="pull-left"
+                    type="checkbox"
                     type="checkbox"
                     name="_remember_me"
                     checked
                 />
             </div>
 
-            <div class="clearfix pure-g-r">
-                <div class="pure-u-1-5">
-                    <button
-                        class="button-primary full-width"
-                        type="submit"
-                        id="_submit"
-                        name="_submit"
-                        value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}"
-                    >{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}</button>
-                </div>
-                <div class="pure-u-1-5 text-centered">
-                    <a class="form-link" ui-sref="register">Register</a>
-                </div>
-                <div class="pure-u-1-5 text-centered">
-                    <a class="form-link" ui-sref="reset">Reset Password</a>
-                </div>
+            <div class="column small-12 medium-4">
+                <button
+                    class="button-primary full-width"
+                    type="submit"
+                    id="_submit"
+                    name="_submit"
+                    value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}"
+                >{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}</button>
+            </div>
+            <div class="column small-6 medium-3 text-center">
+                <a class="form-link" ui-sref="register">Register</a>
+            </div>
+            <div class="column small-6 medium-3 text-center">
+                <a class="form-link" ui-sref="reset">Reset Password</a>
             </div>
 
         </form>
