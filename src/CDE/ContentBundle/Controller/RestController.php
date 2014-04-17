@@ -12,18 +12,36 @@ class RestController extends FOSRestController
      */
     private function setCommentParameters(Request $request, $comment)
     {
-        $text = $request->request->get('comment');
-        $marked = $request->request->get('marked');
-        if (!isset($text)) {
-            $text = $request->query->get('comment');
+
+        // Get comment reviewed status
+        $reviewed = $request->request->get('reviewed');
+        if (!isset($reviewed)) {
+            $reviewed = $request->query->get('reviewed');
         }
+
+        // Get comment marked status
+        $marked = $request->request->get('marked');
         if (!isset($marked)) {
             $marked = $request->query->get('marked');
         }
-        if (isset($text)) {
-            $comment->setComment($text);
+
+        // Get comment text
+        $text = $request->request->get('comment');
+        if (!isset($text)) {
+            $text = $request->query->get('comment');
         }
 
+        // Set comment reviewed status
+        if (isset($reviewed)) {
+            if (strtolower($reviewed) === 'true') {
+                $reviewed = true;
+            } else if (strtolower($reviewed) === 'false') {
+                $reviewed = false;
+            }
+            $comment->setReviewed($reviewed);
+        }
+
+        // Set comment marked status
         if (isset($marked)) {
             if (strtolower($marked) === 'true') {
                 $marked = true;
@@ -32,17 +50,43 @@ class RestController extends FOSRestController
             }
             $comment->setMarked($marked);
         }
+
+        // Set comment text
+        if (isset($text)) {
+            $comment->setComment($text);
+        }
+
+
+        // Save comment changes
         $this->getCommentManager()->update($comment);
         return $comment;
     }
 
     private function setGalleryParameters(Request $request, $gallery)
     {
+        // Get comment reviewed status
+        $reviewed = $request->query->get('reviewed');
+        if (!isset($reviewed)) {
+            $reviewed = $request->request->get('reviewed');
+        }
+
+        // Get comment marked status
         $marked = $request->query->get('marked');
         if (!isset($marked)) {
             $marked = $request->request->get('marked');
         }
 
+        // Set comment reviewed status
+        if (isset($reviewed)) {
+            if (strtolower($reviewed) === 'true') {
+                $reviewed = true;
+            } else if (strtolower($reviewed) === 'false') {
+                $reviewed = false;
+            }
+            $gallery->setReviewed($reviewed);
+        }
+
+        // Set comment marked status
         if (isset($marked)) {
             if (strtolower($marked) === 'true') {
                 $marked = true;
@@ -51,6 +95,8 @@ class RestController extends FOSRestController
             }
             $gallery->setMarked($marked);
         }
+
+        // Save gallery changes
         $this->getGalleryManager()->update($gallery);
         return $gallery;
     }

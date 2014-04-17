@@ -68,6 +68,14 @@ class Gallery implements GalleryInterface
 
     /**
      * @Expose
+     * @var boolean $reviewed
+     *
+     * @ORM\Column(name="reviewed", type="boolean", nullable=true)
+     */
+    private $reviewed;
+
+    /**
+     * @Expose
      * @var boolean $marked
      *
      * @ORM\Column(name="marked", type="boolean", nullable=true)
@@ -289,6 +297,28 @@ class Gallery implements GalleryInterface
     public function getSignedUri()
     {
         return $this->signedUri;
+    }
+
+    /**
+     * Set reviewed
+     *
+     * @param text $reviewed
+     * @return Comment
+     */
+    public function setReviewed($reviewed)
+    {
+        $this->reviewed = $reviewed;
+        return $this;
+    }
+
+    /**
+     * Get reviewed
+     *
+     * @return text
+     */
+    public function getReviewed()
+    {
+        return $this->reviewed;
     }
 
     /**
