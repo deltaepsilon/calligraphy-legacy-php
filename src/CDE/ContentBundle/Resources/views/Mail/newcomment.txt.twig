@@ -3,20 +3,16 @@
 {% block title %}
 {{ galleryUser.username }},
 
-<p>
-    You have a new comment on the gallery titled "{{ comment.gallery.title }}".
-</p>
+You have a new comment on the gallery titled "{{ comment.gallery.title }}".
 
 {% endblock %}
 
 {% block main %}
-<p>
-    Comment:
-    {{ comment.comment | markdown | purify | raw }}
-</p>
+Comment:
+---
 
-<p>
-    View all comments at {{ url('CDEUtilityBundle_index') }}/#!/gallery/{{ comment.gallery.id }}
-</p>
+{{ comment.comment | purify | raw }}
+
+View all comments at {{ url('CDEUtilityBundle_index') }}#!/gallery/{{ comment.gallery.id }}
 
 {% endblock %}
