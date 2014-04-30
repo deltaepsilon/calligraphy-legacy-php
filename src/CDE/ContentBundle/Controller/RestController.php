@@ -151,17 +151,45 @@ class RestController extends FOSRestController
             $this->setCommentParameters($request, $comment);
             $galleryUser = $gallery->getUser();
             if (( $user->getId() != $galleryUser->getId() ) && $galleryUser->getCommentEmail()) {
-                $admin = $this->container->getParameter('admin');
-                $message = \Swift_Message::newInstance()
-                    ->setSubject($this->container->getParameter('site_name').': New Gallery Comment')
-                    ->setFrom($admin['no_reply_email'])
-                    ->setTo($comment->getGalleryuser()->getEmail())
-                    ->setBody($this->renderView('CDEContentBundle:Mail:newcomment.txt.twig', array(
+
+                /**
+                 * Send email using firebase queueing system
+                 */
+
+                $postData = http_build_query(array(
+                    'to' => $comment->getGalleryuser()->getEmail(),
+                    'bcc' => $this->container->getParameter('mailer_deliver_all'),
+                    'subject' => $this->container->getParameter('site_name').': New Gallery Comment',
+                    'body' => $this->renderView('CDEContentBundle:Mail:newcomment.txt.twig', array(
                         'galleryUser' => $gallery->getUser(),
                         'comment' => $comment
-                    )))
-                    ->setContentType("text/html");
-                $this->get('mailer')->send($message);
+                    ))
+                ));
+
+                $opts = array('http' => array(
+                    'method' => 'POST',
+                    'header' => 'Content-Type: application/x-www-form-urlencoded',
+                    'content' => $postData
+                ));
+
+                $context = stream_context_create($opts);
+
+                $result = file_get_contents($this->container->getParameter('smart_client_endpoint').'/email', false, $context);
+
+                /**
+                 * Send email the old fashioned way
+                 */
+//                $admin = $this->container->getParameter('admin');
+//                $message = \Swift_Message::newInstance()
+//                    ->setSubject($this->container->getParameter('site_name').': New Gallery Comment')
+//                    ->setFrom($admin['no_reply_email'])
+//                    ->setTo($comment->getGalleryuser()->getEmail())
+//                    ->setBody($this->renderView('CDEContentBundle:Mail:newcomment.txt.twig', array(
+//                        'galleryUser' => $gallery->getUser(),
+//                        'comment' => $comment
+//                    )))
+//                    ->setContentType("text/html");
+//                $this->get('mailer')->send($message);
             }
 
 
