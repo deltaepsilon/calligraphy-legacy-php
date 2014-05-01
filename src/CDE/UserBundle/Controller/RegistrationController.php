@@ -127,7 +127,12 @@ class RegistrationController extends Controller
       $redirect = $request->request->get('origin');
       if (isset($redirect)) {
           $errors = $this->getErrorMessages($form);
-          $error = 'Registration failed. Try another username.';
+          $error = 'Registration failed.';
+
+          foreach ($errors as $errorMessage) {
+              $error .= ' '.$errorMessage[0].'.';
+          }
+
           $final = $redirect.'?error='.$error;
           if (preg_match('/http/', $redirect) === 0) {
               $final = 'http://'.$_SERVER['HTTP_HOST'].'/'.$redirect.'?error='.$error;
