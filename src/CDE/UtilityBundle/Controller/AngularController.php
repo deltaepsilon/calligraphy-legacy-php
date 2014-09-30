@@ -636,26 +636,61 @@ class AngularController extends FOSRestController
         $file = $request->files->get('file');
         $title = $this->getParameter($request, 'title');
         $description = $this->getParameter($request, 'description');
+        $flowChunkNumber = intval($this->getParameter($request, 'flowChunkNumber'));
+        $flowTotalChunks = intval($this->getParameter($request, 'flowTotalChunks'));
+        $flowFilename = trim(preg_replace("/[^a-zA-Z0-9]+/", '-', $this->getParameter($request, 'flowFilename')));
+        $flowTotalSize = intval($this->getParameter($request, 'flowTotalSize'));
+        $parts = explode('.', $this->getParameter($request, 'flowFilename'));
+        $extension = $parts[count($parts) - 1];
+        $tempFilename = $user->getId().'-'.$flowFilename;
+        $tempChunkFilename = $flowChunkNumber.'-'.$tempFilename;
+        $galleryFolder = '../dist/gallery/';
+        $lastChunk = true;
+        $chunks = [];
 
-        $gallery = $this->getGalleryManager()->create();
-        $gallery->setTitle($title);
-        $gallery->setDescription($description);
-        $gallery->setUser($user);
+        for ($i = 1; $i <= $flowTotalChunks; $i++) {
+            $chunks[] = $galleryFolder.$i.'-'.$tempFilename;
+        }
 
         if ($file->getError() > 0) {
             $view = $this->view(array('error' => "Image upload failed. It's likely too large."), 200)->setFormat('json');
         } else {
-            $filename = $user->getUsername().'-'.uniqid().'.'.$file->guessExtension();
-            $aws_folder = $this->container->getParameter('aws_gallery_folder');
-            $file->move('../dist/gallery', $filename);
-            $destination = $aws_folder.'/'.$filename;
-            $this->getAwsManager()->copyGalleryFile($destination, '../dist/');
-            $gallery->setFilename($destination);
-            $this->getGalleryManager()->add($gallery);
+            $file->move($galleryFolder, $tempChunkFilename);
 
-            $view = $this->view($gallery, 200)->setFormat('json');
+            foreach ($chunks as $chunk) {
+                if (!file_exists($chunk)) {
+                    $lastChunk = false;
+                }
+            }
+
+            if ($lastChunk) {
+                $fp = fopen($galleryFolder.$tempFilename, 'w');
+                foreach ($chunks as $chunk) {
+                    fwrite($fp, file_get_contents($chunk));
+                    unlink($chunk);
+                }
+                fclose($fp);
+
+                $aws_folder = $this->container->getParameter('aws_gallery_folder');
+                $filename = $user->getUsername().'-'.uniqid().'.'.$extension;
+                $destination = $aws_folder.'/'.$filename;
+                rename($galleryFolder.$tempFilename, $galleryFolder.$filename);
+
+                $gallery = $this->getGalleryManager()->create();
+                $gallery->setTitle($title);
+                $gallery->setDescription($description);
+                $gallery->setUser($user);
+                $gallery->setFilename($destination);
+                $this->getGalleryManager()->add($gallery);
+
+                $this->getAwsManager()->copyGalleryFile($destination, '../dist/');
+
+                $view = $this->view($gallery, 200)->setFormat('json');
+            } else {
+                $view = $this->view(array('response' => 'OK'))->setFormat('json');
+            }
+
         }
-
 
         return $this->handleView($view);
     }
